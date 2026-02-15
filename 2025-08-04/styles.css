@@ -28,6 +28,7 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 .quickfill-box { position: absolute; z-index: 20; display: grid; gap: 0.25rem; min-width: 220px; max-width: 380px; background: #0b1220; border: 1px solid #3b4967; border-radius: 8px; padding: 0.4rem; }
 .quickfill-box button { background: #1f2937; border-color: #374151; text-align: left; }
 .class-progress .timeline { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.45rem; }
+.class-level-breakdown { margin-top: 0.4rem; display: grid; gap: 0.4rem; }
 .feature-desc { margin: 0.2rem 0 0.5rem; color: #cbd5e1; }
 .multiclass-block { margin-top: 0.9rem; }
 .abilities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }

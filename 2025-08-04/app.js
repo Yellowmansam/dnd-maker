@@ -227,7 +227,7 @@ function mapEls() {
     panels: { race: byId("step-race"), class: byId("step-class"), abilities: byId("step-abilities"), background: byId("step-background"), summary: byId("step-summary") },
     raceOptions: byId("race-options"), raceDetails: byId("race-details"), raceOptionConfig: byId("race-option-config"),
     classOptions: byId("class-options"), subclassPickerWrap: byId("subclass-picker-wrap"), subclassPicker: byId("subclass-picker"), classValidation: byId("class-validation"),
-    addLevel: byId("add-level"), removeLevel: byId("remove-level"), totalLevel: byId("total-level"), classFeatureTimeline: byId("class-feature-timeline"),
+    totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
     characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
     backgroundOptions: byId("background-options"), backgroundDetails: byId("background-details"), characterSheet: byId("character-sheet"),
@@ -267,8 +267,6 @@ function bindEvents() {
   byId("download-json").addEventListener("click", downloadJson);
 
   els.characterName.addEventListener("input", (e) => { state.character.name = e.target.value; });
-  els.addLevel.addEventListener("click", () => addLevelToClass(state.character.classPlan.primaryClassId));
-  els.removeLevel.addEventListener("click", () => removeLevelFromPrimary());
   els.toggleMulticlass.addEventListener("click", () => { state.multiclassOpen = !state.multiclassOpen; renderClassProgress(); });
   els.subclassPicker.addEventListener("change", (e) => {
     state.character.classPlan.subclassByClass[state.character.classPlan.primaryClassId] = e.target.value;
@@ -409,15 +407,64 @@ function renderClassProgress() {
 
   const timeline = classTimelineEntries();
   els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span class="desc-term" data-desc="${escapeHtml(f.description)}">${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul></li>`).join("");
-
-  const primary = state.character.classPlan.primaryClassId;
-  const canLevelPrimary = primary && total < 20;
-  els.addLevel.disabled = !canLevelPrimary;
-  els.removeLevel.disabled = classLevel(primary) <= 1;
+  renderClassLevelBreakdown();
 
   els.multiclassList.classList.toggle("hidden", !state.multiclassOpen);
   if (state.multiclassOpen) renderMulticlassList();
   els.classValidation.textContent = total > 20 ? "Total class levels cannot exceed 20." : "";
+}
+
+function renderClassLevelBreakdown() {
+  const total = totalClassLevel();
+  els.classLevelBreakdown.innerHTML = "";
+  Object.entries(state.character.classPlan.levelsByClass).forEach(([classId, lvl]) => {
+    const cls = classById(classId);
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `<strong>${cls.name}: Level ${lvl}</strong>`;
+
+    const minus = document.createElement("button");
+    minus.type = "button";
+    minus.className = "secondary";
+    minus.textContent = "Level -";
+    minus.disabled = lvl <= 1;
+    minus.addEventListener("click", () => {
+      if (state.character.classPlan.levelsByClass[classId] > 1) {
+        state.character.classPlan.levelsByClass[classId] -= 1;
+        renderClassStep();
+      }
+    });
+
+    const plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "Level +";
+    plus.disabled = total >= 20;
+    plus.addEventListener("click", () => addLevelToClass(classId));
+
+    row.appendChild(minus);
+    row.appendChild(plus);
+
+    if (lvl >= 3 && (cls.subclasses || []).length) {
+      const subSelect = document.createElement("select");
+      cls.subclasses.forEach((sub) => {
+        const opt = document.createElement("option");
+        opt.value = sub.name;
+        opt.textContent = sub.name;
+        if (state.character.classPlan.subclassByClass[classId] === sub.name) opt.selected = true;
+        subSelect.appendChild(opt);
+      });
+      if (!state.character.classPlan.subclassByClass[classId]) {
+        state.character.classPlan.subclassByClass[classId] = cls.subclasses[0].name;
+      }
+      subSelect.addEventListener("change", (e) => {
+        state.character.classPlan.subclassByClass[classId] = e.target.value;
+        renderClassProgress();
+      });
+      row.appendChild(subSelect);
+    }
+
+    els.classLevelBreakdown.appendChild(row);
+  });
 }
 
 function classTimelineEntries() {
@@ -441,10 +488,12 @@ function renderMulticlassList() {
   els.multiclassList.innerHTML = "";
   state.data.classes.filter((c) => c.id !== primary).forEach((cls) => {
     const meets = meetsMulticlassRequirement(cls.multiclassReq);
-    const canAdd = meets && total < 20;
+    const alreadyHas = classLevel(cls.id) > 0;
+    const canAdd = meets && total < 20 && !alreadyHas;
     const card = document.createElement("div");
     card.className = `option-card ${canAdd ? "" : "disabled"}`;
-    card.innerHTML = `<strong>${cls.name}</strong><p>Requirement: ${cls.multiclassReq}</p><p>${meets ? "Requirement met" : "Requirement not met with current ability scores"}</p>`;
+    const reason = alreadyHas ? "You already have levels in this class." : (meets ? "Requirement met" : "Requirement not met with current ability scores");
+    card.innerHTML = `<strong>${cls.name}</strong><p>Requirement: ${cls.multiclassReq}</p><p>${reason}</p>`;
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "+1 Level";
@@ -457,15 +506,9 @@ function renderMulticlassList() {
 
 function addLevelToClass(classId) {
   if (totalClassLevel() >= 20) return;
+  const wasZero = !state.character.classPlan.levelsByClass[classId];
   state.character.classPlan.levelsByClass[classId] = (state.character.classPlan.levelsByClass[classId] || 0) + 1;
-  renderClassStep();
-}
-
-function removeLevelFromPrimary() {
-  const id = state.character.classPlan.primaryClassId;
-  const current = classLevel(id);
-  if (current <= 1) return;
-  state.character.classPlan.levelsByClass[id] = current - 1;
+  if (wasZero && classId !== state.character.classPlan.primaryClassId) state.multiclassOpen = false;
   renderClassStep();
 }
 

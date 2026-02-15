@@ -4,7 +4,7 @@ This project is a multi-step character creation flow inspired by D&D Beyond.
 
 ## Current Builder Flow
 - **Race**: pick a race, review short lore, age of maturity, lifespan, and detailed features.
-- **Class**: pick a starting class, submit to lock level 1, then add levels from there up to level 20. The center timeline shows each level and exact features gained with descriptions shown under each feature. Multiclass options are shown at the bottom, can be toggled open/closed, and classes you do not qualify for are greyed out based on current ability scores.
+- **Class**: pick a starting class, submit to lock level 1, then add levels from there up to level 20. The center timeline shows each level and exact features gained with descriptions shown under each feature. Multiclass options are shown at the bottom, can be toggled open/closed, and classes you do not qualify for are greyed out based on current ability scores. If you already have levels in a class, it is greyed out in multiclass options and marked as already taken. Class levels are adjusted per-class with Level + / Level - controls, and each class can select its subclass once it reaches subclass level.
 - **Ability Scores**: choose either strict **27-point buy** (8 to 15 before racial bonuses) or **rolled stats** (4d6 drop one die per roll slot with manual assignment to stats, max 18).
 - **Background**: choose a background and review grants.
 - **Summary**: export a JSON character sheet.
