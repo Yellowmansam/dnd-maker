@@ -16,6 +16,8 @@ button.secondary { background: #1f2937; border-color: #374151; }
 button:disabled { opacity: 0.55; cursor: not-allowed; }
 .validation { color: #fca5a5; min-height: 1.2rem; }
 .option-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin: 0.75rem 0; }
+.race-era-groups { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+.race-era-groups > .details { margin: 0; }
 .option-card { border: 1px solid #3b4967; border-radius: 10px; padding: 0.75rem; cursor: pointer; background: #121827; }
 .option-card.selected { border-color: #38bdf8; box-shadow: 0 0 0 1px #38bdf8; }
 .option-card.disabled { opacity: 0.6; border-style: dashed; }
