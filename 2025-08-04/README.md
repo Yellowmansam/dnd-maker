@@ -3,7 +3,7 @@
 This project is a multi-step character creation flow inspired by D&D Beyond.
 
 ## Current Builder Flow
-- **Race**: pick a race, review details, and choose race options (like bonus language) from dropdowns with per-option descriptions.
+- **Race**: pick a race, review details, and choose race options (like Dragonborn draconic ancestry for breath weapon/resistance, or bonus language options) from dropdowns with per-option descriptions.
 - **Class**: pick class and level plan, with hover descriptions on feature names.
 - **Ability Scores**: assign stats using a strict **27-point buy** system (8 to 15 limits before racial bonuses).
 - **Background**: choose a background and review grants.
@@ -12,7 +12,7 @@ This project is a multi-step character creation flow inspired by D&D Beyond.
 ## Custom Content
 Use the **Custom Content** button in the top-right to open the custom page.
 - Import/export custom JSON.
-- Add/edit custom races, classes, spells, backgrounds, and feats.
+- Add/edit custom races, classes, spells, backgrounds, feats, and languages.
 - Type-specific editor fields are shown based on selected type.
 - Quick fill suggestions appear in appropriate list fields.
 - Submitted items appear in a sidebar and can be reopened for editing.

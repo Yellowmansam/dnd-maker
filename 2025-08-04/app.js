@@ -13,6 +13,49 @@ const LANGUAGE_DESCRIPTIONS = {
   Infernal: "The legalistic language of devils and infernal contracts.",
 };
 
+const DRAGONBORN_ANCESTRY = {
+  Black: {
+    breath: "5-by-30 ft. line of acid (DEX save). Targets take 2d6 acid damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to acid damage at all times.",
+  },
+  Blue: {
+    breath: "5-by-30 ft. line of lightning (DEX save). Targets take 2d6 lightning damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to lightning damage at all times.",
+  },
+  Brass: {
+    breath: "5-by-30 ft. line of fire (DEX save). Targets take 2d6 fire damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to fire damage at all times.",
+  },
+  Bronze: {
+    breath: "5-by-30 ft. line of lightning (DEX save). Targets take 2d6 lightning damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to lightning damage at all times.",
+  },
+  Copper: {
+    breath: "5-by-30 ft. line of acid (DEX save). Targets take 2d6 acid damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to acid damage at all times.",
+  },
+  Gold: {
+    breath: "15 ft. cone of fire (DEX save). Targets take 2d6 fire damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to fire damage at all times.",
+  },
+  Green: {
+    breath: "15 ft. cone of poison (CON save). Targets take 2d6 poison damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to poison damage at all times.",
+  },
+  Red: {
+    breath: "15 ft. cone of fire (DEX save). Targets take 2d6 fire damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to fire damage at all times.",
+  },
+  Silver: {
+    breath: "15 ft. cone of cold (CON save). Targets take 2d6 cold damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to cold damage at all times.",
+  },
+  White: {
+    breath: "15 ft. cone of cold (CON save). Targets take 2d6 cold damage on a failed save, half on success. Damage scales at higher levels.",
+    resistance: "You have resistance to cold damage at all times.",
+  },
+};
+
 const CLASS_FEATURE_DESCRIPTIONS = {
   "Fighting Style": "At 1st level, you specialize in one combat approach (for example Defense or Archery), granting a persistent combat bonus that shapes how your fighter performs every round.",
   "Second Wind": "You can use a bonus action to recover hit points equal to 1d10 + fighter level. This is a personal emergency heal that refreshes on a short or long rest.",
@@ -35,9 +78,9 @@ const CLASS_FEATURE_DESCRIPTIONS = {
 };
 
 const FEATURE_DESCRIPTIONS = {
-  "Draconic Ancestry": "Choose the dragon lineage that empowers your breath weapon and determines your elemental resistance.",
-  "Breath Weapon": "Exhale magical elemental energy in a cone or line. Targets make a save for reduced damage.",
-  "Damage Resistance": "You permanently take half damage from one elemental damage type tied to your ancestry.",
+  "Draconic Ancestry": "Choose your dragon ancestry. It determines your breath weapon shape/damage type and your permanent elemental resistance.",
+  "Breath Weapon": "You exhale destructive elemental energy tied to your ancestry. Shape and damage type vary by dragon ancestry.",
+  "Damage Resistance": "You permanently take half damage from the elemental type linked to your draconic ancestry.",
   Darkvision: "You can see in darkness up to a set range as dim light, and in dim light as bright light.",
   "Dwarven Resilience": "You have advantage on saving throws against poison and resistance to poison damage.",
   "Dwarven Combat Training": "You gain proficiency with traditional dwarven martial weapons.",
@@ -63,46 +106,22 @@ const FEATURE_DESCRIPTIONS = {
 
 const BASE_DATA = {
   races: [
-    { id: "dragonborn", name: "Dragonborn", languages: ["Common", "Draconic"], skills: ["No automatic skill proficiency from race"], features: ["Draconic Ancestry", "Breath Weapon", "Damage Resistance"], racialAbilities: { STR: 2, CHA: 1 } },
+    {
+      id: "dragonborn",
+      name: "Dragonborn",
+      languages: ["Common", "Draconic"],
+      skills: ["No automatic skill proficiency from race"],
+      features: ["Draconic Ancestry", "Breath Weapon", "Damage Resistance"],
+      racialAbilities: { STR: 2, CHA: 1 },
+      options: [{ key: "draconicAncestry", label: "Draconic Ancestry", help: "Choose your dragon lineage. This changes both your breath weapon and your damage resistance.", choices: Object.keys(DRAGONBORN_ANCESTRY), descriptions: Object.fromEntries(Object.entries(DRAGONBORN_ANCESTRY).map(([k, v]) => [k, `Breath: ${v.breath} Resistance: ${v.resistance}`])) }],
+    },
     { id: "dwarf", name: "Dwarf", languages: ["Common", "Dwarvish"], skills: ["Battleaxe, handaxe, light hammer, warhammer proficiency", "Tool proficiency"], features: ["Darkvision", "Dwarven Resilience", "Dwarven Combat Training", "Stonecunning"], racialAbilities: { CON: 2 } },
     { id: "elf", name: "Elf", languages: ["Common", "Elvish"], skills: ["Perception proficiency"], features: ["Darkvision", "Keen Senses", "Fey Ancestry", "Trance"], racialAbilities: { DEX: 2 } },
     { id: "gnome", name: "Gnome", languages: ["Common", "Gnomish"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Gnome Cunning"], racialAbilities: { INT: 2 } },
-    {
-      id: "half-elf",
-      name: "Half-Elf",
-      languages: ["Common", "Elvish"],
-      skills: ["Two skill proficiencies of your choice"],
-      features: ["Darkvision", "Fey Ancestry", "Skill Versatility"],
-      racialAbilities: { CHA: 2 },
-      options: [
-        {
-          key: "bonusLanguage",
-          label: "Bonus Language",
-          help: "Half-Elves learn one additional language of their choice.",
-          choices: Object.keys(LANGUAGE_DESCRIPTIONS),
-          descriptions: LANGUAGE_DESCRIPTIONS,
-        },
-      ],
-    },
+    { id: "half-elf", name: "Half-Elf", languages: ["Common", "Elvish"], skills: ["Two skill proficiencies of your choice"], features: ["Darkvision", "Fey Ancestry", "Skill Versatility"], racialAbilities: { CHA: 2 }, options: [{ key: "bonusLanguage", label: "Bonus Language", help: "Half-Elves learn one additional language of their choice.", choices: Object.keys(LANGUAGE_DESCRIPTIONS), descriptions: LANGUAGE_DESCRIPTIONS }] },
     { id: "half-orc", name: "Half-Orc", languages: ["Common", "Orc"], skills: ["Intimidation proficiency"], features: ["Darkvision", "Relentless Endurance", "Savage Attacks"], racialAbilities: { STR: 2, CON: 1 } },
     { id: "halfling", name: "Halfling", languages: ["Common", "Halfling"], skills: ["No automatic skill proficiency from race"], features: ["Lucky", "Brave", "Halfling Nimbleness"], racialAbilities: { DEX: 2 } },
-    {
-      id: "human",
-      name: "Human",
-      languages: ["Common"],
-      skills: ["No automatic skill proficiency from race"],
-      features: ["Versatile"],
-      racialAbilities: { STR: 1, DEX: 1, CON: 1, INT: 1, WIS: 1, CHA: 1 },
-      options: [
-        {
-          key: "bonusLanguage",
-          label: "Bonus Language",
-          help: "Humans learn one additional language reflecting their broad cultural adaptability.",
-          choices: Object.keys(LANGUAGE_DESCRIPTIONS),
-          descriptions: LANGUAGE_DESCRIPTIONS,
-        },
-      ],
-    },
+    { id: "human", name: "Human", languages: ["Common"], skills: ["No automatic skill proficiency from race"], features: ["Versatile"], racialAbilities: { STR: 1, DEX: 1, CON: 1, INT: 1, WIS: 1, CHA: 1 }, options: [{ key: "bonusLanguage", label: "Bonus Language", help: "Humans learn one additional language reflecting their broad cultural adaptability.", choices: Object.keys(LANGUAGE_DESCRIPTIONS), descriptions: LANGUAGE_DESCRIPTIONS }] },
     { id: "tiefling", name: "Tiefling", languages: ["Common", "Infernal"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Hellish Resistance", "Infernal Legacy"], racialAbilities: { INT: 1, CHA: 2 } },
   ],
   classes: [
@@ -119,24 +138,14 @@ const BASE_DATA = {
   ],
   spells: [],
   feats: [],
+  languages: Object.entries(LANGUAGE_DESCRIPTIONS).map(([name, description]) => ({ name, description })),
 };
 
 const state = {
   step: "race",
   customOpen: false,
   data: structuredClone(BASE_DATA),
-  character: {
-    name: "",
-    raceId: "dragonborn",
-    raceChoices: {},
-    classId: "fighter",
-    primaryLevel: 1,
-    multiclassEnabled: false,
-    multiclassId: "wizard",
-    multiclassLevel: 1,
-    abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
-    backgroundId: "acolyte",
-  },
+  character: { name: "", raceId: "dragonborn", raceChoices: {}, classId: "fighter", primaryLevel: 1, multiclassEnabled: false, multiclassId: "wizard", multiclassLevel: 1, abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 }, backgroundId: "acolyte" },
   custom: { submitted: [], editingId: null },
   hoverTimer: null,
 };
@@ -157,13 +166,7 @@ const els = {
   applyCustom: document.getElementById("apply-custom"),
   quickfillBox: document.getElementById("quickfill-box"),
   tooltip: document.getElementById("hover-tooltip"),
-  panels: {
-    race: document.getElementById("step-race"),
-    class: document.getElementById("step-class"),
-    abilities: document.getElementById("step-abilities"),
-    background: document.getElementById("step-background"),
-    summary: document.getElementById("step-summary"),
-  },
+  panels: { race: document.getElementById("step-race"), class: document.getElementById("step-class"), abilities: document.getElementById("step-abilities"), background: document.getElementById("step-background"), summary: document.getElementById("step-summary") },
   raceOptions: document.getElementById("race-options"),
   raceDetails: document.getElementById("race-details"),
   raceOptionConfig: document.getElementById("race-option-config"),
@@ -256,22 +259,31 @@ function renderRaceStep() {
 
   const race = selectedRace();
   const selectedLanguages = [...toArray(race.languages)];
-  if (race.options?.length) {
-    race.options.forEach((option) => {
-      const selected = state.character.raceChoices[`${race.id}:${option.key}`];
-      if (selected && option.key.toLowerCase().includes("language")) selectedLanguages.push(selected);
-    });
-  }
+  (race.options || []).forEach((option) => {
+    const selected = state.character.raceChoices[`${race.id}:${option.key}`];
+    if (selected && option.key.toLowerCase().includes("language")) selectedLanguages.push(selected);
+  });
 
   els.raceDetails.innerHTML = `
     <h3>${race.name}</h3>
     <p><strong>Languages:</strong> ${selectedLanguages.join(", ") || "None"}</p>
     <p><strong>Skills/Proficiencies:</strong> ${toArray(race.skills).join(", ") || "None"}</p>
-    <p><strong>Features:</strong> ${toArray(race.features).map((feature) => describeTermHtml(feature, FEATURE_DESCRIPTIONS[feature])).join(", ") || "None"}</p>
+    <p><strong>Features:</strong> ${toArray(race.features).map((feature) => describeTermHtml(feature, featureDescriptionForRace(race, feature))).join(", ") || "None"}</p>
     <p><strong>Racial Ability Bonuses:</strong> ${formatAbilityBonuses(race.racialAbilities || {})}</p>
   `;
 
   renderRaceOptionSelectors(race);
+}
+
+function featureDescriptionForRace(race, feature) {
+  if (race.id === "dragonborn") {
+    const ancestry = state.character.raceChoices["dragonborn:draconicAncestry"];
+    if (ancestry && DRAGONBORN_ANCESTRY[ancestry]) {
+      if (feature === "Breath Weapon") return `(${ancestry} ancestry) ${DRAGONBORN_ANCESTRY[ancestry].breath}`;
+      if (feature === "Damage Resistance") return `(${ancestry} ancestry) ${DRAGONBORN_ANCESTRY[ancestry].resistance}`;
+    }
+  }
+  return FEATURE_DESCRIPTIONS[feature];
 }
 
 function renderRaceOptionSelectors(race) {
@@ -283,12 +295,11 @@ function renderRaceOptionSelectors(race) {
   }
 
   els.raceOptionConfig.classList.remove("hidden");
-  els.raceOptionConfig.innerHTML = `<h3>Race Options</h3>${options
-    .map((option) => {
-      const key = `${race.id}:${option.key}`;
-      const current = state.character.raceChoices[key] || "";
-      const choiceDescription = option.descriptions?.[current] || "";
-      return `
+  els.raceOptionConfig.innerHTML = `<h3>Race Options</h3>${options.map((option) => {
+    const key = `${race.id}:${option.key}`;
+    const current = state.character.raceChoices[key] || "";
+    const choiceDescription = option.descriptions?.[current] || "";
+    return `
       <label>
         ${option.label}
         <select data-race-option="${key}">
@@ -299,8 +310,7 @@ function renderRaceOptionSelectors(race) {
       <p><em>${escapeHtml(option.help || "")}</em></p>
       <p class="option-description">${choiceDescription ? `<strong>${escapeHtml(current)}:</strong> ${escapeHtml(choiceDescription)}` : "Select an option to view its full description."}</p>
     `;
-    })
-    .join("<hr />")}`;
+  }).join("<hr />")}`;
 
   els.raceOptionConfig.querySelectorAll("select[data-race-option]").forEach((select) => {
     select.addEventListener("change", (event) => {
@@ -337,8 +347,7 @@ function renderClassDetails() {
   const rows = [];
   for (let level = 1; level <= state.character.primaryLevel; level += 1) {
     const features = toArray(cls.levelFeatures?.[level] || ["No feature listed in current data"]);
-    const rendered = features.map((f) => describeTermHtml(f, CLASS_FEATURE_DESCRIPTIONS[f] || FEATURE_DESCRIPTIONS[f])).join(", ");
-    rows.push(`<li><strong>Level ${level}:</strong> ${rendered}</li>`);
+    rows.push(`<li><strong>Level ${level}:</strong> ${features.map((f) => describeTermHtml(f, CLASS_FEATURE_DESCRIPTIONS[f] || FEATURE_DESCRIPTIONS[f])).join(", ")}</li>`);
   }
 
   const multi = state.character.multiclassEnabled
@@ -350,8 +359,7 @@ function renderClassDetails() {
 }
 
 function fillMulticlassSelect() {
-  const primary = state.character.classId;
-  const options = state.data.classes.filter((c) => c.id !== primary);
+  const options = state.data.classes.filter((c) => c.id !== state.character.classId);
   els.multiclassClass.innerHTML = "";
   options.forEach((c) => {
     const option = document.createElement("option");
@@ -402,7 +410,6 @@ function renderSummary() {
   const race = selectedRace();
   const finalAbilities = Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, v + (race.racialAbilities?.[a] || 0)]));
   const raceSelections = Object.fromEntries(Object.entries(state.character.raceChoices).filter(([key]) => key.startsWith(`${race.id}:`)).map(([key, value]) => [key.split(":")[1], value]));
-
   const summary = {
     name: state.character.name || "Unnamed Adventurer",
     race: race.name,
@@ -448,8 +455,7 @@ function describeTermHtml(name, description) {
 }
 
 function showQuickFill(input) {
-  const domain = input.dataset.domain;
-  const pool = quickFillOptions(domain);
+  const pool = quickFillOptions(input.dataset.domain);
   const parts = input.value.split(",");
   const current = parts[parts.length - 1].trim().toLowerCase();
   if (!current) return hideQuickFill();
@@ -464,7 +470,7 @@ function showQuickFill(input) {
     btn.textContent = match;
     btn.addEventListener("click", () => {
       parts[parts.length - 1] = ` ${match}`;
-      input.value = parts.map((p) => p.trim()).filter(Boolean).join(", ");
+      input.value = parts.map((entry) => entry.trim()).filter(Boolean).join(", ");
       hideQuickFill();
     });
     els.quickfillBox.appendChild(btn);
@@ -482,10 +488,11 @@ function quickFillOptions(domain) {
     if (item.type === "races") source.races.push({ ...item.data, name: item.name });
     if (item.type === "classes") source.classes.push({ ...item.data, name: item.name });
     if (item.type === "backgrounds") source.backgrounds.push({ ...item.data, name: item.name });
+    if (item.type === "languages") source.languages.push({ name: item.name, description: item.data.description || "" });
   });
 
   const map = {
-    languages: [...new Set(source.races.flatMap((r) => toArray(r.languages)))],
+    languages: [...new Set([...source.races.flatMap((r) => toArray(r.languages)), ...source.languages.map((l) => l.name)])],
     skills: [...new Set([...source.races.flatMap((r) => toArray(r.skills)), ...source.backgrounds.flatMap((b) => toArray(b.skills))])],
     "race-features": [...new Set(source.races.flatMap((r) => toArray(r.features)))],
     proficiencies: [...new Set(source.classes.flatMap((c) => toArray(c.proficiencies)))],
@@ -509,7 +516,7 @@ function renderOptionCards(container, items, selectedId, onSelect) {
 
 function renderCustomFieldsByType() {
   const type = els.customType.value;
-  document.querySelectorAll(".type-fields").forEach((n) => n.classList.add("hidden"));
+  document.querySelectorAll(".type-fields").forEach((node) => node.classList.add("hidden"));
   document.getElementById(`type-${type}`)?.classList.remove("hidden");
 }
 
@@ -540,10 +547,10 @@ function loadCustomItem(itemId) {
 
 function clearCustomEditor() {
   state.custom.editingId = null;
-  document.querySelectorAll("#custom-page input, #custom-page textarea").forEach((el) => {
-    if (el.id === "spell-level") el.value = "0";
-    else if (el.id === "race-abilities") el.value = '{"STR":1}';
-    else if (el.type !== "file") el.value = "";
+  document.querySelectorAll("#custom-page input, #custom-page textarea").forEach((element) => {
+    if (element.id === "spell-level") element.value = "0";
+    else if (element.id === "race-abilities") element.value = '{"STR":1}';
+    else if (element.type !== "file") element.value = "";
   });
   els.customType.value = "races";
   renderCustomFieldsByType();
@@ -553,9 +560,8 @@ function clearCustomEditor() {
 function submitCustomItem() {
   const record = collectTypeFields(els.customType.value);
   if (!record) return;
-
   if (state.custom.editingId) {
-    const existing = state.custom.submitted.find((x) => x.id === state.custom.editingId);
+    const existing = state.custom.submitted.find((entry) => entry.id === state.custom.editingId);
     if (existing) Object.assign(existing, record, { dirty: false });
     els.customStatus.textContent = "Custom item updated and submitted.";
   } else {
@@ -592,6 +598,11 @@ function collectTypeFields(type) {
       if (!name) return fail("Feat name is required.");
       return { type, name, data: { prerequisite: byId("feat-prereq").value, description: byId("feat-description").value } };
     }
+    if (type === "languages") {
+      const name = byId("language-name").value.trim();
+      if (!name) return fail("Language name is required.");
+      return { type, name, data: { description: byId("language-description").value.trim() || "Custom language description." } };
+    }
   } catch {
     return fail("One or more fields are invalid.");
   }
@@ -612,7 +623,10 @@ function fillTypeFields(type, name, data) {
     byId("spell-name").value = name; byId("spell-level").value = String(data.level ?? 0); byId("spell-school").value = data.school || ""; byId("spell-description").value = data.description || ""; return;
   }
   if (type === "feats") {
-    byId("feat-name").value = name; byId("feat-prereq").value = data.prerequisite || ""; byId("feat-description").value = data.description || "";
+    byId("feat-name").value = name; byId("feat-prereq").value = data.prerequisite || ""; byId("feat-description").value = data.description || ""; return;
+  }
+  if (type === "languages") {
+    byId("language-name").value = name; byId("language-description").value = data.description || "";
   }
 }
 
@@ -646,6 +660,11 @@ function applyCustomDataToBuilder() {
     const normalized = normalizeCustomRecord(item);
     if (normalized) state.data[item.type].push(normalized);
   });
+
+  state.data.languages.forEach((language) => {
+    if (language?.name) LANGUAGE_DESCRIPTIONS[language.name] = language.description || "Custom language.";
+  });
+
   ensureValidSelections();
 }
 
@@ -669,6 +688,7 @@ function normalizeCustomRecord(item) {
     if (data.feature && data.featureDescription) FEATURE_DESCRIPTIONS[data.feature] = data.featureDescription;
     return { id, name, skills: data.skills || [], feature: data.feature || "Custom Feature", equipment: data.equipment || [], bonuses: data.bonuses || "Custom bonuses" };
   }
+  if (type === "languages") return { id, name, description: data.description || "Custom language." };
   if (type === "spells" || type === "feats") return { id, name, ...data };
   return null;
 }
@@ -693,7 +713,7 @@ function toArray(value) { if (Array.isArray(value)) return value; if (typeof val
 function csv(value) { return String(value || "").split(",").map((entry) => entry.trim()).filter(Boolean); }
 function fail(message) { els.customStatus.textContent = message; return null; }
 function slugify(value) { return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
-function labelForType(type) { return { races: "Race", classes: "Class", spells: "Spell", backgrounds: "Background", feats: "Feat" }[type] || type; }
+function labelForType(type) { return { races: "Race", classes: "Class", spells: "Spell", backgrounds: "Background", feats: "Feat", languages: "Language" }[type] || type; }
 function capitalize(value) { return `${value[0].toUpperCase()}${value.slice(1)}`; }
 function clamp(value, min, max) { return Math.min(Math.max(value, min), max); }
 function byId(id) { return document.getElementById(id); }

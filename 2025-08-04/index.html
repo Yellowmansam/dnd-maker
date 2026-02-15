@@ -61,6 +61,7 @@ Pick a type first. The editor fields change based on type.
                 <option value="spells">Spell</option>
                 <option value="backgrounds">Background</option>
                 <option value="feats">Feat</option>
+                <option value="languages">Language</option>
               </select>
             </label>
 
@@ -122,6 +123,11 @@ Pick a type first. The editor fields change based on type.
               <label>Name <input id="feat-name" type="text" /></label>
               <label>Prerequisite <input id="feat-prereq" type="text" /></label>
               <label>Description <textarea id="feat-description" rows="4"></textarea></label>
+            </div>
+
+            <div id="type-languages" class="type-fields hidden">
+              <label>Name <input id="language-name" type="text" /></label>
+              <label>Description <textarea id="language-description" rows="4"></textarea></label>
             </div>
 
             <div id="quickfill-box" class="quickfill-box hidden"></div>
