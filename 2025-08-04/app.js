@@ -165,6 +165,36 @@ function buildClass(id, name, hitDie, multiclassReq, proficiencies, subclassName
   return { id, name, hitDie, multiclassReq, proficiencies, subclasses: subclassNames.map((sub) => ({ name: sub, description: `${sub} is a core ${name} subclass option.` })), levels };
 }
 
+function ensureClassLevelsTo20() {
+  const classMilestones = {
+    barbarian: { 6: ["Path Feature", "Your Primal Path grants a new defining feature."], 7: ["Feral Instinct", "Advantage on initiative and better reaction when surprised."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Brutal Critical (1 die)", "Roll one extra weapon die on critical hits."], 10: ["Path Feature", "Another Primal Path feature unlocks."], 11: ["Relentless Rage", "Make CON save to stay at 1 HP instead of 0 while raging."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Brutal Critical (2 dice)", "Roll two extra weapon dice on critical hits."], 14: ["Path Feature", "Late-path feature improves your subclass identity."], 15: ["Persistent Rage", "Your rage only ends early under stricter conditions."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Brutal Critical (3 dice)", "Roll three extra weapon dice on critical hits."], 18: ["Indomitable Might", "Use Strength score as minimum on STR checks."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Primal Champion", "STR and CON increase by 4; max for both becomes 24."] },
+    bard: { 6: ["Countercharm", "Use performance to protect allies from fear/charm."], 7: ["4th-level Spells", "Access to 4th-level bard spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Song of Rest d8", "Song of Rest die improves."], 10: ["Magical Secrets", "Learn spells from any class list."], 11: ["6th-level Spells", "Access to 6th-level bard spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Song of Rest d10", "Song of Rest die improves again."], 14: ["Magical Secrets", "Gain additional off-list spells."], 15: ["8th-level Spells", "Access to 8th-level bard spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Song of Rest d12", "Song of Rest die reaches d12."], 18: ["Magical Secrets", "Final broad spell access bump."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Superior Inspiration", "Regain one Bardic Inspiration if none at initiative."] },
+    cleric: { 6: ["Channel Divinity (2/rest)", "Use Channel Divinity twice between rests."], 7: ["4th-level Spells", "Access to 4th-level cleric spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level cleric spells."], 10: ["Divine Intervention", "Call directly on your deity for miraculous aid."], 11: ["6th-level Spells", "Access to 6th-level cleric spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level cleric spells."], 14: ["Destroy Undead (CR 2)", "Turn Undead destroys stronger undead."], 15: ["8th-level Spells", "Access to 8th-level cleric spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level cleric spells."], 18: ["Channel Divinity (3/rest)", "Third use between rests."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Divine Intervention Improvement", "Divine Intervention succeeds automatically."] },
+    druid: { 6: ["Circle Feature", "Subclass feature progression."], 7: ["4th-level Spells", "Access to 4th-level druid spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level druid spells."], 10: ["Circle Feature", "Subclass feature progression."], 11: ["6th-level Spells", "Access to 6th-level druid spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level druid spells."], 14: ["Circle Feature", "Subclass feature progression."], 15: ["8th-level Spells", "Access to 8th-level druid spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level druid spells."], 18: ["Timeless Body", "Aging slows dramatically."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Archdruid", "Unlimited Wild Shape uses."] },
+    fighter: { 6: ["Ability Score Improvement", "Increase ability scores or take a feat."], 7: ["Archetype Feature", "Subclass progression feature."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Indomitable (1)", "Reroll a failed saving throw once per long rest."], 10: ["Archetype Feature", "Subclass progression feature."], 11: ["Extra Attack (2)", "Attack three times when taking Attack action."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Indomitable (2)", "Second use of Indomitable."], 14: ["Ability Score Improvement", "Increase ability scores or take a feat."], 15: ["Archetype Feature", "Subclass progression feature."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Action Surge (2)", "Two Action Surge uses between rests."], 18: ["Archetype Feature", "Subclass progression feature."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Extra Attack (3)", "Attack four times when taking Attack action."] },
+    monk: { 6: ["Ki-Empowered Strikes", "Unarmed strikes count as magical."], 7: ["Evasion", "Take no damage on successful DEX save effects."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Unarmored Movement Improvement", "Move along vertical surfaces and liquids while moving."], 10: ["Purity of Body", "Immune to disease and poison."], 11: ["Monastic Feature", "Subclass progression feature."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Tongue of Sun and Moon", "Communicate with any creature that understands a language."], 14: ["Diamond Soul", "Proficiency in all saves and ki rerolls."], 15: ["Timeless Body", "You no longer suffer frailty of old age."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Monastic Feature", "Subclass capstone feature."], 18: ["Empty Body", "Powerful invisibility/astral projection options."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Perfect Self", "Regain ki at initiative if empty."] },
+    paladin: { 6: ["Aura of Protection", "Add CHA bonus to saving throws for you and nearby allies."], 7: ["Sacred Oath Feature", "Subclass aura/feature progression."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["3rd-level Spells", "Access to 3rd-level paladin spells."], 10: ["Aura of Courage", "You and allies near you are immune to frightened."], 11: ["Improved Divine Smite", "Each melee weapon hit gains extra radiant damage."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["4th-level Spells", "Access to 4th-level paladin spells."], 14: ["Cleansing Touch", "End spells on yourself or willing creatures."], 15: ["Sacred Oath Feature", "Subclass progression feature."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["5th-level Spells", "Access to 5th-level paladin spells."], 18: ["Aura Improvements", "Aura range increases."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Sacred Oath Capstone", "Subclass ultimate feature."] },
+    ranger: { 6: ["Favored Enemy Improvement", "Additional favored enemy and language benefit."], 7: ["Archetype Feature", "Subclass progression feature."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["3rd-level Spells", "Access to 3rd-level ranger spells."], 10: ["Hide in Plain Sight", "Create camouflage for stealth while stationary."], 11: ["Archetype Feature", "Subclass progression feature."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["4th-level Spells", "Access to 4th-level ranger spells."], 14: ["Vanish", "Hide as bonus action; nonmagical tracking is harder."], 15: ["Archetype Feature", "Subclass progression feature."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["5th-level Spells", "Access to 5th-level ranger spells."], 18: ["Feral Senses", "Detect nearby unseen creatures."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Foe Slayer", "Add WIS modifier to attack/damage once per turn vs favored enemies."] },
+    rogue: { 6: ["Expertise", "Gain two more expertise choices."], 7: ["Evasion", "No damage on successful DEX save effects."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Archetype Feature", "Subclass progression feature."], 10: ["Ability Score Improvement", "Increase ability scores or take a feat."], 11: ["Reliable Talent", "Treat low d20 rolls as 10 on proficient checks."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Archetype Feature", "Subclass progression feature."], 14: ["Blindsense", "Sense hidden or invisible creatures nearby."], 15: ["Slippery Mind", "Gain proficiency in Wisdom saving throws."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Archetype Feature", "Subclass progression feature."], 18: ["Elusive", "No attack roll has advantage against you unless incapacitated."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Stroke of Luck", "Turn a miss into a hit or a failed check into a 20."] },
+    sorcerer: { 6: ["Origin Feature", "Subclass progression feature."], 7: ["4th-level Spells", "Access to 4th-level sorcerer spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level sorcerer spells."], 10: ["Metamagic", "Gain an additional Metamagic option."], 11: ["6th-level Spells", "Access to 6th-level sorcerer spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level sorcerer spells."], 14: ["Origin Feature", "Subclass progression feature."], 15: ["8th-level Spells", "Access to 8th-level sorcerer spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level sorcerer spells."], 18: ["Origin Feature", "Subclass progression feature."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Sorcerous Restoration", "Regain sorcery points after short rest."] },
+    warlock: { 6: ["Patron Feature", "Subclass progression feature."], 7: ["4th-level Pact Slots", "Pact slots become 4th level."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Pact Slots", "Pact slots become 5th level."], 10: ["Patron Feature", "Subclass progression feature."], 11: ["Mystic Arcanum (6th)", "One 6th-level spell known and cast once per long rest."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Mystic Arcanum (7th)", "One 7th-level spell known and cast once per long rest."], 14: ["Patron Feature", "Subclass progression feature."], 15: ["Mystic Arcanum (8th)", "One 8th-level spell known and cast once per long rest."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Mystic Arcanum (9th)", "One 9th-level spell known and cast once per long rest."], 18: ["Invocation", "Gain one additional eldritch invocation."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Eldritch Master", "Recover pact slots by spending 1 minute entreating patron."] },
+    wizard: { 6: ["Tradition Feature", "Subclass progression feature."], 7: ["4th-level Spells", "Access to 4th-level wizard spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level wizard spells."], 10: ["Tradition Feature", "Subclass progression feature."], 11: ["6th-level Spells", "Access to 6th-level wizard spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level wizard spells."], 14: ["Tradition Feature", "Subclass progression feature."], 15: ["8th-level Spells", "Access to 8th-level wizard spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level wizard spells."], 18: ["Spell Mastery", "Choose low-level spells to cast at-will without slots."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Signature Spells", "Two chosen 3rd-level spells are always prepared and easier to cast."] },
+  };
+
+  BASE_DATA.classes.forEach((cls) => {
+    if (!cls.levels) cls.levels = {};
+    for (let level = 1; level <= 20; level += 1) {
+      if (!cls.levels[level]) cls.levels[level] = [];
+      const m = classMilestones[cls.id]?.[level];
+      if (m && cls.levels[level].length === 0) cls.levels[level].push(m);
+      if (cls.levels[level].length === 0) cls.levels[level].push(["Class Progression", `Level ${level} progression feature for ${cls.name}.`]);
+    }
+  });
+}
+
+
+ensureClassLevelsTo20();
+
 const state = {
   step: "race",
   customOpen: false,
@@ -179,6 +209,8 @@ const state = {
   },
   custom: { submitted: [], editingId: null },
   multiclassOpen: false,
+  abilityMethod: "pointBuy",
+  rolled: { slots: [null, null, null, null, null, null] },
   hoverTimer: null,
 };
 
@@ -197,7 +229,7 @@ function mapEls() {
     classOptions: byId("class-options"), subclassPickerWrap: byId("subclass-picker-wrap"), subclassPicker: byId("subclass-picker"), classValidation: byId("class-validation"),
     addLevel: byId("add-level"), removeLevel: byId("remove-level"), totalLevel: byId("total-level"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
-    characterName: byId("character-name"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
+    characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
     backgroundOptions: byId("background-options"), backgroundDetails: byId("background-details"), characterSheet: byId("character-sheet"),
   };
 }
@@ -227,6 +259,8 @@ function bindEvents() {
   byId("confirm-class-levels").addEventListener("click", () => goStep("abilities"));
   byId("back-to-class").addEventListener("click", () => goStep("class"));
   byId("confirm-abilities").addEventListener("click", () => goStep("background"));
+  els.abilityMethod.addEventListener("change", (e) => { state.abilityMethod = e.target.value; renderAbilityStep(); renderClassProgress(); });
+  els.resetRolls.addEventListener("click", resetRolledStats);
   byId("back-to-abilities").addEventListener("click", () => goStep("abilities"));
   byId("confirm-background").addEventListener("click", () => goStep("summary"));
   byId("back-to-background").addEventListener("click", () => goStep("background"));
@@ -374,7 +408,7 @@ function renderClassProgress() {
   els.totalLevel.textContent = `Total Level: ${total}`;
 
   const timeline = classTimelineEntries();
-  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong>: ${row.features.map((f) => describeTermHtml(f.name, f.description)).join(", ")}</li>`).join("");
+  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span class="desc-term" data-desc="${escapeHtml(f.description)}">${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul></li>`).join("");
 
   const primary = state.character.classPlan.primaryClassId;
   const canLevelPrimary = primary && total < 20;
@@ -463,7 +497,7 @@ function meetsCondition(cond, scores) {
 
 function finalAbilityScores() {
   const race = selectedRace();
-  return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, v + (race.racialAbilities?.[a] || 0)]));
+  return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, Math.min(18, v + (race.racialAbilities?.[a] || 0))]));
 }
 
 function toFeatureObjects(raw) {
@@ -476,20 +510,100 @@ function subclassDescription(classId, subName) {
 }
 
 function renderAbilityStep() {
+  const rolledMode = state.abilityMethod === "rolled";
+  els.abilityMethod.value = state.abilityMethod;
+  els.rolledPanel.classList.toggle("hidden", !rolledMode);
+
+  if (rolledMode) renderRolledPanel();
+
   els.abilitiesGrid.innerHTML = "";
   Object.entries(state.character.abilities).forEach(([ability, score]) => {
     const bonus = selectedRace().racialAbilities?.[ability] || 0;
+    const finalScore = Math.min(18, score + bonus);
     const card = document.createElement("div");
     card.className = "ability-card";
-    card.innerHTML = `<h3>${ability}</h3><div class="ability-controls"><button type="button" data-dir="down">-</button><strong>${score}</strong><button type="button" data-dir="up">+</button></div><p>Point Cost: ${COST_BY_SCORE[score]}</p><p>Racial Bonus: ${bonus >= 0 ? "+" : ""}${bonus}</p><p><strong>Final: ${score + bonus}</strong></p>`;
-    card.querySelectorAll("button").forEach((btn) => btn.addEventListener("click", () => updateAbility(ability, btn.dataset.dir === "up" ? score + 1 : score - 1)));
+
+    if (rolledMode) {
+      card.innerHTML = `<h3>${ability}</h3><label>Set Score (3-18)<input type="number" min="3" max="18" value="${score}" /></label><p>Racial Bonus: ${bonus >= 0 ? "+" : ""}${bonus}</p><p><strong>Final: ${finalScore}</strong></p>`;
+      card.querySelector("input").addEventListener("input", (e) => {
+        const next = clamp(Number(e.target.value), 3, 18);
+        state.character.abilities[ability] = next;
+        renderAbilityStep();
+        renderClassProgress();
+      });
+    } else {
+      card.innerHTML = `<h3>${ability}</h3><div class="ability-controls"><button type="button" data-dir="down">-</button><strong>${score}</strong><button type="button" data-dir="up">+</button></div><p>Point Cost: ${COST_BY_SCORE[score]}</p><p>Racial Bonus: ${bonus >= 0 ? "+" : ""}${bonus}</p><p><strong>Final: ${finalScore}</strong></p>`;
+      card.querySelectorAll("button").forEach((btn) => btn.addEventListener("click", () => updateAbility(ability, btn.dataset.dir === "up" ? score + 1 : score - 1)));
+    }
     els.abilitiesGrid.appendChild(card);
   });
-  const spent = spentPoints();
-  els.pointBuyStatus.textContent = `Points spent: ${spent} / ${POINT_BUY_BUDGET}. Remaining: ${POINT_BUY_BUDGET - spent}.`;
+
+  if (rolledMode) {
+    els.pointBuyStatus.textContent = "Rolled mode active. You can assign rolled totals manually to any stat (max 18).";
+  } else {
+    const spent = spentPoints();
+    els.pointBuyStatus.textContent = `Points spent: ${spent} / ${POINT_BUY_BUDGET}. Remaining: ${POINT_BUY_BUDGET - spent}.`;
+  }
 }
 
+function renderRolledPanel() {
+  els.rollButtons.innerHTML = "";
+  els.rolledAssign.innerHTML = "";
+
+  state.rolled.slots.forEach((slot, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = slot?.total ? `Roll ${idx + 1}: ${slot.total}` : `Roll ${idx + 1}`;
+    btn.addEventListener("click", () => performRollForSlot(idx));
+    els.rollButtons.appendChild(btn);
+
+    if (slot?.total) {
+      const wrap = document.createElement("div");
+      wrap.className = "details";
+      wrap.innerHTML = `<strong>Roll ${idx + 1}</strong><p>Dice: ${slot.dice.join(", ")}</p><p>Dropped: ${slot.dropped} • Total: ${slot.total}</p>`;
+      const select = document.createElement("select");
+      ["STR","DEX","CON","INT","WIS","CHA"].forEach((ab) => {
+        const opt = document.createElement("option");
+        opt.value = ab;
+        opt.textContent = ab;
+        select.appendChild(opt);
+      });
+      const apply = document.createElement("button");
+      apply.type = "button";
+      apply.textContent = `Set Stat to ${slot.total}`;
+      apply.addEventListener("click", () => {
+        state.character.abilities[select.value] = Math.min(18, slot.total);
+        renderAbilityStep();
+        renderClassProgress();
+      });
+      wrap.appendChild(select);
+      wrap.appendChild(apply);
+      els.rolledAssign.appendChild(wrap);
+    }
+  });
+}
+
+function performRollForSlot(index) {
+  const dice = [rollD6(), rollD6(), rollD6(), rollD6()];
+  const dropChoice = window.prompt(`Roll ${index + 1}: ${dice.join(", ")}
+Enter die position to drop (1-4):`, "1");
+  const dropIdx = clamp(Number(dropChoice) - 1, 0, 3);
+  const dropped = dice[dropIdx];
+  const kept = dice.filter((_, i) => i !== dropIdx);
+  const total = kept.reduce((s, v) => s + v, 0);
+  state.rolled.slots[index] = { dice, dropped, total };
+  renderAbilityStep();
+}
+
+function resetRolledStats() {
+  state.rolled.slots = [null, null, null, null, null, null];
+  renderAbilityStep();
+}
+
+function rollD6() { return Math.floor(Math.random() * 6) + 1; }
+
 function updateAbility(ability, next) {
+  if (state.abilityMethod !== "pointBuy") return;
   if (next < 8 || next > 15) return;
   const prev = state.character.abilities[ability];
   state.character.abilities[ability] = next;

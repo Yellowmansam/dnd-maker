@@ -191,12 +191,26 @@ Pick a type first. The editor fields change based on type.
       </section>
 
       <section id="step-abilities" class="card step-panel hidden">
-        <h2>Ability Scores (27-Point Buy)</h2>
-        <p>Use standard 5e point buy limits: 8 to 15 before racial bonuses.</p>
+        <h2>Ability Scores</h2>
+        <label>Generation Method
+          <select id="ability-method">
+            <option value="pointBuy">Point Buy (27)</option>
+            <option value="rolled">Rolled Stats (4d6 drop lowest)</option>
+          </select>
+        </label>
+
+        <article id="rolled-panel" class="details hidden">
+          <h3>Rolled Stats</h3>
+          <p>Click each roll button to roll 4d6, then choose one die to drop for that slot.</p>
+          <div id="roll-buttons" class="row"></div>
+          <div id="rolled-assign" class="row"></div>
+          <button id="reset-rolls" type="button" class="secondary">Reset Rolls</button>
+        </article>
+
         <div id="abilities-grid" class="abilities-grid"></div>
         <article class="details">
           <ul>
-            <li>Total budget: 27</li><li>Minimum: 8</li><li>Maximum: 15</li>
+            <li>Point buy budget: 27</li><li>Point buy min/max: 8 to 15</li><li>Rolled stat max allowed on assignment: 18</li>
           </ul>
           <p id="point-buy-status"></p>
         </article>
