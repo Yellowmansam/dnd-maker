@@ -49,5 +49,22 @@ Output:
 - Added book-by-book subclass and feat ingestion batches from:
   - Player's Handbook (2014)
   - Xanathar's Guide to Everything
+  - Sword Coast Adventurer's Guide
   - Tasha's Cauldron of Everything
 - Species using flexible sourcebook ASI rules now use the ability tab's +2/+1 assignment panel when their race data specifies flexible bonuses.
+
+## What is left in the ingestion roadmap
+The app now ingests from the books listed above. Remaining major official/partnered books requested by you still need batch imports, including (not exhaustive):
+- Volo's Guide to Monsters
+- Mordenkainen's Tome of Foes
+- Eberron: Rising from the Last War
+- Explorer's Guide to Wildemount
+- Mythic Odysseys of Theros
+- Van Richten's Guide to Ravenloft
+- Strixhaven: A Curriculum of Chaos
+- Spelljammer: Astral Adventurer's Guide (full trait ingestion)
+- Bigby Presents: Glory of the Giants
+- Planescape: Adventures in the Multiverse
+- The Book of Many Things
+- Fizban's Treasury of Dragons
+- Partnered books currently indexed but not fully traited in-app.
