@@ -57,22 +57,52 @@ const FEATURE_DESCRIPTIONS = {
 };
 
 const EXPANDED_RACE_INDEX = [
-  ["aarakocra", "Aarakocra", "EEPC"], ["aasimar-vgm", "Aasimar (VGM)", "VGM"], ["astral-elf", "Astral Elf", "AAG"], ["autognome", "Autognome", "AAG"],
-  ["bugbear", "Bugbear", "VGM/MPMM"], ["centaur", "Centaur", "GGTR/MOT"], ["changeling", "Changeling", "ERLW/MPMM"], ["deep-gnome", "Deep Gnome", "SCAG/MPMM"],
-  ["duergar", "Duergar", "SCAG/MPMM"], ["eladrin-mtof", "Eladrin", "MToF"], ["fairy", "Fairy", "WBtW"], ["firbolg", "Firbolg", "VGM/MPMM"],
-  ["githyanki", "Githyanki", "MToF/MPMM"], ["githzerai", "Githzerai", "MToF/MPMM"], ["goblin", "Goblin", "VGM/MPMM"], ["goliath", "Goliath", "VGM/EEPC"],
-  ["harengon", "Harengon", "WBtW"], ["hobgoblin", "Hobgoblin", "VGM/MPMM"], ["kenku", "Kenku", "VGM/MPMM"], ["kobold", "Kobold", "VGM/MPMM"],
-  ["lizardfolk", "Lizardfolk", "VGM/MPMM"], ["locathah", "Locathah", "LR"], ["minotaur", "Minotaur", "GGTR/MOT"], ["orc", "Orc", "VGM/MPMM"],
-  ["satyr", "Satyr", "MOT"], ["sea-elf", "Sea Elf", "MToF"], ["shadar-kai", "Shadar-kai", "MToF"], ["shifter", "Shifter", "ERLW"],
-  ["tabaxi", "Tabaxi", "VGM/MPMM"], ["tortle", "Tortle", "TP"], ["triton", "Triton", "VGM/MPMM"], ["yuan-ti", "Yuan-ti", "VGM/MPMM"],
-  ["leonin", "Leonin", "MOT"], ["owlin", "Owlin", "SCC"], ["reborn", "Reborn", "VRGR"], ["dhampir", "Dhampir", "VRGR"], ["hexblood", "Hexblood", "VRGR"],
-  ["kender", "Kender", "DSotDQ"], ["plasmoid", "Plasmoid", "AAG"], ["thri-kreen", "Thri-kreen", "SJA"], ["hadozee", "Hadozee", "AAG"], ["giff", "Giff", "AAG"],
-  ["human-2024", "Human (2024)", "PHB 2024"], ["dwarf-2024", "Dwarf (2024)", "PHB 2024"], ["elf-2024", "Elf (2024)", "PHB 2024"],
-  ["halfling-2024", "Halfling (2024)", "PHB 2024"], ["gnome-2024", "Gnome (2024)", "PHB 2024"], ["dragonborn-2024", "Dragonborn (2024)", "PHB 2024"],
-  ["orc-2024", "Orc (2024)", "PHB 2024"], ["tiefling-2024", "Tiefling (2024)", "PHB 2024"], ["goliath-2024", "Goliath (2024)", "PHB 2024"],
-  ["aasimar-2024", "Aasimar (2024)", "DMG 2024"],
-  ["critical-role-pallid", "Pallid Elf", "Partnered (EGtW)"], ["tal-dorei-luxonborn", "Luxonborn", "Partnered (Tal'Dorei)"],
-  ["ghostfire-lumin", "Lumin", "Partnered (Ghostfire)"], ["drakkenheim-draconic", "Draconic Lineage", "Partnered (Dungeons of Drakkenheim)"],
+  { id: "aarakocra", name: "Aarakocra", source: "Elemental Evil Player's Companion", rulesEra: "2014" },
+  { id: "aasimar-vgm", name: "Aasimar (Volo's)", source: "Volo's Guide to Monsters", rulesEra: "2014" },
+  { id: "astral-elf", name: "Astral Elf", source: "Spelljammer: Astral Adventurer's Guide", rulesEra: "2014" },
+  { id: "autognome", name: "Autognome", source: "Spelljammer: Astral Adventurer's Guide", rulesEra: "2014" },
+  { id: "bugbear", name: "Bugbear", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "changeling", name: "Changeling", source: "Eberron: Rising from the Last War", rulesEra: "2014" },
+  { id: "fairy", name: "Fairy", source: "The Wild Beyond the Witchlight", rulesEra: "2014" },
+  { id: "firbolg", name: "Firbolg", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "githyanki", name: "Githyanki", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "githzerai", name: "Githzerai", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "goblin", name: "Goblin", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "harengon", name: "Harengon", source: "The Wild Beyond the Witchlight", rulesEra: "2014" },
+  { id: "hobgoblin", name: "Hobgoblin", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "kenku", name: "Kenku", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "kobold", name: "Kobold", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "lizardfolk", name: "Lizardfolk", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "orc", name: "Orc", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "satyr", name: "Satyr", source: "Mythic Odysseys of Theros", rulesEra: "2014" },
+  { id: "tabaxi", name: "Tabaxi", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "tortle", name: "Tortle", source: "The Tortle Package", rulesEra: "2014" },
+  { id: "triton", name: "Triton", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "yuan-ti", name: "Yuan-ti", source: "Mordenkainen Presents: Monsters of the Multiverse", rulesEra: "2014" },
+  { id: "leonin", name: "Leonin", source: "Mythic Odysseys of Theros", rulesEra: "2014" },
+  { id: "owlin", name: "Owlin", source: "Strixhaven: A Curriculum of Chaos", rulesEra: "2014" },
+  { id: "reborn", name: "Reborn", source: "Van Richten's Guide to Ravenloft", rulesEra: "2014" },
+  { id: "dhampir", name: "Dhampir", source: "Van Richten's Guide to Ravenloft", rulesEra: "2014" },
+  { id: "hexblood", name: "Hexblood", source: "Van Richten's Guide to Ravenloft", rulesEra: "2014" },
+  { id: "kender", name: "Kender", source: "Dragonlance: Shadow of the Dragon Queen", rulesEra: "2014" },
+  { id: "plasmoid", name: "Plasmoid", source: "Spelljammer: Astral Adventurer's Guide", rulesEra: "2014" },
+  { id: "thri-kreen", name: "Thri-kreen", source: "Spelljammer: Astral Adventurer's Guide", rulesEra: "2014" },
+  { id: "hadozee", name: "Hadozee", source: "Spelljammer: Astral Adventurer's Guide", rulesEra: "2014" },
+  { id: "giff", name: "Giff", source: "Spelljammer: Astral Adventurer's Guide", rulesEra: "2014" },
+  { id: "human-2024", name: "Human (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "dwarf-2024", name: "Dwarf (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "elf-2024", name: "Elf (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "halfling-2024", name: "Halfling (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "gnome-2024", name: "Gnome (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "dragonborn-2024", name: "Dragonborn (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "orc-2024", name: "Orc (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "tiefling-2024", name: "Tiefling (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "goliath-2024", name: "Goliath (2024)", source: "Player's Handbook (2024)", rulesEra: "2024" },
+  { id: "aasimar-2024", name: "Aasimar (2024)", source: "Dungeon Master's Guide (2024)", rulesEra: "2024" },
+  { id: "critical-role-pallid", name: "Pallid Elf", source: "Explorer's Guide to Wildemount", rulesEra: "2014" },
+  { id: "tal-dorei-luxonborn", name: "Luxonborn", source: "Tal'Dorei Campaign Setting Reborn", rulesEra: "2014" },
+  { id: "ghostfire-lumin", name: "Lumin", source: "Ghostfire Gaming Partner Content", rulesEra: "2014" },
+  { id: "drakkenheim-draconic", name: "Draconic Lineage", source: "Dungeons of Drakkenheim", rulesEra: "2014" },
 ];
 
 const CLASS_DESCRIPTIONS = {
@@ -175,9 +205,9 @@ const BASE_DATA = {
     { id: "halfling", name: "Halfling", shortDescription: "Small, nimble adventurers known for luck and courage.", maturityAge: "20 years", lifespan: "~150 years", languages: ["Common", "Halfling"], skills: ["No automatic skill proficiency from race"], features: ["Lucky", "Brave", "Halfling Nimbleness"], racialAbilities: { DEX: 2 } },
     { id: "human", name: "Human", shortDescription: "Adaptable people with broad potential and ambition.", maturityAge: "Late teens", lifespan: "<100 years", languages: ["Common"], skills: ["No automatic skill proficiency from race"], features: ["Versatile"], racialAbilities: { STR: 1, DEX: 1, CON: 1, INT: 1, WIS: 1, CHA: 1 }, options: [{ key: "bonusLanguage", label: "Bonus Language", help: "Humans learn one extra language.", choices: Object.keys(LANGUAGE_DESCRIPTIONS), descriptions: LANGUAGE_DESCRIPTIONS }] },
     { id: "tiefling", name: "Tiefling", shortDescription: "Infernal-blooded people with innate magical heritage.", maturityAge: "Same as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Infernal"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Hellish Resistance", "Infernal Legacy"], racialAbilities: { INT: 1, CHA: 2 } },
-    { id: "aasimar", name: "Aasimar (DMG)", shortDescription: "Celestial-touched beings marked by divine power and inner radiance.", maturityAge: "Same as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Celestial"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Celestial Resistance", "Healing Hands", "Light Bearer"], racialAbilities: { CHA: 2 } },
-    { id: "eladrin", name: "Eladrin (DMG)", shortDescription: "Fey elves strongly tied to the magic and moods of the Feywild.", maturityAge: "100 years", lifespan: "~750 years", languages: ["Common", "Elvish"], skills: ["Perception proficiency"], features: ["Darkvision", "Fey Step", "Fey Ancestry", "Trance"], racialAbilities: { DEX: 2 } },
-    { id: "genasi", name: "Genasi (DMG)", shortDescription: "Elemental-blooded wanderers with power inherited from elemental planes.", maturityAge: "Late teens", lifespan: "~120 years", languages: ["Common", "Primordial"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Elemental Legacy"], racialAbilities: { CON: 2 } },
+    { id: "aasimar", name: "Aasimar (DMG)", source: "Dungeon Master's Guide (2014)", rulesEra: "2014", shortDescription: "Celestial-touched beings marked by divine power and inner radiance.", maturityAge: "Same as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Celestial"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Celestial Resistance", "Healing Hands", "Light Bearer"], racialAbilities: { CHA: 2 } },
+    { id: "eladrin", name: "Eladrin (DMG)", source: "Dungeon Master's Guide (2014)", rulesEra: "2014", shortDescription: "Fey elves strongly tied to the magic and moods of the Feywild.", maturityAge: "100 years", lifespan: "~750 years", languages: ["Common", "Elvish"], skills: ["Perception proficiency"], features: ["Darkvision", "Fey Step", "Fey Ancestry", "Trance"], racialAbilities: { DEX: 2 } },
+    { id: "genasi", name: "Genasi (DMG)", source: "Dungeon Master's Guide (2014)", rulesEra: "2014", shortDescription: "Elemental-blooded wanderers with power inherited from elemental planes.", maturityAge: "Late teens", lifespan: "~120 years", languages: ["Common", "Primordial"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Elemental Legacy"], racialAbilities: { CON: 2 } },
   ],
   classes: [
     buildClass("barbarian", "Barbarian", "d12", "STR 13", ["Light/medium armor", "Shields", "Simple/martial weapons"], ["Berserker", "Totem Warrior"], {
@@ -299,14 +329,19 @@ function buildSubclass(classId, className, subName) {
 }
 
 function expandRaceCatalog() {
+  BASE_DATA.races.forEach((race) => {
+    if (!race.source) race.source = "Player's Handbook (2014)";
+    if (!race.rulesEra) race.rulesEra = "2014";
+  });
   const seen = new Set(BASE_DATA.races.map((r) => r.id));
-  EXPANDED_RACE_INDEX.forEach(([id, name, source]) => {
-    if (seen.has(id)) return;
+  EXPANDED_RACE_INDEX.forEach((entry) => {
+    if (seen.has(entry.id)) return;
     BASE_DATA.races.push({
-      id,
-      name,
-      source,
-      shortDescription: `${name} from ${source}.`,
+      id: entry.id,
+      name: entry.name,
+      source: entry.source,
+      rulesEra: entry.rulesEra,
+      shortDescription: `${entry.name} from ${entry.source}.`,
       maturityAge: "See sourcebook",
       lifespan: "See sourcebook",
       languages: ["See sourcebook"],
@@ -452,7 +487,7 @@ function renderStepper() {
 function goStep(step) { state.step = step; renderAll(); }
 
 function renderRaceStep() {
-  renderOptionCards(els.raceOptions, state.data.races, state.character.raceId, (id) => {
+  renderRaceCardsByEra(els.raceOptions, state.data.races, state.character.raceId, (id) => {
     state.character.raceId = id;
     renderRaceStep();
     renderAbilityStep();
@@ -479,6 +514,32 @@ function renderRaceStep() {
   `;
 
   renderRaceOptionSelectors(race);
+}
+
+function renderRaceCardsByEra(container, races, selectedId, onSelect) {
+  container.innerHTML = "";
+  const groups = [
+    { label: "2014 Rules Content", races: races.filter((r) => (r.rulesEra || "2014") === "2014") },
+    { label: "2024 Rules Content", races: races.filter((r) => (r.rulesEra || "2014") === "2024") },
+  ];
+  groups.forEach((group) => {
+    if (!group.races.length) return;
+    const section = document.createElement("section");
+    section.className = "details";
+    section.innerHTML = `<h3>${group.label}</h3>`;
+    const grid = document.createElement("div");
+    grid.className = "option-grid";
+    group.races.forEach((race) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = `option-card ${race.id === selectedId ? "selected" : ""}`;
+      b.innerHTML = `<strong>${escapeHtml(race.name)}</strong><p>${escapeHtml(race.source || "Player's Handbook (2014)")}</p>`;
+      b.addEventListener("click", () => onSelect(race.id));
+      grid.appendChild(b);
+    });
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
 }
 
 function featureDescriptionForRace(race, feature) {
