@@ -10,25 +10,80 @@
     <main class="layout">
       <header class="hero card">
         <h1>D&D 5e Character Builder</h1>
-        <p>Step-by-step flow inspired by D&D Beyond: Race → Class → Ability Scores → Background.</p>
+        <p>D&D Beyond-style flow: Custom Content → Race → Class → Ability Scores → Background → Summary.</p>
       </header>
 
       <nav class="steps card" aria-label="Builder steps">
         <ol id="stepper"></ol>
       </nav>
 
-      <section id="step-race" class="card step-panel">
-        <h2>1. Choose Race</h2>
+      <section id="step-custom" class="card step-panel">
+        <h2>1. Set Custom Content</h2>
+        <p>Import/export and create custom races, classes, spells, backgrounds, and feats before building your character.</p>
+
+        <div class="row">
+          <button id="import-custom" type="button" class="secondary">Import Custom JSON</button>
+          <button id="export-custom" type="button" class="secondary">Export Custom JSON</button>
+          <input id="import-custom-file" type="file" accept="application/json" class="hidden" />
+        </div>
+
+        <div class="custom-layout">
+          <aside class="custom-sidebar">
+            <h3>Submitted Items</h3>
+            <ul id="submitted-items" class="submitted-list"></ul>
+          </aside>
+
+          <section class="custom-editor details">
+            <h3>Custom Item Editor</h3>
+            <form id="custom-form" class="grid-two">
+              <label>
+                Type
+                <select id="custom-type">
+                  <option value="races">Race</option>
+                  <option value="classes">Class</option>
+                  <option value="spells">Spell</option>
+                  <option value="backgrounds">Background</option>
+                  <option value="feats">Feat</option>
+                </select>
+              </label>
+
+              <label>
+                Name
+                <input id="custom-name" type="text" placeholder="Arcane Archer" required />
+              </label>
+
+              <label class="full">
+                Details (JSON)
+                <textarea id="custom-details" rows="12" placeholder='{"features":["Example Feature"],"languages":["Common"]}'></textarea>
+              </label>
+            </form>
+
+            <p id="custom-status" class="validation"></p>
+            <div class="row between">
+              <button id="clear-custom" type="button" class="secondary">New Item</button>
+              <button id="submit-custom" type="button">Submit Item</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="row end">
+          <button id="apply-custom" type="button">Apply & Continue</button>
+        </div>
+      </section>
+
+      <section id="step-race" class="card step-panel hidden">
+        <h2>2. Choose Race</h2>
         <p>Select a race to review its languages, features, proficiencies, and racial bonuses.</p>
         <div id="race-options" class="option-grid"></div>
         <article id="race-details" class="details"></article>
-        <div class="row end">
+        <div class="row between">
+          <button id="back-to-custom" type="button" class="secondary">Back</button>
           <button id="confirm-race" type="button">Confirm Race</button>
         </div>
       </section>
 
       <section id="step-class" class="card step-panel hidden">
-        <h2>2. Choose Class</h2>
+        <h2>3. Choose Class</h2>
         <p>Pick your primary class and review what it gains by level. Optionally add multiclass levels.</p>
 
         <label>
@@ -67,7 +122,7 @@
       </section>
 
       <section id="step-abilities" class="card step-panel hidden">
-        <h2>3. Ability Scores (27-Point Buy)</h2>
+        <h2>4. Ability Scores (27-Point Buy)</h2>
         <p>Use standard 5e point buy limits: scores from 8 to 15 before racial bonuses.</p>
 
         <div id="abilities-grid" class="abilities-grid"></div>
@@ -89,7 +144,7 @@
       </section>
 
       <section id="step-background" class="card step-panel hidden">
-        <h2>4. Choose Background</h2>
+        <h2>5. Choose Background</h2>
         <p>Select a background and review what it grants your character.</p>
 
         <div id="background-options" class="option-grid"></div>
