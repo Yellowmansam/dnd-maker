@@ -3,11 +3,17 @@
 This project is a multi-step character creation flow inspired by D&D Beyond.
 
 ## Current Builder Flow
-- **Race**: pick a race, review details, and choose race options (like Dragonborn draconic ancestry for breath weapon/resistance, or bonus language options) from dropdowns with per-option descriptions.
-- **Class**: pick class and level plan, with hover descriptions on feature names.
-- **Ability Scores**: assign stats using a strict **27-point buy** system (8 to 15 limits before racial bonuses).
+- **Race**: pick a race, review short lore, age of maturity, lifespan, and detailed features.
+- **Class**: pick a starting class, submit to lock level 1, then add levels from there. The center timeline shows each level and exact features gained. Multiclass options are shown at the bottom and invalid options are greyed out if requirements are not met.
+- **Ability Scores**: assign stats using strict **27-point buy** (8 to 15 before racial bonuses).
 - **Background**: choose a background and review grants.
 - **Summary**: export a JSON character sheet.
+
+## Included Core Content
+- All core PHB races with race-option support (including Dragonborn ancestry and dynamic breath/resistance descriptions).
+- All core PHB classes:
+  - Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard.
+- Core PHB subclasses are included for each class in the class selection flow.
 
 ## Custom Content
 Use the **Custom Content** button in the top-right to open the custom page.

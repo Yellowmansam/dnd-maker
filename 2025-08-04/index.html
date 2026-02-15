@@ -25,7 +25,7 @@
           <h2>Set Custom Content</h2>
           <button id="close-custom" type="button" class="secondary">Back to Builder</button>
         </div>
-        <p>Import/export and create custom races, classes, spells, backgrounds, and feats.</p>
+        <p>Import/export and create custom races, classes, spells, backgrounds, feats, and languages.</p>
 
         <div class="row">
           <button id="import-custom" type="button" class="secondary">Import Custom JSON</button>
@@ -37,8 +37,8 @@
           <summary>How to add custom content</summary>
           <textarea rows="8" readonly>
 Pick a type first. The editor fields change based on type.
-- Use comma-separated values in list boxes (languages, features, skills, etc).
-- Quick fill appears while typing in supported fields; click a suggestion to insert it.
+- Use comma-separated values in list boxes.
+- Quick fill appears while typing in supported fields.
 - Submit Item is required for new/edited items.
 - Imported items are already submitted.
 - Click Apply Changes to merge submitted items into the builder.
@@ -146,7 +146,7 @@ Pick a type first. The editor fields change based on type.
 
       <section id="step-race" class="card step-panel">
         <h2>Choose Race</h2>
-        <p>Select a race to review its details.</p>
+        <p>Select a race to review full racial details.</p>
         <div id="race-options" class="option-grid"></div>
         <article id="race-details" class="details"></article>
         <div id="race-option-config" class="details hidden"></div>
@@ -154,24 +154,39 @@ Pick a type first. The editor fields change based on type.
       </section>
 
       <section id="step-class" class="card step-panel hidden">
-        <h2>Choose Class</h2>
-        <p>Pick your class and review level progression (with feature descriptions on hover).</p>
+        <h2>Choose Class & Build Levels</h2>
         <label>Character Name <input id="character-name" type="text" placeholder="Nalia" /></label>
-        <div id="class-options" class="option-grid"></div>
 
-        <div class="row">
-          <label>Primary Class Level <input id="primary-level" type="number" min="1" max="20" value="1" /></label>
-          <label class="inline"><input id="multiclass-enabled" type="checkbox" /> Enable multiclass</label>
-          <label id="multiclass-class-wrap" class="hidden">Secondary Class <select id="multiclass-class"></select></label>
-          <label id="multiclass-level-wrap" class="hidden">Secondary Class Level <input id="multiclass-level" type="number" min="1" max="19" value="1" /></label>
+        <h3>Pick Starting Class</h3>
+        <div id="class-options" class="option-grid"></div>
+        <label id="subclass-picker-wrap" class="hidden">Subclass
+          <select id="subclass-picker"></select>
+        </label>
+        <div class="row end">
+          <button id="confirm-class" type="button">Set Starting Class (Level 1)</button>
         </div>
 
-        <article id="class-details" class="details"></article>
-        <p id="class-validation" class="validation"></p>
+        <article class="details class-progress">
+          <div class="row between">
+            <h3>Class Progression</h3>
+            <div class="row">
+              <button id="remove-level" type="button" class="secondary">- Level</button>
+              <strong id="total-level">Total Level: 1</strong>
+              <button id="add-level" type="button">+ Level</button>
+            </div>
+          </div>
+          <ul id="class-feature-timeline" class="timeline"></ul>
 
+          <div class="multiclass-block">
+            <button id="toggle-multiclass" type="button" class="secondary">Multiclass Options</button>
+            <div id="multiclass-list" class="option-grid hidden"></div>
+          </div>
+        </article>
+
+        <p id="class-validation" class="validation"></p>
         <div class="row between">
           <button id="back-to-race" type="button" class="secondary">Back</button>
-          <button id="confirm-class" type="button">Confirm Class</button>
+          <button id="confirm-class-levels" type="button">Confirm Class Levels</button>
         </div>
       </section>
 
