@@ -1,11 +1,11 @@
 # D&D 5e Character Builder (Starter)
 
-This project is a multi-step character creation flow inspired by D&D Beyond.
+This project is a multi-step character creation flow inspired by D&D Beyond, with clickable step tabs for quick navigation.
 
 ## Current Builder Flow
 - **Race**: pick a race, review short lore, age of maturity, lifespan, and detailed features.
 - **Class**: pick a starting class, submit to lock level 1, then add or subtract levels per class up to a total of level 20. Class cards now include a hover description for each class, multiclass options can be toggled open/closed, and picked multiclasses are removed from the multiclass list until reduced back to level 0. A class setup panel now shows saving throws, core proficiencies, and class skill-pick checkboxes for every taken class. The timeline shows class features with descriptions directly underneath (no duplicate hover tooltip on class features), subclass features appear as `Subclass Feature - ...` at subclass progression levels, and each Ability Score Improvement / Feat selector is shown inline at the exact level where it is unlocked.
-- **Ability Scores**: choose either strict **27-point buy** (8 to 15 before racial bonuses) or **rolled stats** (4d6 drop one die per roll slot with manual assignment to stats, max 18).
+- **Ability Scores**: choose either strict **27-point buy** (8 to 15 before bonuses) or **rolled stats** (4d6 drop one die per roll slot with manual assignment to stats, max 18). For 2024-era species, ability bonuses are assigned in the ability tab (+2 and +1 to different abilities) instead of fixed racial bonuses.
 - **Background**: choose a background and review grants.
 - **Summary**: export a JSON character sheet.
 

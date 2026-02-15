@@ -4,7 +4,7 @@ body { margin: 0; background: #0e1420; color: #f5f5f5; }
 .card { background: #161d2c; border: 1px solid #2f3a52; border-radius: 12px; padding: 1rem; }
 .steps ol { margin: 0; padding-left: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; }
 .steps li.active { color: #7dd3fc; font-weight: 700; }
-.hidden { display: none; }
+.hidden { display: none !important; }
 .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
 .between { justify-content: space-between; }
 .end { justify-content: end; }

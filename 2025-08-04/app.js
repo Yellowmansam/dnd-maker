@@ -393,6 +393,7 @@ const state = {
     raceId: BASE_DATA.races[0].id,
     raceChoices: {},
     classPlan: { primaryClassId: BASE_DATA.classes[0].id, subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {} },
+    originAbilityBonuses: { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 },
     abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
     backgroundId: BASE_DATA.backgrounds[0].id,
   },
@@ -418,7 +419,7 @@ function mapEls() {
     startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classConfigPanel: byId("class-config-panel"), classValidation: byId("class-validation"),
     totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
-    characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
+    characterName: byId("character-name"), abilityMethod: byId("ability-method"), originAsiPanel: byId("origin-asi-panel"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
     backgroundOptions: byId("background-options"), backgroundDetails: byId("background-details"), characterSheet: byId("character-sheet"),
   };
 }
@@ -480,6 +481,15 @@ function renderStepper() {
     const li = document.createElement("li");
     li.textContent = capitalize(step);
     if (state.step === step) li.classList.add("active");
+    li.tabIndex = 0;
+    li.style.cursor = "pointer";
+    li.addEventListener("click", () => goStep(step));
+    li.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        goStep(step);
+      }
+    });
     els.stepper.appendChild(li);
   });
 }
@@ -855,7 +865,8 @@ function meetsCondition(cond, scores) {
 function finalAbilityScores() {
   const race = selectedRace();
   const asi = abilityBonusesFromAdvancements();
-  return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, Math.min(20, v + (race.racialAbilities?.[a] || 0) + (asi[a] || 0))]));
+  const origin = race.rulesEra === "2024" ? state.character.originAbilityBonuses : (race.racialAbilities || {});
+  return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, Math.min(20, v + (origin?.[a] || 0) + (asi[a] || 0))]));
 }
 
 function toFeatureObjects(raw) {
@@ -962,6 +973,7 @@ function renderAbilityStep() {
   const rolledMode = state.abilityMethod === "rolled";
   els.abilityMethod.value = state.abilityMethod;
   els.rolledPanel.classList.toggle("hidden", !rolledMode);
+  renderOriginAsiPanel();
 
   if (rolledMode) renderRolledPanel();
 
@@ -994,6 +1006,32 @@ function renderAbilityStep() {
     const spent = spentPoints();
     els.pointBuyStatus.textContent = `Points spent: ${spent} / ${POINT_BUY_BUDGET}. Remaining: ${POINT_BUY_BUDGET - spent}.`;
   }
+}
+
+function renderOriginAsiPanel() {
+  const race = selectedRace();
+  const is2024 = race.rulesEra === "2024";
+  els.originAsiPanel.classList.toggle("hidden", !is2024);
+  if (!is2024) {
+    state.character.originAbilityBonuses = { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 };
+    return;
+  }
+
+  const bonuses = state.character.originAbilityBonuses || { STR: 2, DEX: 1, CON: 0, INT: 0, WIS: 0, CHA: 0 };
+  const plusTwo = Object.keys(bonuses).find((k) => bonuses[k] === 2) || "STR";
+  const plusOne = Object.keys(bonuses).find((k) => bonuses[k] === 1) || "DEX";
+  els.originAsiPanel.innerHTML = `<h3>2024 Ability Score Rules</h3><p>Species in 2024 rules do not grant fixed ability bonuses. Assign +2 to one ability and +1 to a different ability here.</p><div class="row"><label>+2<select id="origin-plus-two">${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${plusTwo === a ? "selected" : ""}>${a}</option>`).join("")}</select></label><label>+1<select id="origin-plus-one">${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${plusOne === a ? "selected" : ""}>${a}</option>`).join("")}</select></label></div>`;
+
+  const apply = () => {
+    const p2 = byId("origin-plus-two").value;
+    const p1 = byId("origin-plus-one").value;
+    if (p2 === p1) return;
+    state.character.originAbilityBonuses = { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0, [p2]: 2, [p1]: 1 };
+    renderAbilityStep();
+    renderClassProgress();
+  };
+  byId("origin-plus-two").addEventListener("change", apply);
+  byId("origin-plus-one").addEventListener("change", apply);
 }
 
 function renderRolledPanel() {
