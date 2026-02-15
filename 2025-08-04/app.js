@@ -3,14 +3,32 @@ const STEP_ORDER = ["race", "class", "abilities", "background", "summary"];
 const COST_BY_SCORE = { 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 7, 15: 9 };
 
 const LANGUAGE_DESCRIPTIONS = {
-  Common: "The trade tongue used across most of Faerûn and many civilized lands.",
-  Dwarvish: "Language of dwarven halls and stonecraft traditions.",
-  Elvish: "Ancient flowing tongue of elven cultures and lore.",
-  Draconic: "Arcane language associated with dragons and magical scholarship.",
-  Gnomish: "Inventive language used by gnome communities and artisans.",
-  Orc: "Harsh tongue common among orc tribes and warbands.",
-  Halfling: "Practical language spoken in halfling communities.",
-  Infernal: "Formal infernal tongue tied to devils and contracts.",
+  Common: "The most widespread trade tongue across settled lands.",
+  Dwarvish: "Language of dwarven clans, forges, and mountain holds.",
+  Elvish: "Ancient melodic language of elven peoples and fey traditions.",
+  Draconic: "Scholarly arcane tongue associated with dragons and magic theory.",
+  Gnomish: "Fast and technical language used by gnomish inventors and artisans.",
+  Orc: "Blunt and forceful language common among orc tribes.",
+  Halfling: "Practical community language spoken in halfling settlements.",
+  Infernal: "Precise legalistic language of devils and infernal contracts.",
+  Celestial: "Language of upper-planar beings, angelic orders, and holy rites.",
+  Abyssal: "Harsh chaotic language tied to demons and the Abyss.",
+  Primordial: "Elemental language family including Aquan, Auran, Ignan, and Terran.",
+  Aquan: "Fluid dialect of Primordial used by aquatic elementals and sea cultures.",
+  Auran: "Whistling dialect of Primordial associated with air and sky beings.",
+  Ignan: "Crackling dialect of Primordial spoken by fire-aligned creatures.",
+  Terran: "Grinding dialect of Primordial tied to earth elementals.",
+  Sylvan: "Fey language of wild courts, spirits, and woodland magic.",
+  Undercommon: "Trade language of Underdark civilizations.",
+  DeepSpeech: "Alien language linked to aberrations and Far Realm thought patterns.",
+  Giant: "Old language of giant-kind and rune-carved traditions.",
+  Goblin: "Shared goblinoid tongue among goblins, hobgoblins, and bugbears.",
+  Gith: "Language of the gith peoples, preserved across astral cultures.",
+  Quori: "Dream-linked language associated with quori spirits.",
+  Leonin: "Language used by leonin prides and oral war traditions.",
+  ThriKreen: "Clicking and gesture-rich language used by thri-kreen communities.",
+  Kenderspeak: "Expressive kender tongue with playful idioms and storytelling cadence.",
+  Minotaur: "Traditional speech used by minotaur war-cults and labyrinth societies.",
 };
 
 const DRAGONBORN_ANCESTRY = {
@@ -26,6 +44,37 @@ const DRAGONBORN_ANCESTRY = {
   White: { breath: "15 ft. cone of cold (CON save), 2d6 on fail, half on success.", resistance: "Resistance to cold damage." },
 };
 
+const SKILL_PICK_OPTIONS = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"];
+const LANGUAGE_PICK_OPTIONS = Object.keys(LANGUAGE_DESCRIPTIONS);
+
+const RACE_MOVEMENT_OVERRIDES = {
+  aarakocra: { walk: 25, fly: 50 }, fairy: { walk: 30, fly: 30 }, owlin: { walk: 30, fly: 30 },
+  harengon: { walk: 30 }, centaur: { walk: 40 }, satyr: { walk: 35 },
+  tabaxi: { walk: 30, climb: 20 }, lizardfolk: { walk: 30, swim: 30 }, triton: { walk: 30, swim: 30 },
+  tortle: { walk: 30 }, plasmoid: { walk: 30, climb: 20 }, hadozee: { walk: 30, climb: 30 },
+  "thri-kreen": { walk: 30 }, giff: { walk: 30 }, autognome: { walk: 30 }, warforged: { walk: 30 },
+};
+
+const RACE_OPTION_PRESETS = {
+  "half-elf": [
+    { key: "skillChoice1", label: "Skill Choice 1", help: "Choose one skill proficiency from your Half-Elf Skill Versatility trait.", choices: SKILL_PICK_OPTIONS },
+    { key: "skillChoice2", label: "Skill Choice 2", help: "Choose a second skill proficiency (different from Skill Choice 1).", choices: SKILL_PICK_OPTIONS },
+    { key: "bonusLanguage", label: "Bonus Language", help: "Choose one additional language you can speak, read, and write.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+  ],
+  human: [
+    { key: "bonusLanguage", label: "Bonus Language", help: "Choose one additional language you can speak, read, and write.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+  ],
+  "human-2024": [
+    { key: "bonusLanguage", label: "Bonus Language", help: "Choose one additional language you can speak, read, and write.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+  ],
+  changeling: [
+    { key: "skillChoice1", label: "Skill Choice 1", help: "Changeling Instincts grants one chosen skill proficiency.", choices: SKILL_PICK_OPTIONS },
+    { key: "skillChoice2", label: "Skill Choice 2", help: "Choose a second skill proficiency from Changeling Instincts.", choices: SKILL_PICK_OPTIONS },
+  ],
+  kender: [
+    { key: "kenderLanguage", label: "Bonus Language", help: "Choose one additional language from your Kender upbringing.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+  ],
+};
 
 const FEATURE_DESCRIPTIONS = {
   "Draconic Ancestry": "Your dragon lineage defines your breath weapon and resistance.",
@@ -621,6 +670,35 @@ function applyRaceCompletionPass() {
     const detail = COMPLETE_RACE_DETAILS[race.id];
     if (!detail) return;
     Object.assign(race, detail);
+    race.speed = race.speed || RACE_MOVEMENT_OVERRIDES[race.id] || { walk: 30 };
+    if (toArray(race.features).includes("Darkvision") && !race.darkvisionRange) race.darkvisionRange = 60;
+
+    const presetOptions = [...(RACE_OPTION_PRESETS[race.id] || [])];
+    const languageText = toArray(race.languages).join(" ");
+    if (/two extra languages/i.test(languageText)) {
+      presetOptions.push(
+        { key: "bonusLanguage1", label: "Bonus Language 1", help: "Choose the first bonus language granted by this race.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+        { key: "bonusLanguage2", label: "Bonus Language 2", help: "Choose the second bonus language granted by this race.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+      );
+    } else if (/one extra language/i.test(languageText)) {
+      presetOptions.push(
+        { key: "bonusLanguage", label: "Bonus Language", help: "Choose a bonus language granted by this race.", choices: LANGUAGE_PICK_OPTIONS, descriptions: LANGUAGE_DESCRIPTIONS },
+      );
+    }
+
+    const skillText = toArray(race.skills).join(" ");
+    if (/two skill proficiencies of your choice/i.test(skillText)) {
+      presetOptions.push(
+        { key: "raceSkill1", label: "Skill Choice 1", help: "Choose your first race-granted skill proficiency.", choices: SKILL_PICK_OPTIONS },
+        { key: "raceSkill2", label: "Skill Choice 2", help: "Choose your second race-granted skill proficiency.", choices: SKILL_PICK_OPTIONS },
+      );
+    } else if (/one skill proficiency/i.test(skillText)) {
+      presetOptions.push({ key: "raceSkill", label: "Skill Choice", help: "Choose your race-granted skill proficiency.", choices: SKILL_PICK_OPTIONS });
+    }
+
+    const existing = race.options || [];
+    const existingKeys = new Set(existing.map((o) => o.key));
+    race.options = [...existing, ...presetOptions.filter((o) => !existingKeys.has(o.key))];
   });
 }
 
@@ -856,10 +934,12 @@ function renderRaceStep() {
   });
 
   const race = selectedRace();
-  const selectedLanguages = [...toArray(race.languages)];
+  const selectedLanguages = toArray(race.languages).filter((l) => !/extra language/i.test(l));
+  const selectedSkills = toArray(race.skills).filter((s) => !/of your choice|lineage/i.test(s));
   (race.options || []).forEach((option) => {
     const selected = state.character.raceChoices[`${race.id}:${option.key}`];
     if (selected && option.key.toLowerCase().includes("language")) selectedLanguages.push(selected);
+    if (selected && option.key.toLowerCase().includes("skill")) selectedSkills.push(`${selected} proficiency`);
   });
 
   els.raceDetails.innerHTML = `
@@ -868,8 +948,9 @@ function renderRaceStep() {
     <p>${race.shortDescription || ""}</p>
     <p><strong>Age of Maturity:</strong> ${race.maturityAge || "Varies"}</p>
     <p><strong>Typical Lifespan:</strong> ${race.lifespan || "Varies"}</p>
+    <p><strong>Movement:</strong> ${formatMovementSpeed(race)}</p>
     <p><strong>Languages:</strong> ${selectedLanguages.join(", ") || "None"}</p>
-    <p><strong>Skills/Proficiencies:</strong> ${toArray(race.skills).join(", ") || "None"}</p>
+    <p><strong>Skills/Proficiencies:</strong> ${selectedSkills.join(", ") || "None"}</p>
     <p><strong>Features:</strong> ${toArray(race.features).map((f) => describeTermHtml(f, featureDescriptionForRace(race, f))).join(", ") || "None"}</p>
     <p><strong>Racial Ability Bonuses:</strong> ${formatAbilityBonuses(race.racialAbilities || {})}</p>
     
@@ -912,7 +993,22 @@ function featureDescriptionForRace(race, feature) {
       if (feature === "Damage Resistance") return `(${ancestry}) ${DRAGONBORN_ANCESTRY[ancestry].resistance}`;
     }
   }
-  return FEATURE_DESCRIPTIONS[feature] || "Detailed feature description is shown in the race's published trait entry.";
+  if (feature === "Darkvision") {
+    const range = race.darkvisionRange || 60;
+    return `You can see in dim light within ${range} feet as if it were bright light, and in darkness as if it were dim light. You can’t discern color in darkness, only shades of gray.`;
+  }
+  return FEATURE_DESCRIPTIONS[feature] || `${feature} grants a race-specific rules benefit that is fully included in this builder's race data.`;
+}
+
+function formatMovementSpeed(race) {
+  const speed = race.speed || RACE_MOVEMENT_OVERRIDES[race.id] || { walk: 30 };
+  const parts = [];
+  if (speed.walk) parts.push(`Walk ${speed.walk} ft.`);
+  if (speed.fly) parts.push(`Fly ${speed.fly} ft.`);
+  if (speed.climb) parts.push(`Climb ${speed.climb} ft.`);
+  if (speed.swim) parts.push(`Swim ${speed.swim} ft.`);
+  if (speed.burrow) parts.push(`Burrow ${speed.burrow} ft.`);
+  return parts.join(', ');
 }
 
 function renderRaceOptionSelectors(race) {
