@@ -1,87 +1,156 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
   margin: 0;
-  padding: 1rem;
-  background: #10131a;
-  color: #f4f4f5;
+  background: #0e1420;
+  color: #f5f5f5;
 }
 
 .layout {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 1rem;
   display: grid;
   gap: 1rem;
 }
 
 .card {
-  border: 1px solid #3a3f4b;
-  border-radius: 10px;
-  background: #191e28;
+  background: #161d2c;
+  border: 1px solid #2f3a52;
+  border-radius: 12px;
   padding: 1rem;
 }
 
-.grid {
+.hero h1 {
+  margin-bottom: 0.5rem;
+}
+
+.steps ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+.steps li.active {
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.hidden {
+  display: none;
+}
+
+.option-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.75rem;
+  margin: 0.75rem 0;
 }
 
-label,
-.mini-form {
-  display: grid;
-  gap: 0.4rem;
-}
-
-input,
-select,
-button {
-  border-radius: 8px;
-  border: 1px solid #535b6e;
-  background: #0f1320;
-  color: #f4f4f5;
-  padding: 0.5rem;
-}
-
-button {
+.option-card {
+  border: 1px solid #3b4967;
+  border-radius: 10px;
+  padding: 0.75rem;
   cursor: pointer;
-  background: #2b6cb0;
-  border-color: #2b6cb0;
+  background: #121827;
+}
+
+.option-card.selected {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 1px #38bdf8;
+}
+
+.details {
+  border: 1px solid #34445f;
+  border-radius: 10px;
+  background: #101726;
+  padding: 0.85rem;
+}
+
+.details h3 {
+  margin-top: 0;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-.abilities {
+.between {
+  justify-content: space-between;
+}
+
+.end {
+  justify-content: end;
+}
+
+label {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
-.ability {
-  border: 1px solid #38445f;
+.inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.3rem;
+}
+
+input,
+select,
+button {
+  border: 1px solid #435172;
   border-radius: 8px;
   padding: 0.5rem;
-  background: #111827;
+  color: #f5f5f5;
+  background: #101726;
 }
 
-.content-grid {
+button {
+  cursor: pointer;
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+button.secondary {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.abilities-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
-ul {
-  padding-left: 1.2rem;
+.ability-card {
+  border: 1px solid #3b4967;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #121827;
+}
+
+.ability-controls {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.validation {
+  color: #fca5a5;
+  min-height: 1.2rem;
 }
 
 pre {
   white-space: pre-wrap;
   word-break: break-word;
+  margin: 0;
 }

@@ -8,95 +8,106 @@
   </head>
   <body>
     <main class="layout">
-      <header>
+      <header class="hero card">
         <h1>D&D 5e Character Builder</h1>
-        <p>Create characters with extendable classes, races, subclasses, and spells.</p>
+        <p>Step-by-step flow inspired by D&D Beyond: Race → Class → Ability Scores → Background.</p>
       </header>
 
-      <section class="card">
-        <h2>Character Sheet</h2>
-        <form id="character-form" class="grid">
-          <label>
-            Name
-            <input id="name" type="text" placeholder="Nalia" />
-          </label>
-          <label>
-            Level
-            <input id="level" type="number" min="1" max="20" value="1" />
-          </label>
-          <label>
-            Class
-            <select id="class"></select>
-          </label>
-          <label>
-            Subclass
-            <select id="subclass"></select>
-          </label>
-          <label>
-            Race
-            <select id="race"></select>
-          </label>
-          <label>
-            Background
-            <input id="background" type="text" placeholder="Sage" />
-          </label>
-        </form>
+      <nav class="steps card" aria-label="Builder steps">
+        <ol id="stepper"></ol>
+      </nav>
+
+      <section id="step-race" class="card step-panel">
+        <h2>1. Choose Race</h2>
+        <p>Select a race to review its languages, features, proficiencies, and racial bonuses.</p>
+        <div id="race-options" class="option-grid"></div>
+        <article id="race-details" class="details"></article>
+        <div class="row end">
+          <button id="confirm-race" type="button">Confirm Race</button>
+        </div>
       </section>
 
-      <section class="card">
-        <h2>Ability Scores</h2>
-        <div id="abilities" class="abilities"></div>
-      </section>
+      <section id="step-class" class="card step-panel hidden">
+        <h2>2. Choose Class</h2>
+        <p>Pick your primary class and review what it gains by level. Optionally add multiclass levels.</p>
 
-      <section class="card">
-        <h2>Known Spells</h2>
+        <label>
+          Character Name
+          <input id="character-name" type="text" placeholder="Nalia" />
+        </label>
+
+        <div id="class-options" class="option-grid"></div>
+
         <div class="row">
-          <select id="spell-picker"></select>
-          <button id="add-spell" type="button">Add Spell</button>
+          <label>
+            Primary Class Level
+            <input id="primary-level" type="number" min="1" max="20" value="1" />
+          </label>
+          <label class="inline">
+            <input id="multiclass-enabled" type="checkbox" />
+            Enable multiclass
+          </label>
+          <label id="multiclass-class-wrap" class="hidden">
+            Secondary Class
+            <select id="multiclass-class"></select>
+          </label>
+          <label id="multiclass-level-wrap" class="hidden">
+            Secondary Class Level
+            <input id="multiclass-level" type="number" min="1" max="19" value="1" />
+          </label>
         </div>
-        <ul id="spell-list"></ul>
-      </section>
 
-      <section class="card">
-        <h2>Content Manager</h2>
-        <p>Add custom game content so your builder can grow as you homebrew.</p>
+        <article id="class-details" class="details"></article>
+        <p id="class-validation" class="validation"></p>
 
-        <div class="content-grid">
-          <form class="mini-form" data-type="classes">
-            <h3>Add Class</h3>
-            <input name="name" placeholder="Artificer" required />
-            <button>Add</button>
-          </form>
-
-          <form class="mini-form" data-type="subclasses">
-            <h3>Add Subclass</h3>
-            <input name="name" placeholder="Battle Smith" required />
-            <select name="parent" id="subclass-parent"></select>
-            <button>Add</button>
-          </form>
-
-          <form class="mini-form" data-type="races">
-            <h3>Add Race</h3>
-            <input name="name" placeholder="Aasimar" required />
-            <button>Add</button>
-          </form>
-
-          <form class="mini-form" data-type="spells">
-            <h3>Add Spell</h3>
-            <input name="name" placeholder="Silvery Barbs" required />
-            <button>Add</button>
-          </form>
+        <div class="row between">
+          <button id="back-to-race" type="button" class="secondary">Back</button>
+          <button id="confirm-class" type="button">Confirm Class</button>
         </div>
       </section>
 
-      <section class="card">
-        <h2>Save / Export</h2>
-        <div class="row">
-          <button id="save" type="button">Save Character</button>
-          <button id="download" type="button">Download JSON</button>
-          <button id="reset" type="button">Reset Builder</button>
+      <section id="step-abilities" class="card step-panel hidden">
+        <h2>3. Ability Scores (27-Point Buy)</h2>
+        <p>Use standard 5e point buy limits: scores from 8 to 15 before racial bonuses.</p>
+
+        <div id="abilities-grid" class="abilities-grid"></div>
+
+        <article class="details">
+          <h3>Point Buy Rules</h3>
+          <ul>
+            <li>Total budget: 27 points</li>
+            <li>Minimum score: 8</li>
+            <li>Maximum score: 15 (before racial bonuses)</li>
+          </ul>
+          <p id="point-buy-status"></p>
+        </article>
+
+        <div class="row between">
+          <button id="back-to-class" type="button" class="secondary">Back</button>
+          <button id="confirm-abilities" type="button">Confirm Ability Scores</button>
         </div>
-        <pre id="status">Ready.</pre>
+      </section>
+
+      <section id="step-background" class="card step-panel hidden">
+        <h2>4. Choose Background</h2>
+        <p>Select a background and review what it grants your character.</p>
+
+        <div id="background-options" class="option-grid"></div>
+        <article id="background-details" class="details"></article>
+
+        <div class="row between">
+          <button id="back-to-abilities" type="button" class="secondary">Back</button>
+          <button id="confirm-background" type="button">Confirm Background</button>
+        </div>
+      </section>
+
+      <section id="step-summary" class="card step-panel hidden">
+        <h2>Character Sheet Summary</h2>
+        <pre id="character-sheet"></pre>
+        <div class="row between">
+          <button id="back-to-background" type="button" class="secondary">Back</button>
+          <button id="download-json" type="button">Download Character JSON</button>
+        </div>
       </section>
     </main>
 
