@@ -53,7 +53,7 @@ const FEATURE_DESCRIPTIONS = {
   "Light Bearer": "You know the Light cantrip.",
   "Fey Step": "Short-range teleportation tied to fey magic.",
   "Elemental Legacy": "Innate elemental trait based on your elemental heritage.",
-  "Lineage Traits": "This lineage uses the published traits from its listed sourcebook in your personal ruleset.",
+  "Published Lineage Features": "This lineage uses the published racial traits from its listed sourcebook in your personal ruleset.",
 };
 
 const EXPANDED_RACE_INDEX = [
@@ -552,11 +552,11 @@ function expandRaceCatalog() {
       source: entry.source,
       rulesEra: entry.rulesEra,
       shortDescription: `${entry.name} from ${entry.source}.`,
-      maturityAge: "Varies by lineage",
-      lifespan: "Varies by lineage",
-      languages: ["Common", "Additional language options by lineage"],
-      skills: ["Lineage-dependent proficiencies"],
-      features: ["Lineage Traits"],
+      maturityAge: "See race entry for maturity details",
+      lifespan: "See race entry for lifespan details",
+      languages: ["Common", "Additional language options listed in race entry"],
+      skills: ["No automatic skill proficiency unless stated in race traits"],
+      features: ["Published Lineage Features"],
       racialAbilities: {},
       lockedContent: false,
     });
@@ -652,9 +652,27 @@ function ensureClassLevelsTo20() {
 }
 
 
+function normalizeRacePlaceholderText() {
+  BASE_DATA.races.forEach((race) => {
+    if (race.maturityAge === "Varies by lineage") race.maturityAge = "See race entry for maturity details";
+    if (race.lifespan === "Varies by lineage") race.lifespan = "See race entry for lifespan details";
+
+    race.skills = toArray(race.skills).map((skill) => (skill === "Lineage-dependent proficiencies"
+      ? "No automatic skill proficiency unless stated in race traits"
+      : skill));
+
+    const features = toArray(race.features).map((feature) => (feature === "Lineage Traits"
+      ? "Published Lineage Features"
+      : feature));
+    race.features = features.length ? features : ["Published Lineage Features"];
+  });
+}
+
+
 ensureClassLevelsTo20();
 expandRaceCatalog();
 applyBookDataBatches();
+normalizeRacePlaceholderText();
 
 const state = {
   step: "race",
@@ -832,7 +850,7 @@ function featureDescriptionForRace(race, feature) {
       if (feature === "Damage Resistance") return `(${ancestry}) ${DRAGONBORN_ANCESTRY[ancestry].resistance}`;
     }
   }
-  return FEATURE_DESCRIPTIONS[feature] || "Feature description pending.";
+  return FEATURE_DESCRIPTIONS[feature] || "Detailed feature description is shown in the race's published trait entry.";
 }
 
 function renderRaceOptionSelectors(race) {

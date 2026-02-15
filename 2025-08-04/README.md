@@ -63,6 +63,7 @@ Output:
   - The Book of Many Things
   - Fizban's Treasury of Dragons
 - Species using flexible sourcebook ASI rules now use the ability tab's +2/+1 assignment panel when their race data specifies flexible bonuses.
+- Placeholder lineage strings have been normalized to clearer fallback text in race cards/details (no "Varies by lineage" / "Lineage-dependent proficiencies" / "Lineage Traits" placeholders).
 
 ## Remaining scope
 - Partnered books and long-tail official options still need deeper pass completion for full, line-by-line trait text and option trees.
