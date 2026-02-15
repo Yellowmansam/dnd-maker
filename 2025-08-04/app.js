@@ -226,7 +226,7 @@ function mapEls() {
     quickfillBox: byId("quickfill-box"), tooltip: byId("hover-tooltip"),
     panels: { race: byId("step-race"), class: byId("step-class"), abilities: byId("step-abilities"), background: byId("step-background"), summary: byId("step-summary") },
     raceOptions: byId("race-options"), raceDetails: byId("race-details"), raceOptionConfig: byId("race-option-config"),
-    classOptions: byId("class-options"), subclassPickerWrap: byId("subclass-picker-wrap"), subclassPicker: byId("subclass-picker"), classValidation: byId("class-validation"),
+    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classValidation: byId("class-validation"),
     totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
     characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
@@ -268,10 +268,6 @@ function bindEvents() {
 
   els.characterName.addEventListener("input", (e) => { state.character.name = e.target.value; });
   els.toggleMulticlass.addEventListener("click", () => { state.multiclassOpen = !state.multiclassOpen; renderClassProgress(); });
-  els.subclassPicker.addEventListener("change", (e) => {
-    state.character.classPlan.subclassByClass[state.character.classPlan.primaryClassId] = e.target.value;
-    renderClassProgress();
-  });
 }
 
 function renderAll() {
@@ -364,33 +360,18 @@ function renderRaceOptionSelectors(race) {
 function renderClassStep() {
   els.characterName.value = state.character.name;
   const primaryId = state.character.classPlan.primaryClassId;
+  const total = totalClassLevel();
 
-  renderOptionCards(els.classOptions, state.data.classes, primaryId, (id) => {
-    state.character.classPlan.primaryClassId = id;
-    renderClassStep();
-  });
+  els.startingClassSetup.classList.toggle("hidden", total > 0);
 
-  renderSubclassPicker();
-  renderClassProgress();
-}
-
-function renderSubclassPicker() {
-  const cls = selectedPrimaryClass();
-  const subclasses = cls.subclasses || [];
-  const level = classLevel(cls.id);
-  els.subclassPicker.innerHTML = "";
-  subclasses.forEach((sub) => {
-    const option = document.createElement("option");
-    option.value = sub.name;
-    option.textContent = `${sub.name} — ${sub.description}`;
-    option.selected = state.character.classPlan.subclassByClass[cls.id] === sub.name;
-    els.subclassPicker.appendChild(option);
-  });
-  const showSubclass = subclasses.length > 0 && level >= 3;
-  els.subclassPickerWrap.classList.toggle("hidden", !showSubclass);
-  if (showSubclass && !state.character.classPlan.subclassByClass[cls.id]) {
-    state.character.classPlan.subclassByClass[cls.id] = subclasses[0].name;
+  if (total === 0) {
+    renderOptionCards(els.classOptions, state.data.classes, primaryId, (id) => {
+      state.character.classPlan.primaryClassId = id;
+      renderClassStep();
+    });
   }
+
+  renderClassProgress();
 }
 
 function confirmStartingClass() {
@@ -427,12 +408,9 @@ function renderClassLevelBreakdown() {
     minus.type = "button";
     minus.className = "secondary";
     minus.textContent = "Level -";
-    minus.disabled = lvl <= 1;
+    minus.disabled = lvl <= 0;
     minus.addEventListener("click", () => {
-      if (state.character.classPlan.levelsByClass[classId] > 1) {
-        state.character.classPlan.levelsByClass[classId] -= 1;
-        renderClassStep();
-      }
+      removeLevelFromClass(classId);
     });
 
     const plus = document.createElement("button");
@@ -486,13 +464,12 @@ function renderMulticlassList() {
   const primary = state.character.classPlan.primaryClassId;
   const total = totalClassLevel();
   els.multiclassList.innerHTML = "";
-  state.data.classes.filter((c) => c.id !== primary).forEach((cls) => {
+  state.data.classes.filter((c) => c.id !== primary && classLevel(c.id) === 0).forEach((cls) => {
     const meets = meetsMulticlassRequirement(cls.multiclassReq);
-    const alreadyHas = classLevel(cls.id) > 0;
-    const canAdd = meets && total < 20 && !alreadyHas;
+    const canAdd = meets && total < 20;
     const card = document.createElement("div");
     card.className = `option-card ${canAdd ? "" : "disabled"}`;
-    const reason = alreadyHas ? "You already have levels in this class." : (meets ? "Requirement met" : "Requirement not met with current ability scores");
+    const reason = meets ? "Requirement met" : "Requirement not met with current ability scores";
     card.innerHTML = `<strong>${cls.name}</strong><p>Requirement: ${cls.multiclassReq}</p><p>${reason}</p>`;
     const button = document.createElement("button");
     button.type = "button";
@@ -509,6 +486,27 @@ function addLevelToClass(classId) {
   const wasZero = !state.character.classPlan.levelsByClass[classId];
   state.character.classPlan.levelsByClass[classId] = (state.character.classPlan.levelsByClass[classId] || 0) + 1;
   if (wasZero && classId !== state.character.classPlan.primaryClassId) state.multiclassOpen = false;
+  renderClassStep();
+}
+
+function removeLevelFromClass(classId) {
+  const current = state.character.classPlan.levelsByClass[classId] || 0;
+  if (current <= 0) return;
+
+  const next = current - 1;
+  if (next <= 0) {
+    delete state.character.classPlan.levelsByClass[classId];
+    delete state.character.classPlan.subclassByClass[classId];
+    if (state.character.classPlan.primaryClassId === classId) {
+      state.character.classPlan.primaryClassId = state.data.classes[0]?.id || "";
+    }
+  } else {
+    state.character.classPlan.levelsByClass[classId] = next;
+  }
+
+  if (totalClassLevel() === 0) {
+    state.multiclassOpen = false;
+  }
   renderClassStep();
 }
 
