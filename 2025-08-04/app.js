@@ -132,14 +132,14 @@ const BASE_DATA = {
       1: [["Rage", "Enter a rage for bonus melee damage, damage resistance, and advantage on Strength checks/saves."], ["Unarmored Defense", "AC = 10 + DEX mod + CON mod while unarmored."]],
       2: [["Reckless Attack", "Gain advantage on melee STR attacks, but attacks against you have advantage until your next turn."], ["Danger Sense", "Advantage on DEX saves against effects you can see."]],
       3: [["Primal Path", "Choose a barbarian subclass to define your rage style."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat if feats are allowed."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Extra Attack", "Attack twice with the Attack action."], ["Fast Movement", "+10 ft speed while not in heavy armor."]],
     }),
     buildClass("bard", "Bard", "d8", "CHA 13", ["Light armor", "Simple weapons", "Hand crossbows, longswords, rapiers, shortswords"], ["Lore", "Valor"], {
       1: [["Spellcasting", "Cast bard spells using Charisma and spell slots."], ["Bardic Inspiration", "Give allies a die they can add to checks, attacks, or saves."]],
       2: [["Jack of All Trades", "Add half proficiency bonus to checks you are not proficient in."], ["Song of Rest", "Extra healing during short rests."]],
       3: [["Bard College", "Choose a bard subclass."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Font of Inspiration", "Bardic Inspiration refreshes on short rest."], ["Bardic Inspiration d8", "Your inspiration die increases."]],
     }),
     buildClass("cleric", "Cleric", "d8", "WIS 13", ["Light/medium armor", "Shields", "Simple weapons"], ["Knowledge", "Life", "Light", "Nature", "Tempest", "Trickery", "War"], {
@@ -147,49 +147,49 @@ const BASE_DATA = {
       2: [["Channel Divinity", "Use divine power for Turn Undead and domain effects."],
       ],
       3: [["2nd-level Spells", "Access to 2nd-level cleric spell slots and spells."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Destroy Undead (CR 1/2)", "Turn Undead can instantly destroy weak undead."], ["3rd-level Spells", "Access to 3rd-level cleric spells."]],
     }),
     buildClass("druid", "Druid", "d8", "WIS 13", ["Light/medium armor (non-metal)", "Shields (non-metal)", "Clubs, daggers, darts, javelins, maces, quarterstaffs, scimitars, sickles, slings, spears"], ["Land", "Moon"], {
       1: [["Druidic", "Learn the secret language of druids."], ["Spellcasting", "Prepare and cast druid spells using Wisdom."]],
       2: [["Wild Shape", "Transform into beasts based on level limitations."], ["Druid Circle", "Choose a druid subclass."]],
       3: [["2nd-level Spells", "Access to 2nd-level druid spells."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."], ["Wild Shape Improvement", "More movement types/forms become available."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], ["Wild Shape Improvement", "More movement types/forms become available."]],
       5: [["3rd-level Spells", "Access to 3rd-level druid spells."]],
     }),
     buildClass("fighter", "Fighter", "d10", "STR 13 or DEX 13", ["All armor", "Shields", "Simple/martial weapons"], ["Champion", "Battle Master", "Eldritch Knight"], {
       1: [["Fighting Style", "Choose a combat style that grants a permanent bonus."], ["Second Wind", "Bonus action self-heal once per short rest."]],
       2: [["Action Surge", "Take one additional action on your turn once per short rest."]],
       3: [["Martial Archetype", "Choose a fighter subclass."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Extra Attack", "Attack twice with the Attack action."]],
     }),
     buildClass("monk", "Monk", "d8", "DEX 13 and WIS 13", ["Shortswords", "Simple weapons"], ["Open Hand", "Shadow", "Four Elements"], {
       1: [["Unarmored Defense", "AC = 10 + DEX mod + WIS mod while unarmored."], ["Martial Arts", "Use monk weapons/unarmed strikes effectively and bonus strike."]],
       2: [["Ki", "Use ki points for Flurry, Patient Defense, and Step of the Wind."], ["Unarmored Movement", "Gain extra movement speed."]],
       3: [["Monastic Tradition", "Choose a monk subclass."], ["Deflect Missiles", "Reduce ranged weapon damage with reaction."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."], ["Slow Fall", "Use reaction to reduce falling damage."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], ["Slow Fall", "Use reaction to reduce falling damage."]],
       5: [["Extra Attack", "Attack twice with the Attack action."], ["Stunning Strike", "Spend ki to force CON save and stun target."], ["Martial Arts Die d6", "Your martial arts damage die increases."]],
     }),
     buildClass("paladin", "Paladin", "d10", "STR 13 and CHA 13", ["All armor", "Shields", "Simple/martial weapons"], ["Devotion", "Ancients", "Vengeance"], {
       1: [["Divine Sense", "Detect celestials, fiends, and undead nearby."], ["Lay on Hands", "Healing pool equal to 5 × paladin level."]],
       2: [["Fighting Style", "Choose a combat style bonus."], ["Spellcasting", "Cast paladin spells using Charisma."], ["Divine Smite", "Spend spell slots to add radiant damage on weapon hits."]],
       3: [["Sacred Oath", "Choose your paladin subclass."], ["Divine Health", "Immune to disease."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Extra Attack", "Attack twice with the Attack action."]],
     }),
     buildClass("ranger", "Ranger", "d10", "DEX 13 and WIS 13", ["Light/medium armor", "Shields", "Simple/martial weapons"], ["Hunter", "Beast Master"], {
       1: [["Favored Enemy", "Gain tracking and lore benefits against chosen enemy types."], ["Natural Explorer", "Gain exploration bonuses in favored terrain."]],
       2: [["Fighting Style", "Choose a combat style bonus."], ["Spellcasting", "Cast ranger spells using Wisdom."]],
       3: [["Ranger Archetype", "Choose a ranger subclass."], ["Primeval Awareness", "Sense certain creature types using spell slots."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Extra Attack", "Attack twice with the Attack action."]],
     }),
     buildClass("rogue", "Rogue", "d8", "DEX 13", ["Light armor", "Simple weapons", "Hand crossbows, longswords, rapiers, shortswords"], ["Thief", "Assassin", "Arcane Trickster"], {
       1: [["Expertise", "Double proficiency bonus in selected proficient skills/tools."], ["Sneak Attack", "Deal bonus damage once per turn when conditions are met."], ["Thieves' Cant", "Learn rogue coded language."]],
       2: [["Cunning Action", "Dash, Disengage, or Hide as a bonus action."]],
       3: [["Roguish Archetype", "Choose a rogue subclass."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Uncanny Dodge", "Use reaction to halve damage from one attacker you can see."]],
     }),
     buildClass("sorcerer", "Sorcerer", "d6", "CHA 13", ["Daggers, darts, slings, quarterstaffs, light crossbows"], ["Draconic Bloodline", "Wild Magic"], {
@@ -197,7 +197,7 @@ const BASE_DATA = {
       2: [["Font of Magic", "Gain sorcery points to fuel class features and convert slots/points."],
       ],
       3: [["Metamagic", "Modify spell behavior with sorcery points."], ["2nd-level Spells", "Access to 2nd-level sorcerer spells."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["3rd-level Spells", "Access to 3rd-level sorcerer spells."]],
     }),
     buildClass("warlock", "Warlock", "d8", "CHA 13", ["Light armor", "Simple weapons"], ["Archfey", "Fiend", "Great Old One"], {
@@ -205,7 +205,7 @@ const BASE_DATA = {
       2: [["Eldritch Invocations", "Choose magical augmentations with persistent effects."],
       ],
       3: [["Pact Boon", "Choose Pact of the Chain, Blade, or Tome."], ["2nd-level Pact Slots", "Stronger pact spellcasting."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["3rd-level Pact Slots", "Pact slots scale to 3rd level."], ["Additional Invocation", "Gain another eldritch invocation known."]],
     }),
     buildClass("wizard", "Wizard", "d6", "INT 13", ["Daggers, darts, slings, quarterstaffs, light crossbows"], ["Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion", "Necromancy", "Transmutation"], {
@@ -213,7 +213,7 @@ const BASE_DATA = {
       2: [["Arcane Tradition", "Choose your wizard subclass school."],
       ],
       3: [["2nd-level Spells", "Access to 2nd-level wizard spells."]],
-      4: [["Ability Score Improvement", "Increase ability scores or take a feat."]],
+      4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["3rd-level Spells", "Access to 3rd-level wizard spells."]],
     }),
   ],
@@ -232,18 +232,18 @@ function buildClass(id, name, hitDie, multiclassReq, proficiencies, subclassName
 
 function ensureClassLevelsTo20() {
   const classMilestones = {
-    barbarian: { 6: ["Path Feature", "Your Primal Path grants a new defining feature."], 7: ["Feral Instinct", "Advantage on initiative and better reaction when surprised."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Brutal Critical (1 die)", "Roll one extra weapon die on critical hits."], 10: ["Path Feature", "Another Primal Path feature unlocks."], 11: ["Relentless Rage", "Make CON save to stay at 1 HP instead of 0 while raging."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Brutal Critical (2 dice)", "Roll two extra weapon dice on critical hits."], 14: ["Path Feature", "Late-path feature improves your subclass identity."], 15: ["Persistent Rage", "Your rage only ends early under stricter conditions."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Brutal Critical (3 dice)", "Roll three extra weapon dice on critical hits."], 18: ["Indomitable Might", "Use Strength score as minimum on STR checks."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Primal Champion", "STR and CON increase by 4; max for both becomes 24."] },
-    bard: { 6: ["Countercharm", "Use performance to protect allies from fear/charm."], 7: ["4th-level Spells", "Access to 4th-level bard spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Song of Rest d8", "Song of Rest die improves."], 10: ["Magical Secrets", "Learn spells from any class list."], 11: ["6th-level Spells", "Access to 6th-level bard spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Song of Rest d10", "Song of Rest die improves again."], 14: ["Magical Secrets", "Gain additional off-list spells."], 15: ["8th-level Spells", "Access to 8th-level bard spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Song of Rest d12", "Song of Rest die reaches d12."], 18: ["Magical Secrets", "Final broad spell access bump."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Superior Inspiration", "Regain one Bardic Inspiration if none at initiative."] },
-    cleric: { 6: ["Channel Divinity (2/rest)", "Use Channel Divinity twice between rests."], 7: ["4th-level Spells", "Access to 4th-level cleric spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level cleric spells."], 10: ["Divine Intervention", "Call directly on your deity for miraculous aid."], 11: ["6th-level Spells", "Access to 6th-level cleric spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level cleric spells."], 14: ["Destroy Undead (CR 2)", "Turn Undead destroys stronger undead."], 15: ["8th-level Spells", "Access to 8th-level cleric spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level cleric spells."], 18: ["Channel Divinity (3/rest)", "Third use between rests."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Divine Intervention Improvement", "Divine Intervention succeeds automatically."] },
-    druid: { 6: ["Circle Feature", "Subclass feature progression."], 7: ["4th-level Spells", "Access to 4th-level druid spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level druid spells."], 10: ["Circle Feature", "Subclass feature progression."], 11: ["6th-level Spells", "Access to 6th-level druid spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level druid spells."], 14: ["Circle Feature", "Subclass feature progression."], 15: ["8th-level Spells", "Access to 8th-level druid spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level druid spells."], 18: ["Timeless Body", "Aging slows dramatically."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Archdruid", "Unlimited Wild Shape uses."] },
-    fighter: { 6: ["Ability Score Improvement", "Increase ability scores or take a feat."], 7: ["Archetype Feature", "Subclass progression feature."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Indomitable (1)", "Reroll a failed saving throw once per long rest."], 10: ["Archetype Feature", "Subclass progression feature."], 11: ["Extra Attack (2)", "Attack three times when taking Attack action."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Indomitable (2)", "Second use of Indomitable."], 14: ["Ability Score Improvement", "Increase ability scores or take a feat."], 15: ["Archetype Feature", "Subclass progression feature."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Action Surge (2)", "Two Action Surge uses between rests."], 18: ["Archetype Feature", "Subclass progression feature."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Extra Attack (3)", "Attack four times when taking Attack action."] },
-    monk: { 6: ["Ki-Empowered Strikes", "Unarmed strikes count as magical."], 7: ["Evasion", "Take no damage on successful DEX save effects."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Unarmored Movement Improvement", "Move along vertical surfaces and liquids while moving."], 10: ["Purity of Body", "Immune to disease and poison."], 11: ["Monastic Feature", "Subclass progression feature."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Tongue of Sun and Moon", "Communicate with any creature that understands a language."], 14: ["Diamond Soul", "Proficiency in all saves and ki rerolls."], 15: ["Timeless Body", "You no longer suffer frailty of old age."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Monastic Feature", "Subclass capstone feature."], 18: ["Empty Body", "Powerful invisibility/astral projection options."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Perfect Self", "Regain ki at initiative if empty."] },
-    paladin: { 6: ["Aura of Protection", "Add CHA bonus to saving throws for you and nearby allies."], 7: ["Sacred Oath Feature", "Subclass aura/feature progression."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["3rd-level Spells", "Access to 3rd-level paladin spells."], 10: ["Aura of Courage", "You and allies near you are immune to frightened."], 11: ["Improved Divine Smite", "Each melee weapon hit gains extra radiant damage."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["4th-level Spells", "Access to 4th-level paladin spells."], 14: ["Cleansing Touch", "End spells on yourself or willing creatures."], 15: ["Sacred Oath Feature", "Subclass progression feature."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["5th-level Spells", "Access to 5th-level paladin spells."], 18: ["Aura Improvements", "Aura range increases."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Sacred Oath Capstone", "Subclass ultimate feature."] },
-    ranger: { 6: ["Favored Enemy Improvement", "Additional favored enemy and language benefit."], 7: ["Archetype Feature", "Subclass progression feature."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["3rd-level Spells", "Access to 3rd-level ranger spells."], 10: ["Hide in Plain Sight", "Create camouflage for stealth while stationary."], 11: ["Archetype Feature", "Subclass progression feature."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["4th-level Spells", "Access to 4th-level ranger spells."], 14: ["Vanish", "Hide as bonus action; nonmagical tracking is harder."], 15: ["Archetype Feature", "Subclass progression feature."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["5th-level Spells", "Access to 5th-level ranger spells."], 18: ["Feral Senses", "Detect nearby unseen creatures."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Foe Slayer", "Add WIS modifier to attack/damage once per turn vs favored enemies."] },
-    rogue: { 6: ["Expertise", "Gain two more expertise choices."], 7: ["Evasion", "No damage on successful DEX save effects."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["Archetype Feature", "Subclass progression feature."], 10: ["Ability Score Improvement", "Increase ability scores or take a feat."], 11: ["Reliable Talent", "Treat low d20 rolls as 10 on proficient checks."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Archetype Feature", "Subclass progression feature."], 14: ["Blindsense", "Sense hidden or invisible creatures nearby."], 15: ["Slippery Mind", "Gain proficiency in Wisdom saving throws."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Archetype Feature", "Subclass progression feature."], 18: ["Elusive", "No attack roll has advantage against you unless incapacitated."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Stroke of Luck", "Turn a miss into a hit or a failed check into a 20."] },
-    sorcerer: { 6: ["Origin Feature", "Subclass progression feature."], 7: ["4th-level Spells", "Access to 4th-level sorcerer spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level sorcerer spells."], 10: ["Metamagic", "Gain an additional Metamagic option."], 11: ["6th-level Spells", "Access to 6th-level sorcerer spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level sorcerer spells."], 14: ["Origin Feature", "Subclass progression feature."], 15: ["8th-level Spells", "Access to 8th-level sorcerer spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level sorcerer spells."], 18: ["Origin Feature", "Subclass progression feature."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Sorcerous Restoration", "Regain sorcery points after short rest."] },
-    warlock: { 6: ["Patron Feature", "Subclass progression feature."], 7: ["4th-level Pact Slots", "Pact slots become 4th level."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Pact Slots", "Pact slots become 5th level."], 10: ["Patron Feature", "Subclass progression feature."], 11: ["Mystic Arcanum (6th)", "One 6th-level spell known and cast once per long rest."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["Mystic Arcanum (7th)", "One 7th-level spell known and cast once per long rest."], 14: ["Patron Feature", "Subclass progression feature."], 15: ["Mystic Arcanum (8th)", "One 8th-level spell known and cast once per long rest."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["Mystic Arcanum (9th)", "One 9th-level spell known and cast once per long rest."], 18: ["Invocation", "Gain one additional eldritch invocation."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Eldritch Master", "Recover pact slots by spending 1 minute entreating patron."] },
-    wizard: { 6: ["Tradition Feature", "Subclass progression feature."], 7: ["4th-level Spells", "Access to 4th-level wizard spells."], 8: ["Ability Score Improvement", "Increase ability scores or take a feat."], 9: ["5th-level Spells", "Access to 5th-level wizard spells."], 10: ["Tradition Feature", "Subclass progression feature."], 11: ["6th-level Spells", "Access to 6th-level wizard spells."], 12: ["Ability Score Improvement", "Increase ability scores or take a feat."], 13: ["7th-level Spells", "Access to 7th-level wizard spells."], 14: ["Tradition Feature", "Subclass progression feature."], 15: ["8th-level Spells", "Access to 8th-level wizard spells."], 16: ["Ability Score Improvement", "Increase ability scores or take a feat."], 17: ["9th-level Spells", "Access to 9th-level wizard spells."], 18: ["Spell Mastery", "Choose low-level spells to cast at-will without slots."], 19: ["Ability Score Improvement", "Increase ability scores or take a feat."], 20: ["Signature Spells", "Two chosen 3rd-level spells are always prepared and easier to cast."] },
+    barbarian: { 6: ["Path Feature", "Your Primal Path grants a new defining feature."], 7: ["Feral Instinct", "Advantage on initiative and better reaction when surprised."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Brutal Critical (1 die)", "Roll one extra weapon die on critical hits."], 10: ["Path Feature", "Another Primal Path feature unlocks."], 11: ["Relentless Rage", "Make CON save to stay at 1 HP instead of 0 while raging."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Brutal Critical (2 dice)", "Roll two extra weapon dice on critical hits."], 14: ["Path Feature", "Late-path feature improves your subclass identity."], 15: ["Persistent Rage", "Your rage only ends early under stricter conditions."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Brutal Critical (3 dice)", "Roll three extra weapon dice on critical hits."], 18: ["Indomitable Might", "Use Strength score as minimum on STR checks."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Primal Champion", "STR and CON increase by 4; max for both becomes 24."] },
+    bard: { 6: ["Countercharm", "Use performance to protect allies from fear/charm."], 7: ["4th-level Spells", "Access to 4th-level bard spells."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Song of Rest d8", "Song of Rest die improves."], 10: ["Magical Secrets", "Learn spells from any class list."], 11: ["6th-level Spells", "Access to 6th-level bard spells."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Song of Rest d10", "Song of Rest die improves again."], 14: ["Magical Secrets", "Gain additional off-list spells."], 15: ["8th-level Spells", "Access to 8th-level bard spells."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Song of Rest d12", "Song of Rest die reaches d12."], 18: ["Magical Secrets", "Final broad spell access bump."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Superior Inspiration", "Regain one Bardic Inspiration if none at initiative."] },
+    cleric: { 6: ["Channel Divinity (2/rest)", "Use Channel Divinity twice between rests."], 7: ["4th-level Spells", "Access to 4th-level cleric spells."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["5th-level Spells", "Access to 5th-level cleric spells."], 10: ["Divine Intervention", "Call directly on your deity for miraculous aid."], 11: ["6th-level Spells", "Access to 6th-level cleric spells."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["7th-level Spells", "Access to 7th-level cleric spells."], 14: ["Destroy Undead (CR 2)", "Turn Undead destroys stronger undead."], 15: ["8th-level Spells", "Access to 8th-level cleric spells."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["9th-level Spells", "Access to 9th-level cleric spells."], 18: ["Channel Divinity (3/rest)", "Third use between rests."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Divine Intervention Improvement", "Divine Intervention succeeds automatically."] },
+    druid: { 6: ["Circle Feature", "You gain a feature from your chosen subclass."], 7: ["4th-level Spells", "Access to 4th-level druid spells."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["5th-level Spells", "Access to 5th-level druid spells."], 10: ["Circle Feature", "You gain a feature from your chosen subclass."], 11: ["6th-level Spells", "Access to 6th-level druid spells."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["7th-level Spells", "Access to 7th-level druid spells."], 14: ["Circle Feature", "You gain a feature from your chosen subclass."], 15: ["8th-level Spells", "Access to 8th-level druid spells."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["9th-level Spells", "Access to 9th-level druid spells."], 18: ["Timeless Body", "Aging slows dramatically."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Archdruid", "Unlimited Wild Shape uses."] },
+    fighter: { 6: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 7: ["Archetype Feature", "You gain a feature from your chosen subclass."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Indomitable (1)", "Reroll a failed saving throw once per long rest."], 10: ["Archetype Feature", "You gain a feature from your chosen subclass."], 11: ["Extra Attack (2)", "Attack three times when taking Attack action."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Indomitable (2)", "Second use of Indomitable."], 14: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 15: ["Archetype Feature", "You gain a feature from your chosen subclass."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Action Surge (2)", "Two Action Surge uses between rests."], 18: ["Archetype Feature", "You gain a feature from your chosen subclass."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Extra Attack (3)", "Attack four times when taking Attack action."] },
+    monk: { 6: ["Ki-Empowered Strikes", "Unarmed strikes count as magical."], 7: ["Evasion", "Take no damage on successful DEX save effects."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Unarmored Movement Improvement", "Move along vertical surfaces and liquids while moving."], 10: ["Purity of Body", "Immune to disease and poison."], 11: ["Monastic Feature", "You gain a feature from your chosen subclass."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Tongue of Sun and Moon", "Communicate with any creature that understands a language."], 14: ["Diamond Soul", "Proficiency in all saves and ki rerolls."], 15: ["Timeless Body", "You no longer suffer frailty of old age."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Monastic Feature", "You gain a high-level feature from your chosen subclass."], 18: ["Empty Body", "Powerful invisibility/astral projection options."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Perfect Self", "Regain ki at initiative if empty."] },
+    paladin: { 6: ["Aura of Protection", "Add CHA bonus to saving throws for you and nearby allies."], 7: ["Sacred Oath Feature", "Subclass aura/feature progression."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["3rd-level Spells", "Access to 3rd-level paladin spells."], 10: ["Aura of Courage", "You and allies near you are immune to frightened."], 11: ["Improved Divine Smite", "Each melee weapon hit gains extra radiant damage."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["4th-level Spells", "Access to 4th-level paladin spells."], 14: ["Cleansing Touch", "End spells on yourself or willing creatures."], 15: ["Sacred Oath Feature", "You gain a feature from your chosen subclass."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["5th-level Spells", "Access to 5th-level paladin spells."], 18: ["Aura Improvements", "Aura range increases."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Sacred Oath Capstone", "You gain the capstone feature from your chosen subclass."] },
+    ranger: { 6: ["Favored Enemy Improvement", "Additional favored enemy and language benefit."], 7: ["Archetype Feature", "You gain a feature from your chosen subclass."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["3rd-level Spells", "Access to 3rd-level ranger spells."], 10: ["Hide in Plain Sight", "Create camouflage for stealth while stationary."], 11: ["Archetype Feature", "You gain a feature from your chosen subclass."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["4th-level Spells", "Access to 4th-level ranger spells."], 14: ["Vanish", "Hide as bonus action; nonmagical tracking is harder."], 15: ["Archetype Feature", "You gain a feature from your chosen subclass."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["5th-level Spells", "Access to 5th-level ranger spells."], 18: ["Feral Senses", "Detect nearby unseen creatures."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Foe Slayer", "Add WIS modifier to attack/damage once per turn vs favored enemies."] },
+    rogue: { 6: ["Expertise", "Gain two more expertise choices."], 7: ["Evasion", "No damage on successful DEX save effects."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Archetype Feature", "You gain a feature from your chosen subclass."], 10: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 11: ["Reliable Talent", "Treat low d20 rolls as 10 on proficient checks."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Archetype Feature", "You gain a feature from your chosen subclass."], 14: ["Blindsense", "Sense hidden or invisible creatures nearby."], 15: ["Slippery Mind", "Gain proficiency in Wisdom saving throws."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Archetype Feature", "You gain a feature from your chosen subclass."], 18: ["Elusive", "No attack roll has advantage against you unless incapacitated."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Stroke of Luck", "Turn a miss into a hit or a failed check into a 20."] },
+    sorcerer: { 6: ["Origin Feature", "You gain a feature from your chosen subclass."], 7: ["4th-level Spells", "Access to 4th-level sorcerer spells."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["5th-level Spells", "Access to 5th-level sorcerer spells."], 10: ["Metamagic", "Gain an additional Metamagic option."], 11: ["6th-level Spells", "Access to 6th-level sorcerer spells."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["7th-level Spells", "Access to 7th-level sorcerer spells."], 14: ["Origin Feature", "You gain a feature from your chosen subclass."], 15: ["8th-level Spells", "Access to 8th-level sorcerer spells."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["9th-level Spells", "Access to 9th-level sorcerer spells."], 18: ["Origin Feature", "You gain a feature from your chosen subclass."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Sorcerous Restoration", "Regain sorcery points after short rest."] },
+    warlock: { 6: ["Patron Feature", "You gain a feature from your chosen subclass."], 7: ["4th-level Pact Slots", "Pact slots become 4th level."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["5th-level Pact Slots", "Pact slots become 5th level."], 10: ["Patron Feature", "You gain a feature from your chosen subclass."], 11: ["Mystic Arcanum (6th)", "One 6th-level spell known and cast once per long rest."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Mystic Arcanum (7th)", "One 7th-level spell known and cast once per long rest."], 14: ["Patron Feature", "You gain a feature from your chosen subclass."], 15: ["Mystic Arcanum (8th)", "One 8th-level spell known and cast once per long rest."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Mystic Arcanum (9th)", "One 9th-level spell known and cast once per long rest."], 18: ["Invocation", "Gain one additional eldritch invocation."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Eldritch Master", "Recover pact slots by spending 1 minute entreating patron."] },
+    wizard: { 6: ["Tradition Feature", "You gain a feature from your chosen subclass."], 7: ["4th-level Spells", "Access to 4th-level wizard spells."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["5th-level Spells", "Access to 5th-level wizard spells."], 10: ["Tradition Feature", "You gain a feature from your chosen subclass."], 11: ["6th-level Spells", "Access to 6th-level wizard spells."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["7th-level Spells", "Access to 7th-level wizard spells."], 14: ["Tradition Feature", "You gain a feature from your chosen subclass."], 15: ["8th-level Spells", "Access to 8th-level wizard spells."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["9th-level Spells", "Access to 9th-level wizard spells."], 18: ["Spell Mastery", "Choose low-level spells to cast at-will without slots."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Signature Spells", "Two chosen 3rd-level spells are always prepared and easier to cast."] },
   };
 
   BASE_DATA.classes.forEach((cls) => {
@@ -291,7 +291,7 @@ function mapEls() {
     quickfillBox: byId("quickfill-box"), tooltip: byId("hover-tooltip"),
     panels: { race: byId("step-race"), class: byId("step-class"), abilities: byId("step-abilities"), background: byId("step-background"), summary: byId("step-summary") },
     raceOptions: byId("race-options"), raceDetails: byId("race-details"), raceOptionConfig: byId("race-option-config"),
-    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classValidation: byId("class-validation"), asiFeatPanel: byId("asi-feat-panel"), asiFeatList: byId("asi-feat-list"),
+    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classValidation: byId("class-validation"),
     totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
     characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
@@ -469,9 +469,9 @@ function renderClassProgress() {
   els.totalLevel.textContent = `Total Level: ${total}`;
 
   const timeline = classTimelineEntries();
-  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul></li>`).join("");
+  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul>${row.asiId ? `<div class="details" data-asi-inline="${escapeHtml(row.asiId)}"><strong>${escapeHtml(row.asiLabel || "Ability Score Improvement")}</strong></div>` : ""}</li>`).join("");
   renderClassLevelBreakdown();
-  renderAsiFeatPanel();
+  renderInlineAsiCards();
 
   if (total === 0) state.multiclassOpen = false;
   els.toggleMulticlass.disabled = total === 0;
@@ -540,9 +540,10 @@ function classTimelineEntries() {
     const subclassLevels = SUBCLASS_LEVELS[classId] || [3, 6, 10, 14];
     for (let lv = 1; lv <= level; lv += 1) {
       const features = toFeatureObjects(cls.levels?.[lv] || [["No feature listed", "No details available for this level yet."]]);
-      entries.push({ label: `${cls.name} Level ${lv}`, features });
+      const hasAsi = features.some((f) => /Ability Score Improvement/i.test(f.name));
+      entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null });
       if (sub && subclassLevels.includes(lv)) {
-        entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: [{ name: sub, description: subclassFeatureDescription(cls.id, sub, lv) }] });
+        entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: [{ name: `Subclass Feature - ${sub}`, description: subclassFeatureDescription(cls.id, sub, lv) }] });
       }
     }
   });
@@ -651,59 +652,59 @@ function subclassUnlockLevel(classId) {
   return Math.min(...(SUBCLASS_LEVELS[classId] || [3]));
 }
 
-function renderAsiFeatPanel() {
+function renderInlineAsiCards() {
   const opportunities = asiOpportunities();
-  els.asiFeatPanel.classList.toggle("hidden", opportunities.length === 0);
-  els.asiFeatList.innerHTML = "";
-
   const validIds = new Set(opportunities.map((o) => o.id));
   Object.keys(state.character.classPlan.advancements || {}).forEach((id) => {
     if (!validIds.has(id)) delete state.character.classPlan.advancements[id];
   });
 
-  opportunities.forEach((op) => {
-    const choice = state.character.classPlan.advancements[op.id] || { kind: "ability", abilityA: "STR", abilityB: "STR", featId: "" };
-    state.character.classPlan.advancements[op.id] = choice;
-
-    const card = document.createElement("div");
-    card.className = "details";
-    const featOptions = state.data.feats.length ? state.data.feats : CORE_FEATS;
-    const feat = featOptions.find((f) => f.id === choice.featId);
-    card.innerHTML = `<strong>${op.label}</strong><label>Choose Benefit<select data-asi-kind="${op.id}"><option value="ability" ${choice.kind === "ability" ? "selected" : ""}>Ability Score Improvement</option><option value="feat" ${choice.kind === "feat" ? "selected" : ""}>Feat</option></select></label>`;
-
-    if (choice.kind === "ability") {
-      const a = buildAbilitySelect(`data-asi-a="${op.id}"`, choice.abilityA || "STR");
-      const b = buildAbilitySelect(`data-asi-b="${op.id}"`, choice.abilityB || choice.abilityA || "STR");
-      const note = document.createElement("p");
-      note.textContent = "Choose the same ability twice for +2, or two different abilities for +1/+1.";
-      card.insertAdjacentHTML("beforeend", `<label>Ability Increase 1 ${a}</label><label>Ability Increase 2 ${b}</label>`);
-      card.appendChild(note);
-    } else {
-      card.insertAdjacentHTML("beforeend", `<label>Feat<select data-asi-feat="${op.id}"><option value="">Select a feat</option>${featOptions.map((f) => `<option value="${escapeHtml(f.id)}" ${choice.featId === f.id ? "selected" : ""}>${escapeHtml(f.name)}</option>`).join("")}</select></label><p>${escapeHtml(feat?.description || "Select a feat to view its description.")}</p>`);
-    }
-
-    els.asiFeatList.appendChild(card);
+  document.querySelectorAll("[data-asi-inline]").forEach((mount) => {
+    const id = mount.dataset.asiInline;
+    const op = opportunities.find((x) => x.id === id);
+    if (!op) return;
+    mount.innerHTML = "";
+    mount.appendChild(buildAsiCard(id, op.label));
   });
+}
 
-  els.asiFeatList.querySelectorAll("select[data-asi-kind]").forEach((s) => s.addEventListener("change", (e) => {
-    const id = e.target.dataset.asiKind;
-    state.character.classPlan.advancements[id] = { kind: e.target.value, abilityA: "STR", abilityB: "STR", featId: "" };
+function buildAsiCard(id, label) {
+  const choice = state.character.classPlan.advancements[id] || { kind: "ability", abilityA: "STR", abilityB: "STR", featId: "" };
+  state.character.classPlan.advancements[id] = choice;
+
+  const card = document.createElement("div");
+  card.innerHTML = `<strong>${escapeHtml(label)}</strong><label>Choose Benefit<select data-asi-kind="${id}"><option value="ability" ${choice.kind === "ability" ? "selected" : ""}>Ability Score Improvement</option><option value="feat" ${choice.kind === "feat" ? "selected" : ""}>Feat</option></select></label>`;
+  const featOptions = state.data.feats.length ? state.data.feats : CORE_FEATS;
+  const feat = featOptions.find((f) => f.id === choice.featId);
+
+  if (choice.kind === "ability") {
+    const a = buildAbilitySelect(`data-asi-a="${id}"`, choice.abilityA || "STR");
+    const b = buildAbilitySelect(`data-asi-b="${id}"`, choice.abilityB || choice.abilityA || "STR");
+    card.insertAdjacentHTML("beforeend", `<label>Ability Increase 1 ${a}</label><label>Ability Increase 2 ${b}</label><p>Choose the same ability twice for +2, or two different abilities for +1/+1.</p>`);
+  } else {
+    card.insertAdjacentHTML("beforeend", `<label>Feat<select data-asi-feat="${id}"><option value="">Select a feat</option>${featOptions.map((f) => `<option value="${escapeHtml(f.id)}" ${choice.featId === f.id ? "selected" : ""}>${escapeHtml(f.name)}</option>`).join("")}</select></label><p>${escapeHtml(feat?.description || "Select a feat to view its description.")}</p>`);
+  }
+
+  card.querySelectorAll("select[data-asi-kind]").forEach((s) => s.addEventListener("change", (e) => {
+    state.character.classPlan.advancements[e.target.dataset.asiKind] = { kind: e.target.value, abilityA: "STR", abilityB: "STR", featId: "" };
     renderClassProgress();
   }));
-  els.asiFeatList.querySelectorAll("select[data-asi-a]").forEach((s) => s.addEventListener("change", (e) => {
+  card.querySelectorAll("select[data-asi-a]").forEach((s) => s.addEventListener("change", (e) => {
     state.character.classPlan.advancements[e.target.dataset.asiA].abilityA = e.target.value;
     renderAbilityStep();
     renderClassProgress();
   }));
-  els.asiFeatList.querySelectorAll("select[data-asi-b]").forEach((s) => s.addEventListener("change", (e) => {
+  card.querySelectorAll("select[data-asi-b]").forEach((s) => s.addEventListener("change", (e) => {
     state.character.classPlan.advancements[e.target.dataset.asiB].abilityB = e.target.value;
     renderAbilityStep();
     renderClassProgress();
   }));
-  els.asiFeatList.querySelectorAll("select[data-asi-feat]").forEach((s) => s.addEventListener("change", (e) => {
+  card.querySelectorAll("select[data-asi-feat]").forEach((s) => s.addEventListener("change", (e) => {
     state.character.classPlan.advancements[e.target.dataset.asiFeat].featId = e.target.value;
     renderClassProgress();
   }));
+
+  return card;
 }
 
 function asiOpportunities() {
