@@ -36,5 +36,8 @@ button.secondary { background: #1f2937; border-color: #374151; }
 .desc-term { text-decoration: underline dotted; cursor: help; }
 .tooltip { position: absolute; max-width: 320px; background: #0b1220; border: 1px solid #3b4967; border-radius: 8px; padding: 0.5rem 0.6rem; opacity: 0; transition: opacity 0.2s ease; z-index: 30; pointer-events: none; }
 .tooltip.show { opacity: 1; }
+
+.option-description { color: #cbd5e1; }
+#race-option-config hr { border: 0; border-top: 1px solid #334155; margin: 0.75rem 0; }
 pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 @media (max-width: 900px) { .custom-layout { grid-template-columns: 1fr; } }

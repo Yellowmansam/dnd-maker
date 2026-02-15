@@ -3,11 +3,11 @@
 This project is a multi-step character creation flow inspired by D&D Beyond.
 
 ## Current Builder Flow
-1. **Race**: pick a race and review details.
-2. **Class**: pick class and level plan, with hover descriptions on feature names.
-3. **Ability Scores**: assign stats using a strict **27-point buy** system (8 to 15 limits before racial bonuses).
-4. **Background**: choose a background and review grants.
-5. **Summary**: export a JSON character sheet.
+- **Race**: pick a race, review details, and choose race options (like bonus language) from dropdowns with per-option descriptions.
+- **Class**: pick class and level plan, with hover descriptions on feature names.
+- **Ability Scores**: assign stats using a strict **27-point buy** system (8 to 15 limits before racial bonuses).
+- **Background**: choose a background and review grants.
+- **Summary**: export a JSON character sheet.
 
 ## Custom Content
 Use the **Custom Content** button in the top-right to open the custom page.
