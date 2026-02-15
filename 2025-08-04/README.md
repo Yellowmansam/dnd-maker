@@ -3,14 +3,20 @@
 This project is a multi-step character creation flow inspired by D&D Beyond.
 
 ## Current Builder Flow
-1. **Set Custom Content**: import/export custom JSON and create/edit submitted custom races, classes, spells, backgrounds, and feats. Click **Apply & Continue** to load submitted content into the builder.
-2. **Race**: pick a race and review languages, features, skills/proficiencies, and racial ability bonuses.
-3. **Class**: pick primary class, set class level, review level-by-level features, and optionally configure multiclass levels.
-4. **Ability Scores**: assign stats using a strict **27-point buy** system (8 to 15 limits before racial bonuses).
-5. **Background**: choose a background and review granted skills, feature, and equipment.
-6. **Summary**: export a JSON character sheet.
+1. **Race**: pick a race and review details.
+2. **Class**: pick class and level plan, with hover descriptions on feature names.
+3. **Ability Scores**: assign stats using a strict **27-point buy** system (8 to 15 limits before racial bonuses).
+4. **Background**: choose a background and review grants.
+5. **Summary**: export a JSON character sheet.
 
-The Race step includes all core PHB races (Dragonborn, Dwarf, Elf, Gnome, Half-Elf, Half-Orc, Halfling, Human, Tiefling).
+## Custom Content
+Use the **Custom Content** button in the top-right to open the custom page.
+- Import/export custom JSON.
+- Add/edit custom races, classes, spells, backgrounds, and feats.
+- Type-specific editor fields are shown based on selected type.
+- Quick fill suggestions appear in appropriate list fields.
+- Submitted items appear in a sidebar and can be reopened for editing.
+- Click **Apply Changes** to merge submitted custom content into the builder.
 
 ## Run in browser
 ```bash

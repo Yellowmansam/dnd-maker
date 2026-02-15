@@ -8,24 +8,42 @@
   </head>
   <body>
     <main class="layout">
-      <header class="hero card">
-        <h1>D&D 5e Character Builder</h1>
-        <p>D&D Beyond-style flow: Custom Content → Race → Class → Ability Scores → Background → Summary.</p>
+      <header class="hero card row between">
+        <div>
+          <h1>D&D 5e Character Builder</h1>
+          <p>D&D Beyond-style flow: Race → Class → Ability Scores → Background → Summary.</p>
+        </div>
+        <button id="open-custom" type="button" class="secondary">Custom Content</button>
       </header>
 
       <nav class="steps card" aria-label="Builder steps">
         <ol id="stepper"></ol>
       </nav>
 
-      <section id="step-custom" class="card step-panel">
-        <h2>1. Set Custom Content</h2>
-        <p>Import/export and create custom races, classes, spells, backgrounds, and feats before building your character.</p>
+      <section id="custom-page" class="card hidden">
+        <div class="row between">
+          <h2>Set Custom Content</h2>
+          <button id="close-custom" type="button" class="secondary">Back to Builder</button>
+        </div>
+        <p>Import/export and create custom races, classes, spells, backgrounds, and feats.</p>
 
         <div class="row">
           <button id="import-custom" type="button" class="secondary">Import Custom JSON</button>
           <button id="export-custom" type="button" class="secondary">Export Custom JSON</button>
           <input id="import-custom-file" type="file" accept="application/json" class="hidden" />
         </div>
+
+        <details class="details">
+          <summary>How to add custom content</summary>
+          <textarea rows="8" readonly>
+Pick a type first. The editor fields change based on type.
+- Use comma-separated values in list boxes (languages, features, skills, etc).
+- Quick fill appears while typing in supported fields; click a suggestion to insert it.
+- Submit Item is required for new/edited items.
+- Imported items are already submitted.
+- Click Apply Changes to merge submitted items into the builder.
+          </textarea>
+        </details>
 
         <div class="custom-layout">
           <aside class="custom-sidebar">
@@ -35,29 +53,78 @@
 
           <section class="custom-editor details">
             <h3>Custom Item Editor</h3>
-            <form id="custom-form" class="grid-two">
-              <label>
-                Type
-                <select id="custom-type">
-                  <option value="races">Race</option>
-                  <option value="classes">Class</option>
-                  <option value="spells">Spell</option>
-                  <option value="backgrounds">Background</option>
-                  <option value="feats">Feat</option>
-                </select>
-              </label>
+            <label>
+              Type
+              <select id="custom-type">
+                <option value="races">Race</option>
+                <option value="classes">Class</option>
+                <option value="spells">Spell</option>
+                <option value="backgrounds">Background</option>
+                <option value="feats">Feat</option>
+              </select>
+            </label>
 
-              <label>
-                Name
-                <input id="custom-name" type="text" placeholder="Arcane Archer" required />
+            <div id="type-races" class="type-fields">
+              <label>Name <input id="race-name" type="text" /></label>
+              <label>Languages (comma-separated)
+                <input id="race-languages" type="text" class="quickfill" data-domain="languages" />
               </label>
-
-              <label class="full">
-                Details (JSON)
-                <textarea id="custom-details" rows="12" placeholder='{"features":["Example Feature"],"languages":["Common"]}'></textarea>
+              <label>Skills/Proficiencies (comma-separated)
+                <input id="race-skills" type="text" class="quickfill" data-domain="skills" />
               </label>
-            </form>
+              <label>Racial Features (comma-separated)
+                <input id="race-features" type="text" class="quickfill" data-domain="race-features" />
+              </label>
+              <label>Racial Ability Bonuses JSON
+                <textarea id="race-abilities" rows="3">{"STR":1}</textarea>
+              </label>
+            </div>
 
+            <div id="type-classes" class="type-fields hidden">
+              <label>Name <input id="class-name" type="text" /></label>
+              <label>Hit Die <input id="class-hitdie" type="text" placeholder="d8" /></label>
+              <label>Proficiencies (comma-separated)
+                <input id="class-proficiencies" type="text" class="quickfill" data-domain="proficiencies" />
+              </label>
+              <label>Multiclass Requirement <input id="class-multi-req" type="text" placeholder="INT 13" /></label>
+              <label>Level Features (one per line: level|feature|description)
+                <textarea id="class-features" rows="6" placeholder="1|Spellcasting|You can cast wizard spells."></textarea>
+              </label>
+            </div>
+
+            <div id="type-backgrounds" class="type-fields hidden">
+              <label>Name <input id="background-name" type="text" /></label>
+              <label>Skills (comma-separated)
+                <input id="background-skills" type="text" class="quickfill" data-domain="skills" />
+              </label>
+              <label>Feature Name
+                <input id="background-feature-name" type="text" class="quickfill" data-domain="background-features" />
+              </label>
+              <label>Feature Description
+                <textarea id="background-feature-desc" rows="3"></textarea>
+              </label>
+              <label>Equipment (comma-separated)
+                <input id="background-equipment" type="text" class="quickfill" data-domain="equipment" />
+              </label>
+              <label>Bonuses / Notes
+                <input id="background-bonuses" type="text" />
+              </label>
+            </div>
+
+            <div id="type-spells" class="type-fields hidden">
+              <label>Name <input id="spell-name" type="text" /></label>
+              <label>Level <input id="spell-level" type="number" min="0" max="9" value="0" /></label>
+              <label>School <input id="spell-school" type="text" /></label>
+              <label>Description <textarea id="spell-description" rows="4"></textarea></label>
+            </div>
+
+            <div id="type-feats" class="type-fields hidden">
+              <label>Name <input id="feat-name" type="text" /></label>
+              <label>Prerequisite <input id="feat-prereq" type="text" /></label>
+              <label>Description <textarea id="feat-description" rows="4"></textarea></label>
+            </div>
+
+            <div id="quickfill-box" class="quickfill-box hidden"></div>
             <p id="custom-status" class="validation"></p>
             <div class="row between">
               <button id="clear-custom" type="button" class="secondary">New Item</button>
@@ -67,49 +134,29 @@
         </div>
 
         <div class="row end">
-          <button id="apply-custom" type="button">Apply & Continue</button>
+          <button id="apply-custom" type="button">Apply Changes</button>
         </div>
       </section>
 
-      <section id="step-race" class="card step-panel hidden">
-        <h2>2. Choose Race</h2>
-        <p>Select a race to review its languages, features, proficiencies, and racial bonuses.</p>
+      <section id="step-race" class="card step-panel">
+        <h2>Choose Race</h2>
+        <p>Select a race to review its details.</p>
         <div id="race-options" class="option-grid"></div>
         <article id="race-details" class="details"></article>
-        <div class="row between">
-          <button id="back-to-custom" type="button" class="secondary">Back</button>
-          <button id="confirm-race" type="button">Confirm Race</button>
-        </div>
+        <div class="row end"><button id="confirm-race" type="button">Confirm Race</button></div>
       </section>
 
       <section id="step-class" class="card step-panel hidden">
-        <h2>3. Choose Class</h2>
-        <p>Pick your primary class and review what it gains by level. Optionally add multiclass levels.</p>
-
-        <label>
-          Character Name
-          <input id="character-name" type="text" placeholder="Nalia" />
-        </label>
-
+        <h2>Choose Class</h2>
+        <p>Pick your class and review level progression (with feature descriptions on hover).</p>
+        <label>Character Name <input id="character-name" type="text" placeholder="Nalia" /></label>
         <div id="class-options" class="option-grid"></div>
 
         <div class="row">
-          <label>
-            Primary Class Level
-            <input id="primary-level" type="number" min="1" max="20" value="1" />
-          </label>
-          <label class="inline">
-            <input id="multiclass-enabled" type="checkbox" />
-            Enable multiclass
-          </label>
-          <label id="multiclass-class-wrap" class="hidden">
-            Secondary Class
-            <select id="multiclass-class"></select>
-          </label>
-          <label id="multiclass-level-wrap" class="hidden">
-            Secondary Class Level
-            <input id="multiclass-level" type="number" min="1" max="19" value="1" />
-          </label>
+          <label>Primary Class Level <input id="primary-level" type="number" min="1" max="20" value="1" /></label>
+          <label class="inline"><input id="multiclass-enabled" type="checkbox" /> Enable multiclass</label>
+          <label id="multiclass-class-wrap" class="hidden">Secondary Class <select id="multiclass-class"></select></label>
+          <label id="multiclass-level-wrap" class="hidden">Secondary Class Level <input id="multiclass-level" type="number" min="1" max="19" value="1" /></label>
         </div>
 
         <article id="class-details" class="details"></article>
@@ -122,21 +169,15 @@
       </section>
 
       <section id="step-abilities" class="card step-panel hidden">
-        <h2>4. Ability Scores (27-Point Buy)</h2>
-        <p>Use standard 5e point buy limits: scores from 8 to 15 before racial bonuses.</p>
-
+        <h2>Ability Scores (27-Point Buy)</h2>
+        <p>Use standard 5e point buy limits: 8 to 15 before racial bonuses.</p>
         <div id="abilities-grid" class="abilities-grid"></div>
-
         <article class="details">
-          <h3>Point Buy Rules</h3>
           <ul>
-            <li>Total budget: 27 points</li>
-            <li>Minimum score: 8</li>
-            <li>Maximum score: 15 (before racial bonuses)</li>
+            <li>Total budget: 27</li><li>Minimum: 8</li><li>Maximum: 15</li>
           </ul>
           <p id="point-buy-status"></p>
         </article>
-
         <div class="row between">
           <button id="back-to-class" type="button" class="secondary">Back</button>
           <button id="confirm-abilities" type="button">Confirm Ability Scores</button>
@@ -144,12 +185,10 @@
       </section>
 
       <section id="step-background" class="card step-panel hidden">
-        <h2>5. Choose Background</h2>
-        <p>Select a background and review what it grants your character.</p>
-
+        <h2>Choose Background</h2>
+        <p>Select a background and review what it grants.</p>
         <div id="background-options" class="option-grid"></div>
         <article id="background-details" class="details"></article>
-
         <div class="row between">
           <button id="back-to-abilities" type="button" class="secondary">Back</button>
           <button id="confirm-background" type="button">Confirm Background</button>
@@ -166,6 +205,7 @@
       </section>
     </main>
 
+    <div id="hover-tooltip" class="tooltip hidden"></div>
     <script src="app.js"></script>
   </body>
 </html>
