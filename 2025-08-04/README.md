@@ -50,12 +50,12 @@ Output:
   - Player's Handbook (2014)
   - Xanathar's Guide to Everything
   - Sword Coast Adventurer's Guide
+  - Volo's Guide to Monsters
   - Tasha's Cauldron of Everything
 - Species using flexible sourcebook ASI rules now use the ability tab's +2/+1 assignment panel when their race data specifies flexible bonuses.
 
 ## What is left in the ingestion roadmap
 The app now ingests from the books listed above. Remaining major official/partnered books requested by you still need batch imports, including (not exhaustive):
-- Volo's Guide to Monsters
 - Mordenkainen's Tome of Foes
 - Eberron: Rising from the Last War
 - Explorer's Guide to Wildemount
