@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D&D 5e Character Builder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header>
+        <h1>D&D 5e Character Builder</h1>
+        <p>Create characters with extendable classes, races, subclasses, and spells.</p>
+      </header>
+
+      <section class="card">
+        <h2>Character Sheet</h2>
+        <form id="character-form" class="grid">
+          <label>
+            Name
+            <input id="name" type="text" placeholder="Nalia" />
+          </label>
+          <label>
+            Level
+            <input id="level" type="number" min="1" max="20" value="1" />
+          </label>
+          <label>
+            Class
+            <select id="class"></select>
+          </label>
+          <label>
+            Subclass
+            <select id="subclass"></select>
+          </label>
+          <label>
+            Race
+            <select id="race"></select>
+          </label>
+          <label>
+            Background
+            <input id="background" type="text" placeholder="Sage" />
+          </label>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Ability Scores</h2>
+        <div id="abilities" class="abilities"></div>
+      </section>
+
+      <section class="card">
+        <h2>Known Spells</h2>
+        <div class="row">
+          <select id="spell-picker"></select>
+          <button id="add-spell" type="button">Add Spell</button>
+        </div>
+        <ul id="spell-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Content Manager</h2>
+        <p>Add custom game content so your builder can grow as you homebrew.</p>
+
+        <div class="content-grid">
+          <form class="mini-form" data-type="classes">
+            <h3>Add Class</h3>
+            <input name="name" placeholder="Artificer" required />
+            <button>Add</button>
+          </form>
+
+          <form class="mini-form" data-type="subclasses">
+            <h3>Add Subclass</h3>
+            <input name="name" placeholder="Battle Smith" required />
+            <select name="parent" id="subclass-parent"></select>
+            <button>Add</button>
+          </form>
+
+          <form class="mini-form" data-type="races">
+            <h3>Add Race</h3>
+            <input name="name" placeholder="Aasimar" required />
+            <button>Add</button>
+          </form>
+
+          <form class="mini-form" data-type="spells">
+            <h3>Add Spell</h3>
+            <input name="name" placeholder="Silvery Barbs" required />
+            <button>Add</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Save / Export</h2>
+        <div class="row">
+          <button id="save" type="button">Save Character</button>
+          <button id="download" type="button">Download JSON</button>
+          <button id="reset" type="button">Reset Builder</button>
+        </div>
+        <pre id="status">Ready.</pre>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
