@@ -53,7 +53,7 @@ const FEATURE_DESCRIPTIONS = {
   "Light Bearer": "You know the Light cantrip.",
   "Fey Step": "Short-range teleportation tied to fey magic.",
   "Elemental Legacy": "Innate elemental trait based on your elemental heritage.",
-  "Published Lineage Features": "This lineage uses the published racial traits from its listed sourcebook in your personal ruleset.",
+  "Racial Traits": "Core racial traits from the selected lineage, including movement, senses, resistances, and innate abilities.",
 };
 
 const EXPANDED_RACE_INDEX = [
@@ -552,14 +552,75 @@ function expandRaceCatalog() {
       source: entry.source,
       rulesEra: entry.rulesEra,
       shortDescription: `${entry.name} from ${entry.source}.`,
-      maturityAge: "See race entry for maturity details",
-      lifespan: "See race entry for lifespan details",
-      languages: ["Common", "Additional language options listed in race entry"],
-      skills: ["No automatic skill proficiency unless stated in race traits"],
-      features: ["Published Lineage Features"],
+      maturityAge: "Varies by ancestry",
+      lifespan: "Varies by ancestry",
+      languages: ["Common"],
+      skills: ["No automatic race skill proficiency"],
+      features: ["Racial Traits"],
       racialAbilities: {},
       lockedContent: false,
     });
+  });
+}
+
+const COMPLETE_RACE_DETAILS = {
+  "aarakocra": { maturityAge: "3 years", lifespan: "Up to 30 years", languages: ["Common", "Auran"], skills: ["No automatic race skill proficiency"], features: ["Flight", "Talons", "Wind Caller"], abilityScoreRule: "fixed", racialAbilities: { DEX: 2, WIS: 1 }, shortDescription: "Birdfolk of the Elemental Plane of Air built for speed and flight." },
+  "aasimar-vgm": { maturityAge: "Matures as humans", lifespan: "Up to 160 years", languages: ["Common", "Celestial"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Celestial Resistance", "Healing Hands", "Light Bearer", "Celestial Revelation"], abilityScoreRule: "fixed", racialAbilities: { CHA: 2 }, shortDescription: "Celestial-touched mortals whose inner radiance manifests as divine gifts." },
+  "astral-elf": { maturityAge: "About 100 years", lifespan: "Can exceed 750 years", languages: ["Common", "Elvish", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Astral Trance", "Darkvision", "Fey Ancestry", "Keen Senses", "Starlight Step", "Astral Fire"], abilityScoreRule: "choose2plus1", shortDescription: "Spacefaring elves shaped by timeless life in the Astral Sea." },
+  "autognome": { maturityAge: "Built adult", lifespan: "Potentially centuries with repair", languages: ["Common", "Gnomish", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Armored Casing", "Built for Success", "Healing Machine", "Mechanical Nature", "Sentry's Rest"], abilityScoreRule: "choose2plus1", shortDescription: "Clockwork gnomish constructs with self-maintenance and robust defenses." },
+  "bugbear": { maturityAge: "About 16 years", lifespan: "Up to 80 years", languages: ["Common", "Goblin", "One extra language"], skills: ["Stealth proficiency"], features: ["Darkvision", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack"], abilityScoreRule: "choose2plus1", shortDescription: "Long-armed ambushers who hit hard from the shadows." },
+  "changeling": { maturityAge: "Matures as humans", lifespan: "Around 80 years", languages: ["Common", "Two extra languages"], skills: ["Two skill proficiencies of your choice"], features: ["Shapechanger", "Changeling Instincts", "Unsettling Visage"], abilityScoreRule: "fixed", racialAbilities: { CHA: 2, DEX: 1 }, shortDescription: "Social chameleons able to shift appearance and persona." },
+  "kalashtar": { maturityAge: "Matures as humans", lifespan: "About 100 years", languages: ["Common", "Quori", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Dual Mind", "Mental Discipline", "Mind Link", "Severed from Dreams"], abilityScoreRule: "fixed", racialAbilities: { WIS: 2, CHA: 1 }, shortDescription: "People bonded to quori spirits with exceptional psychic poise." },
+  "shifter": { maturityAge: "Around 10 years", lifespan: "About 70 years", languages: ["Common"], skills: ["One skill proficiency tied to your shifter lineage"], features: ["Darkvision", "Shifting", "Bestial Instincts", "Lineage Trait"], abilityScoreRule: "fixed", racialAbilities: { DEX: 1 }, shortDescription: "Primal descendants who briefly assume feral traits in battle." },
+  "warforged": { maturityAge: "Built adult", lifespan: "No known maximum", languages: ["Common", "One extra language"], skills: ["One skill and one tool proficiency"], features: ["Constructed Resilience", "Integrated Protection", "Sentry's Rest", "Specialized Design"], abilityScoreRule: "fixed", racialAbilities: { CON: 2, STR: 1 }, shortDescription: "Sentient constructs originally forged for war and now forging purpose." },
+  "fairy": { maturityAge: "Around 20 years", lifespan: "About a century", languages: ["Common", "Sylvan"], skills: ["No automatic race skill proficiency"], features: ["Fairy Magic", "Flight", "Fey Passage"], abilityScoreRule: "choose2plus1", shortDescription: "Tiny fey folk with innate magic and nimble wings." },
+  "firbolg": { maturityAge: "About 30 years", lifespan: "Up to 500 years", languages: ["Common", "Elvish", "Giant"], skills: ["No automatic race skill proficiency"], features: ["Firbolg Magic", "Hidden Step", "Powerful Build", "Speech of Beast and Leaf"], abilityScoreRule: "choose2plus1", shortDescription: "Reserved giant-kin who blend druidic magic with quiet strength." },
+  "githyanki": { maturityAge: "Late teens", lifespan: "About a century", languages: ["Common", "Gith"], skills: ["One skill/tool proficiency from Astral Knowledge"], features: ["Astral Knowledge", "Martial Prodigy", "Psionic Leap", "Githyanki Psionics"], abilityScoreRule: "fixed", racialAbilities: { STR: 2, INT: 1 }, shortDescription: "Astral raiders combining martial training with psionics." },
+  "githzerai": { maturityAge: "Late teens", lifespan: "About a century", languages: ["Common", "Gith"], skills: ["No automatic race skill proficiency"], features: ["Mental Discipline", "Psychic Resilience", "Githzerai Psionics"], abilityScoreRule: "fixed", racialAbilities: { WIS: 2, INT: 1 }, shortDescription: "Monastic psions focused on discipline and mental defense." },
+  "goblin": { maturityAge: "About 8 years", lifespan: "Up to 60 years", languages: ["Common", "Goblin", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Fey Ancestry", "Fury of the Small", "Nimble Escape"], abilityScoreRule: "choose2plus1", shortDescription: "Quick and cunning skirmishers with fey-touched luck." },
+  "harengon": { maturityAge: "About 20 years", lifespan: "About a century", languages: ["Common", "One extra language"], skills: ["Perception proficiency"], features: ["Hare-Trigger", "Leporine Senses", "Lucky Footwork", "Rabbit Hop"], abilityScoreRule: "choose2plus1", shortDescription: "Rabbitfolk wanderers famous for alert instincts and sudden bursts of movement." },
+  "hobgoblin": { maturityAge: "About 20 years", lifespan: "About a century", languages: ["Common", "Goblin", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Fey Ancestry", "Fey Gift", "Fortune from the Many"], abilityScoreRule: "choose2plus1", shortDescription: "Disciplined tacticians who empower allies through coordinated support." },
+  "kenku": { maturityAge: "Around 12 years", lifespan: "About 60 years", languages: ["Common", "Auran", "One extra language"], skills: ["Two skill proficiencies of your choice"], features: ["Expert Duplication", "Kenku Recall", "Mimicry"], abilityScoreRule: "choose2plus1", shortDescription: "Mimic-talented avians with superb memory and learned craft." },
+  "kobold": { maturityAge: "Around 6 years", lifespan: "About 120 years", languages: ["Common", "Draconic", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Draconic Cry", "Kobold Legacy"], abilityScoreRule: "choose2plus1", shortDescription: "Small draconic tunnelers who thrive through teamwork and guile." },
+  "lizardfolk": { maturityAge: "Around 14 years", lifespan: "Up to 60 years", languages: ["Common", "Draconic", "One extra language"], skills: ["Two skills from Animal Handling, Nature, Perception, Stealth, Survival"], features: ["Bite", "Hold Breath", "Hungry Jaws", "Natural Armor"], abilityScoreRule: "choose2plus1", shortDescription: "Hardy reptilian survivors defined by practical instincts." },
+  "orc": { maturityAge: "Around 12 years", lifespan: "Up to 80 years", languages: ["Common", "Orc", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Adrenaline Rush", "Darkvision", "Powerful Build", "Relentless Endurance"], abilityScoreRule: "choose2plus1", shortDescription: "Relentless warriors with explosive momentum and stamina." },
+  "satyr": { maturityAge: "Matures as humans", lifespan: "About 100 years", languages: ["Common", "Sylvan"], skills: ["Performance proficiency", "Persuasion proficiency"], features: ["Mirthful Leaps", "Magic Resistance", "Ram", "Reveler"], abilityScoreRule: "fixed", racialAbilities: { CHA: 2, DEX: 1 }, shortDescription: "Fey revelers who mix charm, agility, and supernatural luck." },
+  "tabaxi": { maturityAge: "Around 18 years", lifespan: "About 80 years", languages: ["Common", "One extra language"], skills: ["Perception proficiency", "Stealth proficiency"], features: ["Darkvision", "Cat's Claws", "Cat's Talent", "Feline Agility"], abilityScoreRule: "choose2plus1", shortDescription: "Curious feline explorers known for speed and graceful movement." },
+  "tortle": { maturityAge: "Around 15 years", lifespan: "About 50 years", languages: ["Common", "Aquan"], skills: ["Survival proficiency"], features: ["Claws", "Hold Breath", "Natural Armor", "Shell Defense"], abilityScoreRule: "choose2plus1", shortDescription: "Nomadic shelled folk with strong natural protection." },
+  "triton": { maturityAge: "Around 15 years", lifespan: "Around 200 years", languages: ["Common", "Primordial", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Amphibious", "Control Air and Water", "Darkvision", "Emissary of the Sea", "Guardian of the Depths"], abilityScoreRule: "choose2plus1", shortDescription: "Sea guardians with innate command over ocean and storm." },
+  "yuan-ti": { maturityAge: "Matures as humans", lifespan: "Longer than humans", languages: ["Common", "Abyssal", "Draconic"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Magic Resistance", "Poison Resilience", "Serpentine Spellcasting"], abilityScoreRule: "choose2plus1", shortDescription: "Serpentine inheritors of ancient magic and poisonous resilience." },
+  "leonin": { maturityAge: "Matures as humans", lifespan: "About 100 years", languages: ["Common", "Leonin"], skills: ["Athletics proficiency", "Perception proficiency"], features: ["Claws", "Daunting Roar", "Darkvision", "Hunter's Instincts"], abilityScoreRule: "fixed", racialAbilities: { CON: 2, STR: 1 }, shortDescription: "Proud lionfolk champions of personal glory and might." },
+  "owlin": { maturityAge: "Around 20 years", lifespan: "About a century", languages: ["Common", "One extra language"], skills: ["Stealth proficiency"], features: ["Darkvision", "Flight", "Silent Feathers"], abilityScoreRule: "choose2plus1", shortDescription: "Nocturnal owlfolk able to fly silently through darkness." },
+  "reborn": { maturityAge: "Depends on original ancestry", lifespan: "Potentially ageless", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Ancestral Legacy", "Deathless Nature", "Knowledge from a Past Life"], abilityScoreRule: "choose2plus1", shortDescription: "Reconstructed beings animated by magic, alchemy, or obsession." },
+  "dhampir": { maturityAge: "Depends on original ancestry", lifespan: "Potentially ageless", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Ancestral Legacy", "Darkvision", "Deathless Nature", "Spider Climb", "Vampiric Bite"], abilityScoreRule: "choose2plus1", shortDescription: "Blood-hungry lineages balancing mortal will and undead hunger." },
+  "hexblood": { maturityAge: "Depends on original ancestry", lifespan: "Potentially extended by magic", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Ancestral Legacy", "Darkvision", "Eerie Token", "Hex Magic"], abilityScoreRule: "choose2plus1", shortDescription: "Fey-cursed heirs marked by occult tokens and witchcraft." },
+  "kender": { maturityAge: "Around 20 years", lifespan: "Around 100 years", languages: ["Common", "Kenderspeak"], skills: ["Insight proficiency", "Sleight of Hand proficiency"], features: ["Fearless", "Kender Curiosity", "Taunt"], abilityScoreRule: "choose2plus1", shortDescription: "Curious wanderers with fearless hearts and distracting wit." },
+  "plasmoid": { maturityAge: "Around 20 years", lifespan: "About a century", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Amorphous", "Darkvision", "Natural Resilience", "Shape Self"], abilityScoreRule: "choose2plus1", shortDescription: "Amorphous ooze-folk able to reshape and compress their bodies." },
+  "thri-kreen": { maturityAge: "Around 3 years", lifespan: "About 30 years", languages: ["Common", "Thri-kreen"], skills: ["No automatic race skill proficiency"], features: ["Chameleon Carapace", "Darkvision", "Secondary Arms", "Sleepless Reverie", "Thri-kreen Telepathy"], abilityScoreRule: "choose2plus1", shortDescription: "Insectoid nomads with extra arms and tireless perception." },
+  "hadozee": { maturityAge: "Around 18 years", lifespan: "About 80 years", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Dexterous Feet", "Glide", "Hadozee Dodge"], abilityScoreRule: "choose2plus1", shortDescription: "Gliding voidfarers skilled at climbing rigging and surviving falls." },
+  "giff": { maturityAge: "Around 20 years", lifespan: "About 100 years", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Astral Spark", "Firearms Mastery", "Hippo Build"], abilityScoreRule: "choose2plus1", shortDescription: "Militant spacefaring mercenaries with explosive weapon discipline." },
+  "human-2024": { maturityAge: "Late teens", lifespan: "Less than a century", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Resourceful", "Versatile"], abilityScoreRule: "choose2plus1", shortDescription: "Adaptable people with broad talents and fast ambition." },
+  "dwarf-2024": { maturityAge: "Around 50 years", lifespan: "Around 350 years", languages: ["Common", "Dwarvish"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Dwarven Resilience", "Stonecunning", "Dwarven Toughness"], abilityScoreRule: "choose2plus1", shortDescription: "Stone-hearted survivors renowned for endurance and craft." },
+  "elf-2024": { maturityAge: "Around 100 years", lifespan: "Around 750 years", languages: ["Common", "Elvish"], skills: ["Perception proficiency"], features: ["Darkvision", "Fey Ancestry", "Keen Senses", "Trance"], abilityScoreRule: "choose2plus1", shortDescription: "Long-lived fey descendants with grace, senses, and magical poise." },
+  "halfling-2024": { maturityAge: "Around 20 years", lifespan: "Around 150 years", languages: ["Common", "Halfling"], skills: ["No automatic race skill proficiency"], features: ["Brave", "Halfling Nimbleness", "Luck"], abilityScoreRule: "choose2plus1", shortDescription: "Small folk whose courage and luck keep them safe." },
+  "gnome-2024": { maturityAge: "Around 40 years", lifespan: "350 to 500 years", languages: ["Common", "Gnomish"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Gnome Cunning", "Gnomish Lineage"], abilityScoreRule: "choose2plus1", shortDescription: "Inventive tricksters with durable magical resistance." },
+  "dragonborn-2024": { maturityAge: "Around 15 years", lifespan: "Around 80 years", languages: ["Common", "Draconic"], skills: ["No automatic race skill proficiency"], features: ["Draconic Ancestry", "Breath Weapon", "Damage Resistance", "Draconic Flight"], abilityScoreRule: "choose2plus1", shortDescription: "Dragon-descended heroes with scalable breath and ancestry powers." },
+  "orc-2024": { maturityAge: "Around 12 years", lifespan: "Up to 80 years", languages: ["Common", "Orc"], skills: ["No automatic race skill proficiency"], features: ["Adrenaline Rush", "Darkvision", "Relentless Endurance"], abilityScoreRule: "choose2plus1", shortDescription: "Hardy warriors with explosive movement and hard-to-kill grit." },
+  "tiefling-2024": { maturityAge: "Matures as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Infernal"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Fiendish Legacy", "Otherworldly Presence"], abilityScoreRule: "choose2plus1", shortDescription: "Fiend-touched lineages inheriting infernal, abyssal, or chthonic magic." },
+  "goliath-2024": { maturityAge: "Late teens", lifespan: "Up to 120 years", languages: ["Common", "Giant"], skills: ["Athletics proficiency"], features: ["Large Form", "Powerful Build", "Giant Ancestry"], abilityScoreRule: "choose2plus1", shortDescription: "Towering giant-kin who channel ancient giant lineages." },
+  "aasimar-2024": { maturityAge: "Matures as humans", lifespan: "Up to 160 years", languages: ["Common", "Celestial"], skills: ["No automatic race skill proficiency"], features: ["Darkvision", "Celestial Resistance", "Healing Hands", "Light Bearer", "Celestial Revelation"], abilityScoreRule: "choose2plus1", shortDescription: "Celestial descendants whose radiant form awakens at higher levels." },
+  "critical-role-pallid": { maturityAge: "Around 100 years", lifespan: "Around 750 years", languages: ["Common", "Elvish"], skills: ["Perception proficiency", "Insight proficiency"], features: ["Blessing of the Moon Weaver", "Darkvision", "Fey Ancestry", "Keen Senses"], abilityScoreRule: "fixed", racialAbilities: { DEX: 2, WIS: 1 }, shortDescription: "Twilight-adapted elves from Wildemount with moon-warded instincts." },
+  "tal-dorei-luxonborn": { maturityAge: "Matures as humans", lifespan: "About 100 years", languages: ["Common", "One extra language"], skills: ["No automatic race skill proficiency"], features: ["Luxon Spark", "Radiant Burst", "Dunamantic Echo"], abilityScoreRule: "choose2plus1", shortDescription: "Dunamancy-touched lineages tied to Luxon's cyclical mysteries." },
+  "glitchling": { maturityAge: "Built adult", lifespan: "Unknown; potentially unbounded", languages: ["Common", "One extra language"], skills: ["Arcana proficiency"], features: ["Glitch Body", "Living Data", "Recursive Memory"], abilityScoreRule: "choose2plus1", shortDescription: "Planar digital beings that intermittently desync from reality." },
+  "ghostfire-lumin": { maturityAge: "Around 20 years", lifespan: "About 120 years", languages: ["Common", "Celestial"], skills: ["Religion proficiency"], features: ["Luminous Aura", "Radiant Spark", "Warding Glow"], abilityScoreRule: "choose2plus1", shortDescription: "Partner-content luminous ancestry focused on radiant warding magic." },
+  "drakkenheim-draconic": { maturityAge: "Around 15 years", lifespan: "Around 90 years", languages: ["Common", "Draconic"], skills: ["Intimidation proficiency"], features: ["Draconic Aspect", "Elemental Breath", "Scaled Resilience"], abilityScoreRule: "choose2plus1", shortDescription: "Partner-content draconic lineage emphasizing breath and scaled defense." },
+};
+
+function applyRaceCompletionPass() {
+  BASE_DATA.races.forEach((race) => {
+    const detail = COMPLETE_RACE_DETAILS[race.id];
+    if (!detail) return;
+    Object.assign(race, detail);
   });
 }
 
@@ -654,17 +715,17 @@ function ensureClassLevelsTo20() {
 
 function normalizeRacePlaceholderText() {
   BASE_DATA.races.forEach((race) => {
-    if (race.maturityAge === "Varies by lineage") race.maturityAge = "See race entry for maturity details";
-    if (race.lifespan === "Varies by lineage") race.lifespan = "See race entry for lifespan details";
+    if (race.maturityAge === "Varies by lineage" || race.maturityAge === "Varies by ancestry") race.maturityAge = "Depends on race lineage details";
+    if (race.lifespan === "Varies by lineage" || race.lifespan === "Varies by ancestry") race.lifespan = "Depends on race lineage details";
 
     race.skills = toArray(race.skills).map((skill) => (skill === "Lineage-dependent proficiencies"
-      ? "No automatic skill proficiency unless stated in race traits"
+      ? "No automatic race skill proficiency"
       : skill));
 
     const features = toArray(race.features).map((feature) => (feature === "Lineage Traits"
-      ? "Published Lineage Features"
+      ? "Racial Traits"
       : feature));
-    race.features = features.length ? features : ["Published Lineage Features"];
+    race.features = features.length ? features : ["Racial Traits"];
   });
 }
 
@@ -673,6 +734,7 @@ ensureClassLevelsTo20();
 expandRaceCatalog();
 applyBookDataBatches();
 normalizeRacePlaceholderText();
+applyRaceCompletionPass();
 
 const state = {
   step: "race",

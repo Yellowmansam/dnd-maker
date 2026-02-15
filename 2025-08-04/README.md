@@ -63,8 +63,7 @@ Output:
   - The Book of Many Things
   - Fizban's Treasury of Dragons
 - Species using flexible sourcebook ASI rules now use the ability tab's +2/+1 assignment panel when their race data specifies flexible bonuses.
-- Placeholder lineage strings have been normalized to clearer fallback text in race cards/details (no "Varies by lineage" / "Lineage-dependent proficiencies" / "Lineage Traits" placeholders).
+- Completed a full race audit pass: every indexed race now has explicit maturity, lifespan, language, skills/proficiency, and feature lists (no generic lineage placeholder traits in the race UI).
 
 ## Remaining scope
-- Partnered books and long-tail official options still need deeper pass completion for full, line-by-line trait text and option trees.
-- Some books are represented by initial batches (core race/feat/subclass entries) and can be expanded further in subsequent detail passes.
+- Race coverage is now in a completed state for the indexed species pass; future work is primarily deeper class/subclass/feat option wiring and long-form rules text polish.
