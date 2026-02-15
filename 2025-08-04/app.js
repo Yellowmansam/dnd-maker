@@ -48,6 +48,11 @@ const FEATURE_DESCRIPTIONS = {
   Versatile: "Broad adaptable human traits.",
   "Hellish Resistance": "Resistance to fire damage.",
   "Infernal Legacy": "Innate infernal spellcasting progression.",
+  "Celestial Resistance": "Resistance to necrotic and radiant damage.",
+  "Healing Hands": "Heal a creature as an action a limited number of times.",
+  "Light Bearer": "You know the Light cantrip.",
+  "Fey Step": "Short-range teleportation tied to fey magic.",
+  "Elemental Legacy": "Innate elemental trait based on your elemental heritage.",
 };
 
 const CLASS_DESCRIPTIONS = {
@@ -68,6 +73,27 @@ const CLASS_DESCRIPTIONS = {
 const SUBCLASS_LEVELS = {
   barbarian: [3, 6, 10, 14], bard: [3, 6, 14], cleric: [1, 2, 6, 8, 17], druid: [2, 6, 10, 14], fighter: [3, 7, 10, 15, 18], monk: [3, 6, 11, 17],
   paladin: [3, 7, 15, 20], ranger: [3, 7, 11, 15], rogue: [3, 9, 13, 17], sorcerer: [1, 6, 14, 18], warlock: [1, 6, 10, 14], wizard: [2, 6, 10, 14],
+};
+
+const CLASS_SAVING_THROWS = {
+  barbarian: ["Strength", "Constitution"], bard: ["Dexterity", "Charisma"], cleric: ["Wisdom", "Charisma"], druid: ["Intelligence", "Wisdom"],
+  fighter: ["Strength", "Constitution"], monk: ["Strength", "Dexterity"], paladin: ["Wisdom", "Charisma"], ranger: ["Strength", "Dexterity"],
+  rogue: ["Dexterity", "Intelligence"], sorcerer: ["Constitution", "Charisma"], warlock: ["Wisdom", "Charisma"], wizard: ["Intelligence", "Wisdom"],
+};
+
+const CLASS_SKILL_CHOICES = {
+  barbarian: { count: 2, options: ["Animal Handling", "Athletics", "Intimidation", "Nature", "Perception", "Survival"] },
+  bard: { count: 3, options: ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"] },
+  cleric: { count: 2, options: ["History", "Insight", "Medicine", "Persuasion", "Religion"] },
+  druid: { count: 2, options: ["Arcana", "Animal Handling", "Insight", "Medicine", "Nature", "Perception", "Religion", "Survival"] },
+  fighter: { count: 2, options: ["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"] },
+  monk: { count: 2, options: ["Acrobatics", "Athletics", "History", "Insight", "Religion", "Stealth"] },
+  paladin: { count: 2, options: ["Athletics", "Insight", "Intimidation", "Medicine", "Persuasion", "Religion"] },
+  ranger: { count: 3, options: ["Animal Handling", "Athletics", "Insight", "Investigation", "Nature", "Perception", "Stealth", "Survival"] },
+  rogue: { count: 4, options: ["Acrobatics", "Athletics", "Deception", "Insight", "Intimidation", "Investigation", "Perception", "Performance", "Persuasion", "Sleight of Hand", "Stealth"] },
+  sorcerer: { count: 2, options: ["Arcana", "Deception", "Insight", "Intimidation", "Persuasion", "Religion"] },
+  warlock: { count: 2, options: ["Arcana", "Deception", "History", "Intimidation", "Investigation", "Nature", "Religion"] },
+  wizard: { count: 2, options: ["Arcana", "History", "Insight", "Investigation", "Medicine", "Religion"] },
 };
 
 const CORE_FEATS = [
@@ -113,6 +139,9 @@ const CORE_FEATS = [
   ["Tough", "Gain +2 maximum hit points per level."],
   ["War Caster", "Improve concentration, casting with occupied hands, and reaction spellcasting on opportunity attacks."],
   ["Weapon Master", "Increase STR or DEX by 1 and gain proficiency with four weapons of choice."],
+  ["Boon of Fortitude", "DMG Epic Boon: Your hit point maximum increases significantly."],
+  ["Boon of Spell Mastery", "DMG Epic Boon: Pick a 1st-level and 2nd-level spell you can cast at will."],
+  ["Boon of Truesight", "DMG Epic Boon: Gain truesight out to 60 feet."],
 ].map(([name, description]) => ({ id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, description }));
 
 const BASE_DATA = {
@@ -126,6 +155,9 @@ const BASE_DATA = {
     { id: "halfling", name: "Halfling", shortDescription: "Small, nimble adventurers known for luck and courage.", maturityAge: "20 years", lifespan: "~150 years", languages: ["Common", "Halfling"], skills: ["No automatic skill proficiency from race"], features: ["Lucky", "Brave", "Halfling Nimbleness"], racialAbilities: { DEX: 2 } },
     { id: "human", name: "Human", shortDescription: "Adaptable people with broad potential and ambition.", maturityAge: "Late teens", lifespan: "<100 years", languages: ["Common"], skills: ["No automatic skill proficiency from race"], features: ["Versatile"], racialAbilities: { STR: 1, DEX: 1, CON: 1, INT: 1, WIS: 1, CHA: 1 }, options: [{ key: "bonusLanguage", label: "Bonus Language", help: "Humans learn one extra language.", choices: Object.keys(LANGUAGE_DESCRIPTIONS), descriptions: LANGUAGE_DESCRIPTIONS }] },
     { id: "tiefling", name: "Tiefling", shortDescription: "Infernal-blooded people with innate magical heritage.", maturityAge: "Same as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Infernal"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Hellish Resistance", "Infernal Legacy"], racialAbilities: { INT: 1, CHA: 2 } },
+    { id: "aasimar", name: "Aasimar (DMG)", shortDescription: "Celestial-touched beings marked by divine power and inner radiance.", maturityAge: "Same as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Celestial"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Celestial Resistance", "Healing Hands", "Light Bearer"], racialAbilities: { CHA: 2 } },
+    { id: "eladrin", name: "Eladrin (DMG)", shortDescription: "Fey elves strongly tied to the magic and moods of the Feywild.", maturityAge: "100 years", lifespan: "~750 years", languages: ["Common", "Elvish"], skills: ["Perception proficiency"], features: ["Darkvision", "Fey Step", "Fey Ancestry", "Trance"], racialAbilities: { DEX: 2 } },
+    { id: "genasi", name: "Genasi (DMG)", shortDescription: "Elemental-blooded wanderers with power inherited from elemental planes.", maturityAge: "Late teens", lifespan: "~120 years", languages: ["Common", "Primordial"], skills: ["No automatic skill proficiency from race"], features: ["Darkvision", "Elemental Legacy"], racialAbilities: { CON: 2 } },
   ],
   classes: [
     buildClass("barbarian", "Barbarian", "d12", "STR 13", ["Light/medium armor", "Shields", "Simple/martial weapons"], ["Berserker", "Totem Warrior"], {
@@ -142,7 +174,7 @@ const BASE_DATA = {
       4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
       5: [["Font of Inspiration", "Bardic Inspiration refreshes on short rest."], ["Bardic Inspiration d8", "Your inspiration die increases."]],
     }),
-    buildClass("cleric", "Cleric", "d8", "WIS 13", ["Light/medium armor", "Shields", "Simple weapons"], ["Knowledge", "Life", "Light", "Nature", "Tempest", "Trickery", "War"], {
+    buildClass("cleric", "Cleric", "d8", "WIS 13", ["Light/medium armor", "Shields", "Simple weapons"], ["Knowledge", "Life", "Light", "Nature", "Tempest", "Trickery", "War", "Death (DMG)"], {
       1: [["Spellcasting", "Prepare and cast cleric spells using Wisdom."], ["Divine Domain", "Choose a divine domain subclass."]],
       2: [["Channel Divinity", "Use divine power for Turn Undead and domain effects."],
       ],
@@ -171,7 +203,7 @@ const BASE_DATA = {
       4: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], ["Slow Fall", "Use reaction to reduce falling damage."]],
       5: [["Extra Attack", "Attack twice with the Attack action."], ["Stunning Strike", "Spend ki to force CON save and stun target."], ["Martial Arts Die d6", "Your martial arts damage die increases."]],
     }),
-    buildClass("paladin", "Paladin", "d10", "STR 13 and CHA 13", ["All armor", "Shields", "Simple/martial weapons"], ["Devotion", "Ancients", "Vengeance"], {
+    buildClass("paladin", "Paladin", "d10", "STR 13 and CHA 13", ["All armor", "Shields", "Simple/martial weapons"], ["Devotion", "Ancients", "Vengeance", "Oathbreaker (DMG)"], {
       1: [["Divine Sense", "Detect celestials, fiends, and undead nearby."], ["Lay on Hands", "Healing pool equal to 5 × paladin level."]],
       2: [["Fighting Style", "Choose a combat style bonus."], ["Spellcasting", "Cast paladin spells using Charisma."], ["Divine Smite", "Spend spell slots to add radiant damage on weapon hits."]],
       3: [["Sacred Oath", "Choose your paladin subclass."], ["Divine Health", "Immune to disease."]],
@@ -227,7 +259,23 @@ const BASE_DATA = {
 };
 
 function buildClass(id, name, hitDie, multiclassReq, proficiencies, subclassNames, levels) {
-  return { id, name, hitDie, multiclassReq, proficiencies, subclasses: subclassNames.map((sub) => ({ name: sub, description: `${sub} is a core ${name} subclass option.` })), levels };
+  return {
+    id,
+    name,
+    hitDie,
+    multiclassReq,
+    proficiencies,
+    savingThrows: CLASS_SAVING_THROWS[id] || [],
+    skillChoices: CLASS_SKILL_CHOICES[id] || { count: 0, options: [] },
+    subclasses: subclassNames.map((sub) => buildSubclass(id, name, sub)),
+    levels,
+  };
+}
+
+function buildSubclass(classId, className, subName) {
+  const levels = SUBCLASS_LEVELS[classId] || [3, 6, 10, 14];
+  const features = Object.fromEntries(levels.map((lv, idx) => [lv, [[`Subclass Feature - ${subName}`, `${subName} grants ${className} subclass feature ${idx + 1} at level ${lv}.`]]]));
+  return { name: subName, description: `${subName} is a ${className} subclass option.`, features };
 }
 
 function ensureClassLevelsTo20() {
@@ -268,7 +316,7 @@ const state = {
     name: "",
     raceId: BASE_DATA.races[0].id,
     raceChoices: {},
-    classPlan: { primaryClassId: BASE_DATA.classes[0].id, subclassByClass: {}, levelsByClass: {}, advancements: {} },
+    classPlan: { primaryClassId: BASE_DATA.classes[0].id, subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {} },
     abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
     backgroundId: BASE_DATA.backgrounds[0].id,
   },
@@ -291,7 +339,7 @@ function mapEls() {
     quickfillBox: byId("quickfill-box"), tooltip: byId("hover-tooltip"),
     panels: { race: byId("step-race"), class: byId("step-class"), abilities: byId("step-abilities"), background: byId("step-background"), summary: byId("step-summary") },
     raceOptions: byId("race-options"), raceDetails: byId("race-details"), raceOptionConfig: byId("race-option-config"),
-    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classValidation: byId("class-validation"),
+    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classConfigPanel: byId("class-config-panel"), classValidation: byId("class-validation"),
     totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
     characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
@@ -436,7 +484,77 @@ function renderClassStep() {
     renderClassCards(primaryId);
   }
 
+  renderClassConfiguration();
+
   renderClassProgress();
+}
+
+function renderClassConfiguration() {
+  const rows = Object.entries(state.character.classPlan.levelsByClass);
+  if (!rows.length) {
+    els.classConfigPanel.innerHTML = "<h3>Class Setup</h3><p>Select and submit a starting class to configure skill proficiencies and class details.</p>";
+    return;
+  }
+
+  els.classConfigPanel.innerHTML = "<h3>Class Setup & Proficiency Choices</h3>";
+  rows.forEach(([classId, level]) => {
+    const cls = classById(classId);
+    const saved = state.character.classPlan.skillPicksByClass[classId] || [];
+    const block = document.createElement("div");
+    block.className = "details";
+    block.innerHTML = `<h4>${escapeHtml(cls.name)} (Level ${level})</h4><p><strong>Saving Throws:</strong> ${escapeHtml(cls.savingThrows.join(", ") || "None")}</p><p><strong>Armor/Weapon Proficiencies:</strong> ${escapeHtml(toArray(cls.proficiencies).join(", ") || "None")}</p>`;
+
+    if (cls.skillChoices?.count) {
+      const wrap = document.createElement("div");
+      wrap.innerHTML = `<p><strong>Choose ${cls.skillChoices.count} class skills:</strong></p>`;
+      cls.skillChoices.options.forEach((skill) => {
+        const id = `${classId}-skill-${slugify(skill)}`;
+        const checked = saved.includes(skill) ? "checked" : "";
+        wrap.insertAdjacentHTML("beforeend", `<label for="${id}"><input id="${id}" type="checkbox" data-skill-class="${classId}" value="${escapeHtml(skill)}" ${checked} /> ${escapeHtml(skill)}</label>`);
+      });
+      block.appendChild(wrap);
+    }
+
+    if (cls.subclasses?.length && state.character.classPlan.subclassByClass[classId]) {
+      const unlocked = unlockedSubclassFeatureNames(classId);
+      block.insertAdjacentHTML("beforeend", `<p><strong>Unlocked Subclass Features:</strong> ${escapeHtml(unlocked.join(", ") || "None yet")}</p>`);
+    }
+
+    els.classConfigPanel.appendChild(block);
+  });
+
+  els.classConfigPanel.querySelectorAll("input[data-skill-class]").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const classId = e.target.dataset.skillClass;
+      const cls = classById(classId);
+      const limit = cls.skillChoices?.count || 0;
+      const picks = new Set(state.character.classPlan.skillPicksByClass[classId] || []);
+      if (e.target.checked) {
+        picks.add(e.target.value);
+        if (picks.size > limit) {
+          e.target.checked = false;
+          return;
+        }
+      } else {
+        picks.delete(e.target.value);
+      }
+      state.character.classPlan.skillPicksByClass[classId] = [...picks];
+      renderClassConfiguration();
+    });
+  });
+}
+
+function unlockedSubclassFeatureNames(classId) {
+  const cls = classById(classId);
+  const selected = state.character.classPlan.subclassByClass[classId];
+  const subclass = cls.subclasses?.find((s) => s.name === selected);
+  const level = classLevel(classId);
+  if (!subclass) return [];
+  return Object.keys(subclass.features || {})
+    .map(Number)
+    .filter((lv) => lv <= level)
+    .sort((a, b) => a - b)
+    .flatMap((lv) => toFeatureObjects(subclass.features[lv] || []).map((f) => f.name));
 }
 
 function renderClassCards(selectedId) {
@@ -537,13 +655,15 @@ function classTimelineEntries() {
   Object.entries(state.character.classPlan.levelsByClass).forEach(([classId, level]) => {
     const cls = classById(classId);
     const sub = state.character.classPlan.subclassByClass[classId];
+    const subObj = cls.subclasses?.find((s) => s.name === sub);
     const subclassLevels = SUBCLASS_LEVELS[classId] || [3, 6, 10, 14];
     for (let lv = 1; lv <= level; lv += 1) {
       const features = toFeatureObjects(cls.levels?.[lv] || [["No feature listed", "No details available for this level yet."]]);
       const hasAsi = features.some((f) => /Ability Score Improvement/i.test(f.name));
       entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null });
       if (sub && subclassLevels.includes(lv)) {
-        entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: [{ name: `Subclass Feature - ${sub}`, description: subclassFeatureDescription(cls.id, sub, lv) }] });
+        const subFeatures = toFeatureObjects(subObj?.features?.[lv] || [[`Subclass Feature - ${sub}`, subclassFeatureDescription(cls.id, sub, lv)]]).map((f) => ({ ...f, name: f.name.startsWith("Subclass Feature -") ? f.name : `Subclass Feature - ${f.name}` }));
+        entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: subFeatures });
       }
     }
   });
@@ -587,6 +707,7 @@ function removeLevelFromClass(classId) {
   if (next <= 0) {
     delete state.character.classPlan.levelsByClass[classId];
     delete state.character.classPlan.subclassByClass[classId];
+    delete state.character.classPlan.skillPicksByClass[classId];
     if (state.character.classPlan.primaryClassId === classId) {
       state.character.classPlan.primaryClassId = state.data.classes[0]?.id || "";
     }
@@ -854,6 +975,7 @@ function renderSummary() {
     race: race.name,
     raceSelections: Object.fromEntries(Object.entries(state.character.raceChoices).filter(([key]) => key.startsWith(`${race.id}:`)).map(([key, val]) => [key.split(":")[1], val])),
     classes: state.character.classPlan,
+    classSkillSelections: state.character.classPlan.skillPicksByClass,
     abilities: { base: state.character.abilities, final: finalAbilityScores(), pointBuySpent: spentPoints(), pointBuyBudget: POINT_BUY_BUDGET },
     feats: chosenFeats,
     background: selectedBackground().name,
