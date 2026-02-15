@@ -50,6 +50,71 @@ const FEATURE_DESCRIPTIONS = {
   "Infernal Legacy": "Innate infernal spellcasting progression.",
 };
 
+const CLASS_DESCRIPTIONS = {
+  Barbarian: "A fierce frontline warrior who channels rage into durability and heavy melee damage.",
+  Bard: "A versatile support caster who inspires allies and adapts through skills, magic, and utility.",
+  Cleric: "A divine spellcaster who blends healing, support, and offense through a sacred domain.",
+  Druid: "A primal spellcaster who commands nature magic and transforms with Wild Shape.",
+  Fighter: "A disciplined weapon master with excellent survivability and repeated combat actions.",
+  Monk: "A mobile martial artist who uses ki for speed, control, defense, and precision strikes.",
+  Paladin: "A holy champion combining weapon combat, protective auras, and divine smites.",
+  Ranger: "A wilderness specialist who mixes martial skill, exploration tools, and focused hunting.",
+  Rogue: "A precise skirmisher focused on stealth, skill mastery, and high-impact Sneak Attacks.",
+  Sorcerer: "An innate arcane caster whose bloodline grants flexible spell shaping through Metamagic.",
+  Warlock: "A pact-bound caster with short-rest spell slots and customizable eldritch powers.",
+  Wizard: "A scholarly arcane caster with broad spell preparation and powerful magical traditions.",
+};
+
+const SUBCLASS_LEVELS = {
+  barbarian: [3, 6, 10, 14], bard: [3, 6, 14], cleric: [1, 2, 6, 8, 17], druid: [2, 6, 10, 14], fighter: [3, 7, 10, 15, 18], monk: [3, 6, 11, 17],
+  paladin: [3, 7, 15, 20], ranger: [3, 7, 11, 15], rogue: [3, 9, 13, 17], sorcerer: [1, 6, 14, 18], warlock: [1, 6, 10, 14], wizard: [2, 6, 10, 14],
+};
+
+const CORE_FEATS = [
+  ["Alert", "You gain +5 initiative, cannot be surprised while conscious, and hidden attackers do not gain advantage from being unseen."],
+  ["Athlete", "Increase STR or DEX by 1 and improve climbing, jumping, and standing from prone."],
+  ["Actor", "Increase CHA by 1 and gain strong mimicry and disguise performance benefits."],
+  ["Charger", "After dashing, make a bonus action attack or shove with extra momentum."],
+  ["Crossbow Expert", "Ignore loading on crossbows, remove close-range disadvantage, and gain bonus action hand-crossbow attacks."],
+  ["Defensive Duelist", "Use reaction to add proficiency bonus to AC against one melee attack while wielding a finesse weapon."],
+  ["Dual Wielder", "Use two-weapon fighting with non-light one-handed weapons and gain +1 AC while dual wielding."],
+  ["Dungeon Delver", "Improve trap detection, trap saves, and resistance against trap damage."],
+  ["Durable", "Increase CON by 1 and improve minimum hit point recovery from hit dice."],
+  ["Elemental Adept", "Choose one damage type; ignore low damage dice results and resistance interactions for that type."],
+  ["Grappler", "Gain advantage on attacks against grappled creatures and unlock pinning options."],
+  ["Great Weapon Master", "Trade attack accuracy for heavy damage and gain bonus attacks on crits or kills."],
+  ["Healer", "Use healer's kits to restore meaningful hit points and stabilize allies effectively."],
+  ["Heavily Armored", "Increase STR by 1 and gain heavy armor proficiency."],
+  ["Heavy Armor Master", "Increase STR by 1 and reduce nonmagical bludgeoning, piercing, and slashing damage while in heavy armor."],
+  ["Inspiring Leader", "Grant temporary hit points to allies after motivational speeches."],
+  ["Keen Mind", "Increase INT by 1 and gain strong memory and orientation benefits."],
+  ["Lightly Armored", "Increase STR or DEX by 1 and gain light armor proficiency."],
+  ["Linguist", "Increase INT by 1, learn three languages, and create coded writing."],
+  ["Lucky", "Gain three luck points per long rest to reroll d20 outcomes."],
+  ["Mage Slayer", "Punish nearby spellcasters with reactions and improved saves against their spells."],
+  ["Magic Initiate", "Learn two cantrips and one 1st-level spell from a chosen class list."],
+  ["Martial Adept", "Learn combat maneuvers and gain a superiority die."],
+  ["Medium Armor Master", "Improve medium armor effectiveness and stealth flexibility."],
+  ["Mobile", "Gain movement speed and attack-mobility benefits that reduce opportunity attacks."],
+  ["Moderately Armored", "Increase STR or DEX by 1 and gain medium armor plus shield proficiency."],
+  ["Mounted Combatant", "Gain mounted combat advantages and improve mount protection."],
+  ["Observant", "Increase INT or WIS by 1 and gain excellent passive Perception/Investigation and lip-reading."],
+  ["Polearm Master", "Gain bonus-end attacks and trigger opportunity attacks when enemies enter your reach."],
+  ["Resilient", "Increase one ability score by 1 and gain saving throw proficiency in that ability."],
+  ["Ritual Caster", "Gain ritual spellcasting from a chosen class list and expand your ritual book."],
+  ["Savage Attacker", "Reroll melee weapon damage once per turn and keep the better result."],
+  ["Sentinel", "Lock enemies in place with opportunity attacks and punish attacks against allies."],
+  ["Sharpshooter", "Ignore range and cover penalties and optionally trade accuracy for large ranged damage."],
+  ["Shield Master", "Use shield techniques for bonus action shoves and better Dexterity defense."],
+  ["Skilled", "Gain proficiency in any combination of three skills or tools."],
+  ["Skulker", "Improve stealth in light obscurity and ranged hiding behavior."],
+  ["Spell Sniper", "Double spell attack range, ignore cover with spell attacks, and learn an attack cantrip."],
+  ["Tavern Brawler", "Increase STR or CON by 1, improve improvised/unarmed fighting, and bonus-action grapple on hit."],
+  ["Tough", "Gain +2 maximum hit points per level."],
+  ["War Caster", "Improve concentration, casting with occupied hands, and reaction spellcasting on opportunity attacks."],
+  ["Weapon Master", "Increase STR or DEX by 1 and gain proficiency with four weapons of choice."],
+].map(([name, description]) => ({ id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, description }));
+
 const BASE_DATA = {
   races: [
     { id: "dragonborn", name: "Dragonborn", shortDescription: "Proud draconic humanoids with innate elemental might.", maturityAge: "15 years", lifespan: "~80 years", languages: ["Common", "Draconic"], skills: ["No automatic skill proficiency from race"], features: ["Draconic Ancestry", "Breath Weapon", "Damage Resistance"], racialAbilities: { STR: 2, CHA: 1 }, options: [{ key: "draconicAncestry", label: "Draconic Ancestry", help: "Select your draconic lineage. This determines both your breath weapon and your resistance.", choices: Object.keys(DRAGONBORN_ANCESTRY), descriptions: Object.fromEntries(Object.entries(DRAGONBORN_ANCESTRY).map(([k, v]) => [k, `Breath Weapon: ${v.breath} Damage Resistance: ${v.resistance}`])) }] },
@@ -158,7 +223,7 @@ const BASE_DATA = {
     { id: "criminal", name: "Criminal", skills: ["Deception", "Stealth"], feature: "Criminal Contact", equipment: ["Crowbar", "Dark clothes", "15 gp"], bonuses: "No direct ability bonus in core 5e" },
     { id: "sage", name: "Sage", skills: ["Arcana", "History"], feature: "Researcher", equipment: ["Ink", "Quill", "Knife", "Letter", "10 gp"], bonuses: "No direct ability bonus in core 5e" },
   ],
-  spells: [], feats: [], languages: Object.entries(LANGUAGE_DESCRIPTIONS).map(([name, description]) => ({ name, description })),
+  spells: [], feats: structuredClone(CORE_FEATS), languages: Object.entries(LANGUAGE_DESCRIPTIONS).map(([name, description]) => ({ name, description })),
 };
 
 function buildClass(id, name, hitDie, multiclassReq, proficiencies, subclassNames, levels) {
@@ -203,7 +268,7 @@ const state = {
     name: "",
     raceId: BASE_DATA.races[0].id,
     raceChoices: {},
-    classPlan: { primaryClassId: BASE_DATA.classes[0].id, subclassByClass: {}, levelsByClass: {} },
+    classPlan: { primaryClassId: BASE_DATA.classes[0].id, subclassByClass: {}, levelsByClass: {}, advancements: {} },
     abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
     backgroundId: BASE_DATA.backgrounds[0].id,
   },
@@ -226,7 +291,7 @@ function mapEls() {
     quickfillBox: byId("quickfill-box"), tooltip: byId("hover-tooltip"),
     panels: { race: byId("step-race"), class: byId("step-class"), abilities: byId("step-abilities"), background: byId("step-background"), summary: byId("step-summary") },
     raceOptions: byId("race-options"), raceDetails: byId("race-details"), raceOptionConfig: byId("race-option-config"),
-    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classValidation: byId("class-validation"),
+    startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classValidation: byId("class-validation"), asiFeatPanel: byId("asi-feat-panel"), asiFeatList: byId("asi-feat-list"),
     totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
     characterName: byId("character-name"), abilityMethod: byId("ability-method"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
@@ -267,7 +332,10 @@ function bindEvents() {
   byId("download-json").addEventListener("click", downloadJson);
 
   els.characterName.addEventListener("input", (e) => { state.character.name = e.target.value; });
-  els.toggleMulticlass.addEventListener("click", () => { state.multiclassOpen = !state.multiclassOpen; renderClassProgress(); });
+  els.toggleMulticlass.addEventListener("click", () => {
+    state.multiclassOpen = !state.multiclassOpen;
+    renderClassProgress();
+  });
 }
 
 function renderAll() {
@@ -365,18 +433,32 @@ function renderClassStep() {
   els.startingClassSetup.classList.toggle("hidden", total > 0);
 
   if (total === 0) {
-    renderOptionCards(els.classOptions, state.data.classes, primaryId, (id) => {
-      state.character.classPlan.primaryClassId = id;
-      renderClassStep();
-    });
+    renderClassCards(primaryId);
   }
 
   renderClassProgress();
 }
 
+function renderClassCards(selectedId) {
+  els.classOptions.innerHTML = "";
+  state.data.classes.forEach((item) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `option-card ${item.id === selectedId ? "selected" : ""}`;
+    const desc = CLASS_DESCRIPTIONS[item.name] || `${item.name} class.`;
+    b.innerHTML = `<strong class="desc-term" data-desc="${escapeHtml(desc)}">${escapeHtml(item.name)}</strong><p>${escapeHtml(desc)}</p>`;
+    b.addEventListener("click", () => {
+      state.character.classPlan.primaryClassId = item.id;
+      renderClassStep();
+    });
+    els.classOptions.appendChild(b);
+  });
+}
+
 function confirmStartingClass() {
   const id = state.character.classPlan.primaryClassId;
   state.character.classPlan.levelsByClass = { [id]: 1 };
+  state.character.classPlan.advancements = {};
   state.character.classPlan.subclassByClass[id] = state.character.classPlan.subclassByClass[id] || "";
   state.classValidation = "";
   renderClassStep();
@@ -387,9 +469,13 @@ function renderClassProgress() {
   els.totalLevel.textContent = `Total Level: ${total}`;
 
   const timeline = classTimelineEntries();
-  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span class="desc-term" data-desc="${escapeHtml(f.description)}">${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul></li>`).join("");
+  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul></li>`).join("");
   renderClassLevelBreakdown();
+  renderAsiFeatPanel();
 
+  if (total === 0) state.multiclassOpen = false;
+  els.toggleMulticlass.disabled = total === 0;
+  els.toggleMulticlass.textContent = state.multiclassOpen ? "Hide Multiclass Options" : "Multiclass Options";
   els.multiclassList.classList.toggle("hidden", !state.multiclassOpen);
   if (state.multiclassOpen) renderMulticlassList();
   els.classValidation.textContent = total > 20 ? "Total class levels cannot exceed 20." : "";
@@ -422,7 +508,8 @@ function renderClassLevelBreakdown() {
     row.appendChild(minus);
     row.appendChild(plus);
 
-    if (lvl >= 3 && (cls.subclasses || []).length) {
+    const unlockLevel = subclassUnlockLevel(cls.id);
+    if (lvl >= unlockLevel && (cls.subclasses || []).length) {
       const subSelect = document.createElement("select");
       cls.subclasses.forEach((sub) => {
         const opt = document.createElement("option");
@@ -449,11 +536,13 @@ function classTimelineEntries() {
   const entries = [];
   Object.entries(state.character.classPlan.levelsByClass).forEach(([classId, level]) => {
     const cls = classById(classId);
+    const sub = state.character.classPlan.subclassByClass[classId];
+    const subclassLevels = SUBCLASS_LEVELS[classId] || [3, 6, 10, 14];
     for (let lv = 1; lv <= level; lv += 1) {
       const features = toFeatureObjects(cls.levels?.[lv] || [["No feature listed", "No details available for this level yet."]]);
       entries.push({ label: `${cls.name} Level ${lv}`, features });
-      if (lv === 3 && state.character.classPlan.subclassByClass[classId]) {
-        entries.push({ label: `${cls.name} Subclass`, features: [{ name: state.character.classPlan.subclassByClass[classId], description: subclassDescription(cls.id, state.character.classPlan.subclassByClass[classId]) }] });
+      if (sub && subclassLevels.includes(lv)) {
+        entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: [{ name: sub, description: subclassFeatureDescription(cls.id, sub, lv) }] });
       }
     }
   });
@@ -502,6 +591,7 @@ function removeLevelFromClass(classId) {
     }
   } else {
     state.character.classPlan.levelsByClass[classId] = next;
+    if (next < subclassUnlockLevel(classId)) delete state.character.classPlan.subclassByClass[classId];
   }
 
   if (totalClassLevel() === 0) {
@@ -538,7 +628,8 @@ function meetsCondition(cond, scores) {
 
 function finalAbilityScores() {
   const race = selectedRace();
-  return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, Math.min(18, v + (race.racialAbilities?.[a] || 0))]));
+  const asi = abilityBonusesFromAdvancements();
+  return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, Math.min(20, v + (race.racialAbilities?.[a] || 0) + (asi[a] || 0))]));
 }
 
 function toFeatureObjects(raw) {
@@ -550,6 +641,97 @@ function subclassDescription(classId, subName) {
   return cls.subclasses?.find((s) => s.name === subName)?.description || "Subclass specialization.";
 }
 
+function subclassFeatureDescription(classId, subName, level) {
+  const cls = classById(classId);
+  const style = ({ barbarian: "rage-focused", bard: "performance and support", cleric: "divine domain", druid: "nature shapecasting", fighter: "martial archetype", monk: "ki technique", paladin: "sacred oath", ranger: "hunting style", rogue: "specialist trick", sorcerer: "sorcerous origin", warlock: "patron gift", wizard: "arcane tradition" })[classId] || "subclass";
+  return `${subName} grants a level ${level} ${style} feature for ${cls.name}. Apply this as the subclass-specific benefit at this level.`;
+}
+
+function subclassUnlockLevel(classId) {
+  return Math.min(...(SUBCLASS_LEVELS[classId] || [3]));
+}
+
+function renderAsiFeatPanel() {
+  const opportunities = asiOpportunities();
+  els.asiFeatPanel.classList.toggle("hidden", opportunities.length === 0);
+  els.asiFeatList.innerHTML = "";
+
+  const validIds = new Set(opportunities.map((o) => o.id));
+  Object.keys(state.character.classPlan.advancements || {}).forEach((id) => {
+    if (!validIds.has(id)) delete state.character.classPlan.advancements[id];
+  });
+
+  opportunities.forEach((op) => {
+    const choice = state.character.classPlan.advancements[op.id] || { kind: "ability", abilityA: "STR", abilityB: "STR", featId: "" };
+    state.character.classPlan.advancements[op.id] = choice;
+
+    const card = document.createElement("div");
+    card.className = "details";
+    const featOptions = state.data.feats.length ? state.data.feats : CORE_FEATS;
+    const feat = featOptions.find((f) => f.id === choice.featId);
+    card.innerHTML = `<strong>${op.label}</strong><label>Choose Benefit<select data-asi-kind="${op.id}"><option value="ability" ${choice.kind === "ability" ? "selected" : ""}>Ability Score Improvement</option><option value="feat" ${choice.kind === "feat" ? "selected" : ""}>Feat</option></select></label>`;
+
+    if (choice.kind === "ability") {
+      const a = buildAbilitySelect(`data-asi-a="${op.id}"`, choice.abilityA || "STR");
+      const b = buildAbilitySelect(`data-asi-b="${op.id}"`, choice.abilityB || choice.abilityA || "STR");
+      const note = document.createElement("p");
+      note.textContent = "Choose the same ability twice for +2, or two different abilities for +1/+1.";
+      card.insertAdjacentHTML("beforeend", `<label>Ability Increase 1 ${a}</label><label>Ability Increase 2 ${b}</label>`);
+      card.appendChild(note);
+    } else {
+      card.insertAdjacentHTML("beforeend", `<label>Feat<select data-asi-feat="${op.id}"><option value="">Select a feat</option>${featOptions.map((f) => `<option value="${escapeHtml(f.id)}" ${choice.featId === f.id ? "selected" : ""}>${escapeHtml(f.name)}</option>`).join("")}</select></label><p>${escapeHtml(feat?.description || "Select a feat to view its description.")}</p>`);
+    }
+
+    els.asiFeatList.appendChild(card);
+  });
+
+  els.asiFeatList.querySelectorAll("select[data-asi-kind]").forEach((s) => s.addEventListener("change", (e) => {
+    const id = e.target.dataset.asiKind;
+    state.character.classPlan.advancements[id] = { kind: e.target.value, abilityA: "STR", abilityB: "STR", featId: "" };
+    renderClassProgress();
+  }));
+  els.asiFeatList.querySelectorAll("select[data-asi-a]").forEach((s) => s.addEventListener("change", (e) => {
+    state.character.classPlan.advancements[e.target.dataset.asiA].abilityA = e.target.value;
+    renderAbilityStep();
+    renderClassProgress();
+  }));
+  els.asiFeatList.querySelectorAll("select[data-asi-b]").forEach((s) => s.addEventListener("change", (e) => {
+    state.character.classPlan.advancements[e.target.dataset.asiB].abilityB = e.target.value;
+    renderAbilityStep();
+    renderClassProgress();
+  }));
+  els.asiFeatList.querySelectorAll("select[data-asi-feat]").forEach((s) => s.addEventListener("change", (e) => {
+    state.character.classPlan.advancements[e.target.dataset.asiFeat].featId = e.target.value;
+    renderClassProgress();
+  }));
+}
+
+function asiOpportunities() {
+  const rows = [];
+  Object.entries(state.character.classPlan.levelsByClass).forEach(([classId, level]) => {
+    const cls = classById(classId);
+    for (let lv = 1; lv <= level; lv += 1) {
+      const hasAsi = toFeatureObjects(cls.levels?.[lv] || []).some((f) => /Ability Score Improvement/i.test(f.name));
+      if (hasAsi) rows.push({ id: `${classId}-lv${lv}`, label: `${cls.name} level ${lv}: Ability Score Improvement` });
+    }
+  });
+  return rows;
+}
+
+function buildAbilitySelect(dataAttr, selected) {
+  return `<select ${dataAttr}>${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${selected === a ? "selected" : ""}>${a}</option>`).join("")}</select>`;
+}
+
+function abilityBonusesFromAdvancements() {
+  const bonuses = { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 };
+  Object.values(state.character.classPlan.advancements || {}).forEach((choice) => {
+    if (choice.kind !== "ability") return;
+    if (bonuses[choice.abilityA] !== undefined) bonuses[choice.abilityA] += 1;
+    if (bonuses[choice.abilityB] !== undefined) bonuses[choice.abilityB] += 1;
+  });
+  return bonuses;
+}
+
 function renderAbilityStep() {
   const rolledMode = state.abilityMethod === "rolled";
   els.abilityMethod.value = state.abilityMethod;
@@ -558,9 +740,10 @@ function renderAbilityStep() {
   if (rolledMode) renderRolledPanel();
 
   els.abilitiesGrid.innerHTML = "";
+  const finalScores = finalAbilityScores();
   Object.entries(state.character.abilities).forEach(([ability, score]) => {
     const bonus = selectedRace().racialAbilities?.[ability] || 0;
-    const finalScore = Math.min(18, score + bonus);
+    const finalScore = finalScores[ability];
     const card = document.createElement("div");
     card.className = "ability-card";
 
@@ -661,12 +844,17 @@ function renderBackgroundStep() {
 
 function renderSummary() {
   const race = selectedRace();
+  const chosenFeats = Object.values(state.character.classPlan.advancements || {})
+    .filter((c) => c.kind === "feat" && c.featId)
+    .map((c) => (state.data.feats.find((f) => f.id === c.featId) || CORE_FEATS.find((f) => f.id === c.featId))?.name)
+    .filter(Boolean);
   const summary = {
     name: state.character.name || "Unnamed Adventurer",
     race: race.name,
     raceSelections: Object.fromEntries(Object.entries(state.character.raceChoices).filter(([key]) => key.startsWith(`${race.id}:`)).map(([key, val]) => [key.split(":")[1], val])),
     classes: state.character.classPlan,
     abilities: { base: state.character.abilities, final: finalAbilityScores(), pointBuySpent: spentPoints(), pointBuyBudget: POINT_BUY_BUDGET },
+    feats: chosenFeats,
     background: selectedBackground().name,
   };
   els.characterSheet.textContent = JSON.stringify(summary, null, 2);
