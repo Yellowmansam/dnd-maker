@@ -40,3 +40,14 @@ build_exe.bat
 ```
 Output:
 - `2025-08-04\dist\dnd-character-builder.exe`
+
+
+## Data ingestion status
+- Added book-by-book data batches for race trait import from:
+  - Player's Handbook (2024)
+  - Mordenkainen Presents: Monsters of the Multiverse
+- Added book-by-book subclass and feat ingestion batches from:
+  - Player's Handbook (2014)
+  - Xanathar's Guide to Everything
+  - Tasha's Cauldron of Everything
+- Species using flexible sourcebook ASI rules now use the ability tab's +2/+1 assignment panel when their race data specifies flexible bonuses.

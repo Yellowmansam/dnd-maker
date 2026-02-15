@@ -105,6 +105,87 @@ const EXPANDED_RACE_INDEX = [
   { id: "drakkenheim-draconic", name: "Draconic Lineage", source: "Dungeons of Drakkenheim", rulesEra: "2014" },
 ];
 
+const BOOK_DATA_BATCHES = [
+  {
+    book: "Player's Handbook (2024)",
+    races: [
+      { id: "human-2024", shortDescription: "Adaptable and ambitious people with broad talent.", maturityAge: "Late teens", lifespan: "Less than a century", languages: ["Common", "One extra language"], features: ["Resourceful", "Versatile"], abilityScoreRule: "choose2plus1" },
+      { id: "dwarf-2024", shortDescription: "Resilient folk of stone halls and ancient clans.", maturityAge: "About 50 years", lifespan: "About 350 years", languages: ["Common", "Dwarvish"], features: ["Darkvision", "Dwarven Resilience", "Stonecunning"], abilityScoreRule: "choose2plus1" },
+      { id: "elf-2024", shortDescription: "Long-lived fey descendants with keen senses and grace.", maturityAge: "About 100 years", lifespan: "About 750 years", languages: ["Common", "Elvish"], features: ["Darkvision", "Fey Ancestry", "Keen Senses", "Trance"], abilityScoreRule: "choose2plus1" },
+      { id: "halfling-2024", shortDescription: "Small wanderers known for luck and resolve.", maturityAge: "About 20 years", lifespan: "About 150 years", languages: ["Common", "Halfling"], features: ["Brave", "Halfling Nimbleness", "Luck"], abilityScoreRule: "choose2plus1" },
+      { id: "gnome-2024", shortDescription: "Inventive and curious folk with innate magical resistance.", maturityAge: "About 40 years", lifespan: "350 to 500 years", languages: ["Common", "Gnomish"], features: ["Darkvision", "Gnome Cunning"], abilityScoreRule: "choose2plus1" },
+      { id: "dragonborn-2024", shortDescription: "Draconic heirs with ancestry-based breath and resistance.", maturityAge: "Around 15 years", lifespan: "Around 80 years", languages: ["Common", "Draconic"], features: ["Draconic Ancestry", "Breath Weapon", "Damage Resistance"], abilityScoreRule: "choose2plus1" },
+      { id: "orc-2024", shortDescription: "Hardy and relentless warriors with powerful endurance.", maturityAge: "Mid teens", lifespan: "Up to about 80 years", languages: ["Common", "Orc"], features: ["Adrenaline Rush", "Relentless Endurance", "Darkvision"], abilityScoreRule: "choose2plus1" },
+      { id: "tiefling-2024", shortDescription: "Fiend-touched people bearing infernal legacies.", maturityAge: "Same as humans", lifespan: "Slightly longer than humans", languages: ["Common", "Infernal"], features: ["Darkvision", "Fiendish Legacy"], abilityScoreRule: "choose2plus1" },
+      { id: "goliath-2024", shortDescription: "Mighty giant-kin with towering strength and endurance.", maturityAge: "Late teens", lifespan: "Less than 120 years", languages: ["Common", "Giant"], features: ["Large Form", "Powerful Build", "Giant Ancestry"], abilityScoreRule: "choose2plus1" },
+    ],
+  },
+  {
+    book: "Mordenkainen Presents: Monsters of the Multiverse",
+    races: [
+      { id: "bugbear", shortDescription: "Long-limbed goblinoids who strike from shadows with brutal surprise.", features: ["Darkvision", "Long-Limbed", "Powerful Build", "Sneaky", "Surprise Attack"], languages: ["Common", "Goblin", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "goblin", shortDescription: "Cunning skirmishers with fey roots and quick escapes.", features: ["Darkvision", "Fey Ancestry", "Fury of the Small", "Nimble Escape"], languages: ["Common", "Goblin", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "hobgoblin", shortDescription: "Disciplined goblinoids whose fey gifts support allies.", features: ["Darkvision", "Fey Ancestry", "Fey Gift"], languages: ["Common", "Goblin", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "kenku", shortDescription: "Mimic-talented avians with excellent recall and copied craft.", features: ["Expert Duplication", "Kenku Recall", "Mimicry"], languages: ["Common", "Auran", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "kobold", shortDescription: "Resourceful draconic tunnelfolk who rely on pack tactics and cries.", features: ["Darkvision", "Draconic Cry", "Kobold Legacy"], languages: ["Common", "Draconic", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "lizardfolk", shortDescription: "Pragmatic reptilian survivors with natural defenses.", features: ["Bite", "Hold Breath", "Hungry Jaws", "Natural Armor"], languages: ["Common", "Draconic", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "tabaxi", shortDescription: "Curious feline wanderers known for speed and agility.", features: ["Darkvision", "Cat's Claws", "Cat's Talent", "Feline Agility"], languages: ["Common", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "triton", shortDescription: "Guardians from the deep sea with elemental command.", features: ["Amphibious", "Control Air and Water", "Darkvision", "Emissary of the Sea", "Guardian of the Depths"], languages: ["Common", "Primordial", "One extra language"], abilityScoreRule: "choose2plus1" },
+      { id: "yuan-ti", shortDescription: "Serpentine inheritors of ancient magic and poison resilience.", features: ["Darkvision", "Magic Resistance", "Poison Resilience", "Serpentine Spellcasting"], languages: ["Common", "Abyssal", "Draconic"], abilityScoreRule: "choose2plus1" },
+      { id: "orc", shortDescription: "Powerful warriors with relentless stamina and momentum.", features: ["Adrenaline Rush", "Darkvision", "Powerful Build", "Relentless Endurance"], languages: ["Common", "Orc", "One extra language"], abilityScoreRule: "choose2plus1" },
+    ],
+  },
+  {
+    book: "Player's Handbook (2014)",
+    subclasses: [
+      { classId: "barbarian", name: "Berserker", description: "A barbarian path focused on overwhelming fury and fear.", features: { 3: [["Subclass Feature - Frenzy", "While raging, you can make one melee weapon attack as a bonus action on each turn, gaining exhaustion after the rage ends."]], 6: [["Subclass Feature - Mindless Rage", "You cannot be charmed or frightened while raging; these effects are suspended for the rage duration."]], 10: [["Subclass Feature - Intimidating Presence", "Use your action to frighten a creature within 30 feet that can see or hear you."]], 14: [["Subclass Feature - Retaliation", "When a creature within 5 feet damages you, use your reaction to make a melee weapon attack against it."]] } },
+      { classId: "barbarian", name: "Totem Warrior", description: "A spiritual barbarian who channels totemic animal powers.", features: { 3: [["Subclass Feature - Spirit Seeker", "Cast Beast Sense and Speak with Animals as rituals."], ["Subclass Feature - Totem Spirit", "Choose bear, eagle, or wolf for a rage benefit."]], 6: [["Subclass Feature - Aspect of the Beast", "Gain a utility benefit based on your chosen totem animal."]], 10: [["Subclass Feature - Spirit Walker", "Cast Commune with Nature as a ritual."]], 14: [["Subclass Feature - Totemic Attunement", "Gain a powerful combat benefit tied to your totem while raging."]] } },
+      { classId: "fighter", name: "Champion", description: "A straightforward martial specialist built on superior athletics and critical hits.", features: { 3: [["Subclass Feature - Improved Critical", "Your weapon attacks score a critical hit on a roll of 19 or 20."]], 7: [["Subclass Feature - Remarkable Athlete", "Add half proficiency bonus to certain Strength, Dexterity, and Constitution checks not already using proficiency."]], 10: [["Subclass Feature - Additional Fighting Style", "Gain a second Fighting Style option from the fighter list."]], 15: [["Subclass Feature - Superior Critical", "Your weapon attacks score a critical hit on an 18–20."]], 18: [["Subclass Feature - Survivor", "At the start of your turn, regain hit points if you have fewer than half your hit points remaining."]] } },
+      { classId: "fighter", name: "Battle Master", description: "A tactical fighter who uses superiority dice and maneuvers.", features: { 3: [["Subclass Feature - Combat Superiority", "Gain superiority dice and learn maneuvers to fuel tactical combat effects."], ["Subclass Feature - Student of War", "Gain proficiency with one type of artisan's tools."]], 7: [["Subclass Feature - Know Your Enemy", "After observing a creature, learn comparative combat statistics about it."]], 10: [["Subclass Feature - Improved Combat Superiority", "Your superiority dice become d10s."]], 15: [["Subclass Feature - Relentless", "Regain one superiority die when initiative is rolled if you have none."]], 18: [["Subclass Feature - Improved Combat Superiority", "Your superiority dice become d12s."]] } },
+      { classId: "rogue", name: "Thief", description: "A rogue specializing in agility, utility, and item interaction.", features: { 3: [["Subclass Feature - Fast Hands", "Use Cunning Action to make Sleight of Hand checks, use thieves' tools, or use objects."], ["Subclass Feature - Second-Story Work", "Climb faster and improve your long jumps."]], 9: [["Subclass Feature - Supreme Sneak", "Gain advantage on Stealth checks when moving slowly."]], 13: [["Subclass Feature - Use Magic Device", "Ignore class, race, and level requirements on magic item use."]], 17: [["Subclass Feature - Thief's Reflexes", "Take two turns during the first round of combat."]] } },
+      { classId: "wizard", name: "Evocation", description: "A wizard tradition focused on destructive elemental spellcraft.", features: { 2: [["Subclass Feature - Evocation Savant", "Copy evocation spells into your spellbook for half the usual gold and time."], ["Subclass Feature - Sculpt Spells", "Protect allies from your area evocation spells."]], 6: [["Subclass Feature - Potent Cantrip", "Your damaging cantrips can still affect targets on successful saves."]], 10: [["Subclass Feature - Empowered Evocation", "Add your Intelligence modifier to one damage roll of any wizard evocation spell."]], 14: [["Subclass Feature - Overchannel", "Maximize damage of lower-level spells and risk self-damage on repeated use."]] } },
+    ],
+    feats: [
+      { name: "Lucky", source: "Player's Handbook (2014)" },
+      { name: "Great Weapon Master", source: "Player's Handbook (2014)" },
+      { name: "Sharpshooter", source: "Player's Handbook (2014)" },
+    ],
+  },
+  {
+    book: "Xanathar's Guide to Everything",
+    subclasses: [
+      { classId: "barbarian", name: "Zealot", description: "A divine-fury barbarian who fights with radiant or necrotic wrath.", features: { 3: [["Subclass Feature - Divine Fury", "Your first weapon hit each turn while raging deals extra radiant or necrotic damage."], ["Subclass Feature - Warrior of the Gods", "Resurrection magic cast on you requires no material components."]], 6: [["Subclass Feature - Fanatical Focus", "Reroll one failed saving throw while raging once per rage."]], 10: [["Subclass Feature - Zealous Presence", "As a bonus action, grant nearby allies advantage on attack rolls and saving throws until your next turn."]], 14: [["Subclass Feature - Rage Beyond Death", "While raging, dropping to 0 hit points does not knock you unconscious."]] } },
+      { classId: "bard", name: "Glamour", description: "A fey-inspired bard college centered on enchantment and stage command.", features: { 3: [["Subclass Feature - Mantle of Inspiration", "Spend Bardic Inspiration to grant temporary hit points and immediate movement to allies."], ["Subclass Feature - Enthralling Performance", "After performing, charm nearby humanoids who watched and listened."]], 6: [["Subclass Feature - Mantle of Majesty", "Cast Command as a bonus action for 1 minute after invoking your majestic presence."]], 14: [["Subclass Feature - Unbreakable Majesty", "Assume a regal aura that imposes checks before creatures can attack you."]] } },
+      { classId: "cleric", name: "Forge", description: "A divine smithing domain devoted to craft and holy armaments.", features: { 1: [["Subclass Feature - Bonus Proficiencies", "Gain heavy armor proficiency and smith's tools proficiency."], ["Subclass Feature - Blessing of the Forge", "Enchant one nonmagical weapon or armor after a long rest."]], 2: [["Subclass Feature - Channel Divinity: Artisan's Blessing", "Create a simple or martial metal item in a ritual by laying out equal-value metal."]], 6: [["Subclass Feature - Soul of the Forge", "Gain resistance to fire damage and bonus AC while in heavy armor."],], 8: [["Subclass Feature - Divine Strike", "Once on each of your turns, add fire damage to a weapon attack."]], 17: [["Subclass Feature - Saint of Forge and Fire", "Gain immunity to fire and resistance to nonmagical bludgeoning, piercing, and slashing damage while in heavy armor."]] } },
+      { classId: "fighter", name: "Samurai", description: "A disciplined warrior archetype built around resolve and presence.", features: { 3: [["Subclass Feature - Bonus Proficiency", "Gain proficiency in History, Insight, Performance, or Persuasion."], ["Subclass Feature - Fighting Spirit", "As a bonus action, grant yourself advantage on weapon attacks and temporary hit points."]], 7: [["Subclass Feature - Elegant Courtier", "Add Wisdom modifier to Persuasion checks and gain Wisdom save proficiency."]], 10: [["Subclass Feature - Tireless Spirit", "Regain one use of Fighting Spirit when initiative is rolled if you have none."]], 15: [["Subclass Feature - Rapid Strike", "Trade advantage on one attack to make an additional weapon attack as part of the same action."]], 18: [["Subclass Feature - Strength Before Death", "Immediately take an extra turn when reduced to 0 hit points."]] } },
+      { classId: "warlock", name: "Hexblade", description: "A patron tied to sentient weapons and shadowy martial curses.", features: { 1: [["Subclass Feature - Hexblade's Curse", "Curse one target for bonus damage, improved critical hits, and healing on its defeat."], ["Subclass Feature - Hex Warrior", "Gain medium armor, shields, martial weapons, and Charisma-based weapon attacks for one chosen weapon."]], 6: [["Subclass Feature - Accursed Specter", "When you slay a humanoid, bind its spirit as a temporary specter ally."]], 10: [["Subclass Feature - Armor of Hexes", "Your cursed target can miss you on a d6 roll when it hits."]], 14: [["Subclass Feature - Master of Hexes", "When your cursed target dies, move the curse to a new creature."]] } },
+    ],
+    feats: [
+      { name: "Elven Accuracy", description: "Increase Dexterity, Intelligence, Wisdom, or Charisma by 1 and reroll one die when attacking with advantage using that ability.", source: "Xanathar's Guide to Everything" },
+      { name: "Fey Teleportation", description: "Increase Intelligence or Charisma by 1, learn Sylvan, and cast Misty Step once per short or long rest.", source: "Xanathar's Guide to Everything" },
+      { name: "Shadow Touched", description: "Increase Intelligence, Wisdom, or Charisma by 1, learn Invisibility and one 1st-level illusion or necromancy spell.", source: "Xanathar's Guide to Everything" },
+    ],
+  },
+  {
+    book: "Tasha's Cauldron of Everything",
+    subclasses: [
+      { classId: "barbarian", name: "Wild Magic", description: "A barbarian channeling unpredictable arcane surges in combat.", features: { 3: [["Subclass Feature - Magic Awareness", "As an action, sense spells and magic items nearby for one turn."], ["Subclass Feature - Wild Surge", "Each rage triggers a roll on the Wild Magic table for a random magical effect."]], 6: [["Subclass Feature - Bolstering Magic", "Empower allies with better attacks/checks or recover spell slots using your action."]], 10: [["Subclass Feature - Unstable Backlash", "When you take damage or fail a save while raging, use your reaction to reroll your Wild Surge effect."]], 14: [["Subclass Feature - Controlled Surge", "Roll twice on the Wild Surge table and choose which effect to use."]] } },
+      { classId: "bard", name: "Creation", description: "A bard college that manifests inspiration into tangible creation.", features: { 3: [["Subclass Feature - Mote of Potential", "Bardic Inspiration grants extra effects on ability checks, attacks, and healing."], ["Subclass Feature - Performance of Creation", "As an action, create a nonmagical item from song."]], 6: [["Subclass Feature - Animating Performance", "Animate a Large or smaller item into a dancing construct companion."]], 14: [["Subclass Feature - Creative Crescendo", "Create more than one item and ignore gp limits for Performance of Creation."]] } },
+      { classId: "cleric", name: "Twilight", description: "A guardian domain balancing light and darkness for protection.", features: { 1: [["Subclass Feature - Bonus Proficiencies", "Gain martial weapon and heavy armor proficiency."], ["Subclass Feature - Eyes of Night", "Share darkvision out to 300 feet with willing creatures."], ["Subclass Feature - Vigilant Blessing", "Grant one creature advantage on its next initiative roll."]], 2: [["Subclass Feature - Channel Divinity: Twilight Sanctuary", "Create a sphere that grants temporary hit points or ends frightened/charmed each round."]], 6: [["Subclass Feature - Steps of Night", "While in dim light or darkness, gain a flying speed equal to your walking speed."]], 8: [["Subclass Feature - Divine Strike", "Once each turn add radiant damage to a weapon hit."]], 17: [["Subclass Feature - Twilight Shroud", "Creatures in your Twilight Sanctuary gain half cover."]] } },
+      { classId: "fighter", name: "Psi Warrior", description: "A martial archetype using psionic power for defense and offense.", features: { 3: [["Subclass Feature - Psionic Power", "Gain psionic energy dice fueling protective fields and kinetic strikes."], ["Subclass Feature - Telekinetic Adept", "Learn psionic movement and object manipulation options."]], 7: [["Subclass Feature - Guarded Mind", "Gain resistance to psychic damage and a way to end charm/fear effects."]], 10: [["Subclass Feature - Bulwark of Force", "Shield allies behind telekinetic cover as a bonus action."]], 15: [["Subclass Feature - Telekinetic Master", "Cast Telekinesis and make bonus-action weapon attacks while maintaining it."]], 18: [["Subclass Feature - Psionic Mastery", "Recover psionic energy dice as a bonus action once per long rest."]] } },
+      { classId: "wizard", name: "Bladesinging", description: "An elven-derived wizard tradition combining swordplay and arcane focus.", features: { 2: [["Subclass Feature - Training in War and Song", "Gain light armor proficiency, one one-handed melee weapon proficiency, and Performance skill."], ["Subclass Feature - Bladesong", "Activate a magical battle dance boosting AC, speed, concentration, and Acrobatics."]], 6: [["Subclass Feature - Extra Attack", "Attack twice, or attack once and cast a cantrip, when taking Attack action."]], 10: [["Subclass Feature - Song of Defense", "Spend spell slots to reduce incoming damage while Bladesong is active."]], 14: [["Subclass Feature - Song of Victory", "Add Intelligence modifier to melee weapon damage while Bladesong is active."]] } },
+    ],
+    feats: [
+      { name: "Fey Touched", description: "Increase Intelligence, Wisdom, or Charisma by 1, learn Misty Step and one 1st-level divination or enchantment spell.", source: "Tasha's Cauldron of Everything" },
+      { name: "Telekinetic", description: "Increase Intelligence, Wisdom, or Charisma by 1, learn invisible Mage Hand, and shove creatures with your mind.", source: "Tasha's Cauldron of Everything" },
+      { name: "Telepathic", description: "Increase Intelligence, Wisdom, or Charisma by 1 and gain long-range telepathic communication plus Detect Thoughts.", source: "Tasha's Cauldron of Everything" },
+      { name: "Crusher", description: "Increase Strength or Constitution by 1; once per turn move a target hit with bludgeoning damage and improve crit follow-up.", source: "Tasha's Cauldron of Everything" },
+      { name: "Slasher", description: "Increase Strength or Dexterity by 1; reduce target speed on slashing hit and penalize crit targets.", source: "Tasha's Cauldron of Everything" },
+      { name: "Piercer", description: "Increase Strength or Dexterity by 1; reroll one piercing damage die each turn and add a die on critical hits.", source: "Tasha's Cauldron of Everything" },
+    ],
+  },
+];
+
 const CLASS_DESCRIPTIONS = {
   Barbarian: "A fierce frontline warrior who channels rage into durability and heavy melee damage.",
   Bard: "A versatile support caster who inspires allies and adapts through skills, magic, and utility.",
@@ -353,6 +434,67 @@ function expandRaceCatalog() {
   });
 }
 
+function applyBookDataBatches() {
+  const raceById = new Map(BASE_DATA.races.map((r) => [r.id, r]));
+  const classByIdMap = new Map(BASE_DATA.classes.map((c) => [c.id, c]));
+  const featById = new Map(BASE_DATA.feats.map((f) => [f.id, f]));
+
+  BOOK_DATA_BATCHES.forEach((batch) => {
+    (batch.races || []).forEach((incoming) => {
+      const target = raceById.get(incoming.id);
+      if (!target) return;
+      Object.assign(target, incoming);
+      target.source = target.source || batch.book;
+      target.book = batch.book;
+      if (!target.rulesEra) target.rulesEra = "2014";
+      if (!target.abilityScoreRule) target.abilityScoreRule = target.rulesEra === "2024" ? "choose2plus1" : "fixed";
+    });
+
+    (batch.classes || []).forEach((incoming) => {
+      const cls = classByIdMap.get(incoming.id);
+      if (!cls) return;
+      if (incoming.description) cls.description = incoming.description;
+      if (incoming.proficiencies) cls.proficiencies = incoming.proficiencies;
+      if (incoming.levels) {
+        cls.levels = cls.levels || {};
+        Object.entries(incoming.levels).forEach(([level, features]) => {
+          cls.levels[level] = features;
+        });
+      }
+    });
+
+    (batch.subclasses || []).forEach((incoming) => {
+      const cls = classByIdMap.get(incoming.classId);
+      if (!cls) return;
+      cls.subclasses = cls.subclasses || [];
+      const found = cls.subclasses.find((s) => s.name === incoming.name);
+      if (!found) {
+        cls.subclasses.push({ name: incoming.name, description: incoming.description || "", features: incoming.features || {} });
+        return;
+      }
+      if (incoming.description) found.description = incoming.description;
+      if (incoming.features) {
+        found.features = found.features || {};
+        Object.entries(incoming.features).forEach(([level, features]) => {
+          found.features[level] = features;
+        });
+      }
+    });
+
+    (batch.feats || []).forEach((incoming) => {
+      const id = incoming.id || incoming.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const found = featById.get(id);
+      if (found) {
+        Object.assign(found, incoming, { id });
+      } else {
+        const feat = { id, ...incoming };
+        BASE_DATA.feats.push(feat);
+        featById.set(id, feat);
+      }
+    });
+  });
+}
+
 function ensureClassLevelsTo20() {
   const classMilestones = {
     barbarian: { 6: ["Path Feature", "Your Primal Path grants a new defining feature."], 7: ["Feral Instinct", "Advantage on initiative and better reaction when surprised."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Brutal Critical (1 die)", "Roll one extra weapon die on critical hits."], 10: ["Path Feature", "Another Primal Path feature unlocks."], 11: ["Relentless Rage", "Make CON save to stay at 1 HP instead of 0 while raging."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Brutal Critical (2 dice)", "Roll two extra weapon dice on critical hits."], 14: ["Path Feature", "Late-path feature improves your subclass identity."], 15: ["Persistent Rage", "Your rage only ends early under stricter conditions."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Brutal Critical (3 dice)", "Roll three extra weapon dice on critical hits."], 18: ["Indomitable Might", "Use Strength score as minimum on STR checks."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Primal Champion", "STR and CON increase by 4; max for both becomes 24."] },
@@ -383,6 +525,7 @@ function ensureClassLevelsTo20() {
 
 ensureClassLevelsTo20();
 expandRaceCatalog();
+applyBookDataBatches();
 
 const state = {
   step: "race",
@@ -865,7 +1008,7 @@ function meetsCondition(cond, scores) {
 function finalAbilityScores() {
   const race = selectedRace();
   const asi = abilityBonusesFromAdvancements();
-  const origin = race.rulesEra === "2024" ? state.character.originAbilityBonuses : (race.racialAbilities || {});
+  const origin = race.abilityScoreRule === "choose2plus1" ? state.character.originAbilityBonuses : (race.racialAbilities || {});
   return Object.fromEntries(Object.entries(state.character.abilities).map(([a, v]) => [a, Math.min(20, v + (origin?.[a] || 0) + (asi[a] || 0))]));
 }
 
@@ -979,8 +1122,9 @@ function renderAbilityStep() {
 
   els.abilitiesGrid.innerHTML = "";
   const finalScores = finalAbilityScores();
+  const speciesBonus = selectedRace().abilityScoreRule === "choose2plus1" ? state.character.originAbilityBonuses : (selectedRace().racialAbilities || {});
   Object.entries(state.character.abilities).forEach(([ability, score]) => {
-    const bonus = selectedRace().racialAbilities?.[ability] || 0;
+    const bonus = speciesBonus?.[ability] || 0;
     const finalScore = finalScores[ability];
     const card = document.createElement("div");
     card.className = "ability-card";
@@ -1010,9 +1154,9 @@ function renderAbilityStep() {
 
 function renderOriginAsiPanel() {
   const race = selectedRace();
-  const is2024 = race.rulesEra === "2024";
-  els.originAsiPanel.classList.toggle("hidden", !is2024);
-  if (!is2024) {
+  const isFlexible = race.abilityScoreRule === "choose2plus1";
+  els.originAsiPanel.classList.toggle("hidden", !isFlexible);
+  if (!isFlexible) {
     state.character.originAbilityBonuses = { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 };
     return;
   }
@@ -1020,7 +1164,7 @@ function renderOriginAsiPanel() {
   const bonuses = state.character.originAbilityBonuses || { STR: 2, DEX: 1, CON: 0, INT: 0, WIS: 0, CHA: 0 };
   const plusTwo = Object.keys(bonuses).find((k) => bonuses[k] === 2) || "STR";
   const plusOne = Object.keys(bonuses).find((k) => bonuses[k] === 1) || "DEX";
-  els.originAsiPanel.innerHTML = `<h3>2024 Ability Score Rules</h3><p>Species in 2024 rules do not grant fixed ability bonuses. Assign +2 to one ability and +1 to a different ability here.</p><div class="row"><label>+2<select id="origin-plus-two">${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${plusTwo === a ? "selected" : ""}>${a}</option>`).join("")}</select></label><label>+1<select id="origin-plus-one">${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${plusOne === a ? "selected" : ""}>${a}</option>`).join("")}</select></label></div>`;
+  els.originAsiPanel.innerHTML = `<h3>Flexible Ability Score Rules</h3><p>This species uses flexible bonuses from its sourcebook. Assign +2 to one ability and +1 to a different ability here.</p><div class="row"><label>+2<select id="origin-plus-two">${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${plusTwo === a ? "selected" : ""}>${a}</option>`).join("")}</select></label><label>+1<select id="origin-plus-one">${["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((a) => `<option value="${a}" ${plusOne === a ? "selected" : ""}>${a}</option>`).join("")}</select></label></div>`;
 
   const apply = () => {
     const p2 = byId("origin-plus-two").value;
