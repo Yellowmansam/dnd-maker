@@ -53,7 +53,27 @@ const FEATURE_DESCRIPTIONS = {
   "Light Bearer": "You know the Light cantrip.",
   "Fey Step": "Short-range teleportation tied to fey magic.",
   "Elemental Legacy": "Innate elemental trait based on your elemental heritage.",
+  "Sourcebook Rules Required": "This race entry is indexed from an official or partnered book, but full rules text is not bundled in this starter app.",
 };
+
+const EXPANDED_RACE_INDEX = [
+  ["aarakocra", "Aarakocra", "EEPC"], ["aasimar-vgm", "Aasimar (VGM)", "VGM"], ["astral-elf", "Astral Elf", "AAG"], ["autognome", "Autognome", "AAG"],
+  ["bugbear", "Bugbear", "VGM/MPMM"], ["centaur", "Centaur", "GGTR/MOT"], ["changeling", "Changeling", "ERLW/MPMM"], ["deep-gnome", "Deep Gnome", "SCAG/MPMM"],
+  ["duergar", "Duergar", "SCAG/MPMM"], ["eladrin-mtof", "Eladrin", "MToF"], ["fairy", "Fairy", "WBtW"], ["firbolg", "Firbolg", "VGM/MPMM"],
+  ["githyanki", "Githyanki", "MToF/MPMM"], ["githzerai", "Githzerai", "MToF/MPMM"], ["goblin", "Goblin", "VGM/MPMM"], ["goliath", "Goliath", "VGM/EEPC"],
+  ["harengon", "Harengon", "WBtW"], ["hobgoblin", "Hobgoblin", "VGM/MPMM"], ["kenku", "Kenku", "VGM/MPMM"], ["kobold", "Kobold", "VGM/MPMM"],
+  ["lizardfolk", "Lizardfolk", "VGM/MPMM"], ["locathah", "Locathah", "LR"], ["minotaur", "Minotaur", "GGTR/MOT"], ["orc", "Orc", "VGM/MPMM"],
+  ["satyr", "Satyr", "MOT"], ["sea-elf", "Sea Elf", "MToF"], ["shadar-kai", "Shadar-kai", "MToF"], ["shifter", "Shifter", "ERLW"],
+  ["tabaxi", "Tabaxi", "VGM/MPMM"], ["tortle", "Tortle", "TP"], ["triton", "Triton", "VGM/MPMM"], ["yuan-ti", "Yuan-ti", "VGM/MPMM"],
+  ["leonin", "Leonin", "MOT"], ["owlin", "Owlin", "SCC"], ["reborn", "Reborn", "VRGR"], ["dhampir", "Dhampir", "VRGR"], ["hexblood", "Hexblood", "VRGR"],
+  ["kender", "Kender", "DSotDQ"], ["plasmoid", "Plasmoid", "AAG"], ["thri-kreen", "Thri-kreen", "SJA"], ["hadozee", "Hadozee", "AAG"], ["giff", "Giff", "AAG"],
+  ["human-2024", "Human (2024)", "PHB 2024"], ["dwarf-2024", "Dwarf (2024)", "PHB 2024"], ["elf-2024", "Elf (2024)", "PHB 2024"],
+  ["halfling-2024", "Halfling (2024)", "PHB 2024"], ["gnome-2024", "Gnome (2024)", "PHB 2024"], ["dragonborn-2024", "Dragonborn (2024)", "PHB 2024"],
+  ["orc-2024", "Orc (2024)", "PHB 2024"], ["tiefling-2024", "Tiefling (2024)", "PHB 2024"], ["goliath-2024", "Goliath (2024)", "PHB 2024"],
+  ["aasimar-2024", "Aasimar (2024)", "DMG 2024"],
+  ["critical-role-pallid", "Pallid Elf", "Partnered (EGtW)"], ["tal-dorei-luxonborn", "Luxonborn", "Partnered (Tal'Dorei)"],
+  ["ghostfire-lumin", "Lumin", "Partnered (Ghostfire)"], ["drakkenheim-draconic", "Draconic Lineage", "Partnered (Dungeons of Drakkenheim)"],
+];
 
 const CLASS_DESCRIPTIONS = {
   Barbarian: "A fierce frontline warrior who channels rage into durability and heavy melee damage.",
@@ -278,6 +298,26 @@ function buildSubclass(classId, className, subName) {
   return { name: subName, description: `${subName} is a ${className} subclass option.`, features };
 }
 
+function expandRaceCatalog() {
+  const seen = new Set(BASE_DATA.races.map((r) => r.id));
+  EXPANDED_RACE_INDEX.forEach(([id, name, source]) => {
+    if (seen.has(id)) return;
+    BASE_DATA.races.push({
+      id,
+      name,
+      source,
+      shortDescription: `${name} from ${source}.`,
+      maturityAge: "See sourcebook",
+      lifespan: "See sourcebook",
+      languages: ["See sourcebook"],
+      skills: ["See sourcebook"],
+      features: ["Sourcebook Rules Required"],
+      racialAbilities: {},
+      lockedContent: true,
+    });
+  });
+}
+
 function ensureClassLevelsTo20() {
   const classMilestones = {
     barbarian: { 6: ["Path Feature", "Your Primal Path grants a new defining feature."], 7: ["Feral Instinct", "Advantage on initiative and better reaction when surprised."], 8: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 9: ["Brutal Critical (1 die)", "Roll one extra weapon die on critical hits."], 10: ["Path Feature", "Another Primal Path feature unlocks."], 11: ["Relentless Rage", "Make CON save to stay at 1 HP instead of 0 while raging."], 12: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 13: ["Brutal Critical (2 dice)", "Roll two extra weapon dice on critical hits."], 14: ["Path Feature", "Late-path feature improves your subclass identity."], 15: ["Persistent Rage", "Your rage only ends early under stricter conditions."], 16: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 17: ["Brutal Critical (3 dice)", "Roll three extra weapon dice on critical hits."], 18: ["Indomitable Might", "Use Strength score as minimum on STR checks."], 19: ["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."], 20: ["Primal Champion", "STR and CON increase by 4; max for both becomes 24."] },
@@ -307,6 +347,7 @@ function ensureClassLevelsTo20() {
 
 
 ensureClassLevelsTo20();
+expandRaceCatalog();
 
 const state = {
   step: "race",
@@ -426,6 +467,7 @@ function renderRaceStep() {
 
   els.raceDetails.innerHTML = `
     <h3>${race.name}</h3>
+    <p><strong>Source:</strong> ${race.source || "PHB"}</p>
     <p>${race.shortDescription || ""}</p>
     <p><strong>Age of Maturity:</strong> ${race.maturityAge || "Varies"}</p>
     <p><strong>Typical Lifespan:</strong> ${race.lifespan || "Varies"}</p>
@@ -433,6 +475,7 @@ function renderRaceStep() {
     <p><strong>Skills/Proficiencies:</strong> ${toArray(race.skills).join(", ") || "None"}</p>
     <p><strong>Features:</strong> ${toArray(race.features).map((f) => describeTermHtml(f, featureDescriptionForRace(race, f))).join(", ") || "None"}</p>
     <p><strong>Racial Ability Bonuses:</strong> ${formatAbilityBonuses(race.racialAbilities || {})}</p>
+    ${race.lockedContent ? '<p><em>Detailed mechanics for this race need the licensed sourcebook. You can add exact rules in Custom Content now or later.</em></p>' : ''}
   `;
 
   renderRaceOptionSelectors(race);

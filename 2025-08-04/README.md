@@ -10,10 +10,10 @@ This project is a multi-step character creation flow inspired by D&D Beyond.
 - **Summary**: export a JSON character sheet.
 
 ## Included Core Content
-- All core PHB races with race-option support (including Dragonborn ancestry and dynamic breath/resistance descriptions), plus DMG supplemental race entries (Aasimar, Eladrin, Genasi).
+- Core PHB races remain fully playable in-app (with race-option support like Dragonborn ancestry), and the race list is now expanded with a broad index of 5e/One D&D official + partnered race names and sources. Entries that require licensed text are flagged in-app so you can fill exact mechanics via Custom Content.
 - All core PHB classes:
   - Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard.
-- Core PHB subclasses are included for each class in the class selection flow, with class progression populated through level 20 and subclass feature milestones surfaced in the timeline. DMG subclasses Death Domain (Cleric) and Oathbreaker (Paladin) are also included.
+- Core PHB subclasses are included for each class in the class selection flow, with class progression populated through level 20 and subclass feature milestones surfaced in the timeline. DMG subclasses Death Domain (Cleric) and Oathbreaker (Paladin) are included, and subclass milestone features are surfaced in both timeline and class setup panels.
 - Core PHB feats are included and can be selected from Ability Score Improvement opportunities, plus several DMG epic boons are available in the same selector.
 
 ## Custom Content
