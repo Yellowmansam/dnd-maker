@@ -1226,11 +1226,6 @@ function renderClassConfiguration() {
       block.appendChild(wrap);
     }
 
-    if (cls.subclasses?.length && state.character.classPlan.subclassByClass[classId]) {
-      const unlocked = unlockedSubclassFeatureNames(classId);
-      block.insertAdjacentHTML("beforeend", `<p><strong>Unlocked Subclass Features:</strong> ${escapeHtml(unlocked.join(", ") || "None yet")}</p>`);
-    }
-
     els.classConfigPanel.appendChild(block);
   });
 
@@ -1369,13 +1364,21 @@ function classTimelineEntries() {
     const subObj = cls.subclasses?.find((s) => s.name === sub);
     const subclassLevels = subObj ? Object.keys(subObj.features || {}).map(Number).sort((a, b) => a - b) : (SUBCLASS_LEVELS[classId] || [3, 6, 10, 14]);
     for (let lv = 1; lv <= level; lv += 1) {
-      const features = toFeatureObjects(cls.levels?.[lv] || [["No feature listed", "No details available for this level yet."]]);
-      const hasAsi = features.some((f) => /Ability Score Improvement/i.test(f.name));
+      const features = toFeatureObjects(cls.levels?.[lv] || []).filter((f) => !/No feature listed/i.test(f.name));
+      const hasAsi = features.some((f) => /Ability Score (Improvement|Increase)/i.test(f.name));
       const fightingStyleId = cls.id === "fighter" && lv === 1 ? `${classId}-lv${lv}-fighting-style` : null;
-      entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null, fightingStyleId });
+      const showClassRow = features.length > 0 || hasAsi || !!fightingStyleId;
+      if (showClassRow) {
+        entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null, fightingStyleId });
+      }
+
       if (sub && subclassLevels.includes(lv)) {
-        const subFeatures = toFeatureObjects(subObj?.features?.[lv] || [[`Subclass Feature - ${sub}`, subclassFeatureDescription(cls.id, sub, lv)]]).map((f) => ({ ...f, name: f.name.startsWith("Subclass Feature -") ? f.name : `Subclass Feature - ${f.name}` }));
-        entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: subFeatures });
+        const subFeatures = toFeatureObjects(subObj?.features?.[lv] || [])
+          .filter((f) => !/No additional|No archetype feature/i.test(f.description || ""))
+          .map((f) => ({ ...f, name: f.name.startsWith("Subclass Feature -") ? f.name : `Subclass Feature - ${f.name}` }));
+        if (subFeatures.length) {
+          entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: subFeatures });
+        }
       }
     }
   });
@@ -1504,6 +1507,26 @@ function renderInlineAsiCards() {
   });
 }
 
+function renderInlineFightingStyleCards() {
+  document.querySelectorAll("[data-fighting-style-inline]").forEach((mount) => {
+    const classId = mount.dataset.fightingStyleInline.split("-lv")[0];
+    const current = state.character.classPlan.fightingStyleByClass[classId] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+    const options = Object.keys(FIGHTING_STYLE_OPTIONS)
+      .map((style) => `<option value="${escapeHtml(style)}" ${style === current ? "selected" : ""}>${escapeHtml(style)}</option>`)
+      .join("");
+    mount.innerHTML = `<strong>Fighting Style</strong><label>Choose Style<select data-inline-fighting-style="${classId}">${options}</select></label><p class="feature-desc">${escapeHtml(FIGHTING_STYLE_OPTIONS[current])}</p>`;
+  });
+
+  document.querySelectorAll("select[data-inline-fighting-style]").forEach((select) => {
+    select.addEventListener("change", (e) => {
+      const classId = e.target.dataset.inlineFightingStyle;
+      state.character.classPlan.fightingStyleByClass[classId] = e.target.value || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+      renderClassProgress();
+      renderSummary();
+    });
+  });
+}
+
 function buildAsiCard(id, label) {
   const choice = state.character.classPlan.advancements[id] || { kind: "ability", abilityA: "STR", abilityB: "STR", featId: "" };
   state.character.classPlan.advancements[id] = choice;
@@ -1548,7 +1571,7 @@ function asiOpportunities() {
   Object.entries(state.character.classPlan.levelsByClass).forEach(([classId, level]) => {
     const cls = classById(classId);
     for (let lv = 1; lv <= level; lv += 1) {
-      const hasAsi = toFeatureObjects(cls.levels?.[lv] || []).some((f) => /Ability Score Improvement/i.test(f.name));
+      const hasAsi = toFeatureObjects(cls.levels?.[lv] || []).some((f) => /Ability Score (Improvement|Increase)/i.test(f.name));
       if (hasAsi) rows.push({ id: `${classId}-lv${lv}`, label: `${cls.name} level ${lv}: Ability Score Improvement` });
     }
   });
@@ -1766,7 +1789,7 @@ function renderSummary() {
       <p><strong>Background:</strong> ${escapeHtml(background.name)}</p>
     </section>
 
-    <section class="details"><h3>Ability Scores</h3><ul>${abilityRows}</ul><p><strong>Point Buy:</strong> ${spentPoints()} / ${POINT_BUY_BUDGET}</p></section>
+    <section class="details"><h3>Ability Scores</h3><ul>${abilityRows}</ul><p><strong>Point Buy:</strong> ${summary.abilities.pointBuySpent} / ${summary.abilities.pointBuyBudget}</p></section>
 
     <section class="details"><h3>Race Choices</h3><ul>${raceSelections}</ul></section>
 
