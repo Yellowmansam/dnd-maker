@@ -4,10 +4,11 @@ This project is a multi-step character creation flow inspired by D&D Beyond, wit
 
 ## Current Builder Flow
 - **Race**: current refinement mode shows core PHB races as selectable and greys out non-core races while we finish core-sheet polish. Race details include lore, maturity, lifespan, movement speeds, language/proficiency details, and feature descriptions.
-- **Class**: current refinement mode enables Fighter as the active class path and greys out other classes. Fighter progression is populated with detailed level-by-level class text, the fighting-style selector appears inline in class progression at level 1, class skill choices use dropdown selectors, and core subclass support (Champion, Battle Master, Eldritch Knight) is shown in the timeline with extra spacing for readability.
-- **Ability Scores**: choose either strict **27-point buy** (8 to 15 before bonuses) or **rolled stats** (4d6 drop one die per roll slot with manual assignment to stats, max 18). For 2024-era species, ability bonuses are assigned in the ability tab (+2 and +1 to different abilities) instead of fixed racial bonuses.
+- **Class**: current refinement mode enables Fighter as the active class path and greys out other classes. Fighter progression is populated with detailed level-by-level class text, fighting-style selectors appear inline in progression (including the Champion level 10 second-style slot), class skill choices use dropdown selectors, and core subclass support (Champion, Battle Master, Eldritch Knight) is shown in the timeline with extra spacing for readability.
+- **Ability Scores**: now appears before Class. Choose either strict **27-point buy** (8 to 15 before bonuses) or **rolled stats** (4d6 drop one die per roll slot with manual assignment to stats, max 18). For 2024-era species, ability bonuses are assigned in the ability tab (+2 and +1 to different abilities) instead of fixed racial bonuses.
+- **Spells**: new dedicated tab after class progression. If your race/class/subclass grants spellcasting, choose known spells by level (cantrip through level 9) with cap enforcement and a selected-spells list.
 - **Background**: choose a background and review grants.
-- **Summary**: outputs a human-readable character sheet layout (race, classes, ability scores, background, feats, and key selections) with defensive fallback rendering if a class/race/background entry is temporarily unavailable.
+- **Summary**: outputs a human-readable character sheet layout (race, classes, ability scores, spells, background, feats, and key selections) with defensive fallback rendering if a class/race/background entry is temporarily unavailable.
 
 ## Included Core Content
 - Core PHB races remain fully playable in-app (with race-option support like Dragonborn ancestry), and the race list is expanded with a broad index of 5e/One D&D official + partnered race names and full sourcebook names. Race options are split into **2014 Rules Content** and **2024 Rules Content** sections in the UI. These race entries are grouped by rules era and include sourcebook metadata directly in the picker and detail view.
@@ -67,3 +68,9 @@ Output:
 
 ## Remaining scope
 - Race tab now includes expanded language coverage, movement speed display, and race-driven language/skill choice selectors. Remaining work is primarily deeper class/subclass/feat option wiring and long-form rules text polish.
+
+
+## Built-in Compendium JSON
+- Class/subclass/spell data is now also provided in `data/compendium.json` for human-readable maintenance.
+- On startup, compendium data merges into runtime content without wiping existing subclass feature definitions.
+- You can load that built-in JSON into the Custom Content page via **Load Built-in Compendium**.

@@ -1,6 +1,7 @@
 const POINT_BUY_BUDGET = 27;
-const STEP_ORDER = ["race", "class", "abilities", "background", "summary"];
+const STEP_ORDER = ["race", "abilities", "class", "spells", "background", "summary"];
 const COST_BY_SCORE = { 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 7, 15: 9 };
+const BUILTIN_COMPENDIUM_PATH = "data/compendium.json";
 
 const LANGUAGE_DESCRIPTIONS = {
   Common: "The most widespread trade tongue across settled lands.",
@@ -974,6 +975,7 @@ const state = {
     raceId: BASE_DATA.races[0].id,
     raceChoices: {},
     classPlan: { primaryClassId: "fighter", subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {}, fightingStyleByClass: {}, fightingStyleSecondaryByClass: {}, battleMasterByClass: {} },
+    spellsKnown: [],
     originAbilityBonuses: { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 },
     abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
     backgroundId: BASE_DATA.backgrounds[0].id,
@@ -987,7 +989,12 @@ const state = {
 
 const els = mapEls();
 bindEvents();
-renderAll();
+initializeApp();
+
+async function initializeApp() {
+  await loadBuiltInCompendium();
+  renderAll();
+}
 
 function mapEls() {
   return {
@@ -995,12 +1002,13 @@ function mapEls() {
     importCustom: byId("import-custom"), exportCustom: byId("export-custom"), importCustomFile: byId("import-custom-file"),
     submittedItems: byId("submitted-items"), customType: byId("custom-type"), customStatus: byId("custom-status"), clearCustom: byId("clear-custom"), submitCustom: byId("submit-custom"), applyCustom: byId("apply-custom"),
     quickfillBox: byId("quickfill-box"), tooltip: byId("hover-tooltip"),
-    panels: { race: byId("step-race"), class: byId("step-class"), abilities: byId("step-abilities"), background: byId("step-background"), summary: byId("step-summary") },
+    panels: { race: byId("step-race"), abilities: byId("step-abilities"), class: byId("step-class"), spells: byId("step-spells"), background: byId("step-background"), summary: byId("step-summary") },
     raceOptions: byId("race-options"), raceDetails: byId("race-details"), raceOptionConfig: byId("race-option-config"),
     startingClassSetup: byId("starting-class-setup"), classOptions: byId("class-options"), classConfigPanel: byId("class-config-panel"), classValidation: byId("class-validation"),
     totalLevel: byId("total-level"), classLevelBreakdown: byId("class-level-breakdown"), classFeatureTimeline: byId("class-feature-timeline"),
     toggleMulticlass: byId("toggle-multiclass"), multiclassList: byId("multiclass-list"),
     characterName: byId("character-name"), abilityMethod: byId("ability-method"), originAsiPanel: byId("origin-asi-panel"), rolledPanel: byId("rolled-panel"), rollButtons: byId("roll-buttons"), rolledAssign: byId("rolled-assign"), resetRolls: byId("reset-rolls"), abilitiesGrid: byId("abilities-grid"), pointBuyStatus: byId("point-buy-status"),
+    spellLevelFilter: byId("spell-level-filter"), spellList: byId("spell-list"), spellsStatus: byId("spells-status"), spellsCap: byId("spells-cap"), selectedSpells: byId("selected-spells"),
     backgroundOptions: byId("background-options"), backgroundDetails: byId("background-details"), characterSheet: byId("character-sheet"),
   };
 }
@@ -1011,6 +1019,7 @@ function bindEvents() {
   els.importCustom.addEventListener("click", () => els.importCustomFile.click());
   els.importCustomFile.addEventListener("change", importCustomData);
   els.exportCustom.addEventListener("click", exportCustomData);
+  byId("import-builtin-compendium")?.addEventListener("click", importBuiltInCompendiumToCustom);
   els.customType.addEventListener("change", renderCustomFieldsByType);
   els.clearCustom.addEventListener("click", clearCustomEditor);
   els.submitCustom.addEventListener("click", submitCustomItem);
@@ -1024,15 +1033,18 @@ function bindEvents() {
   document.addEventListener("mouseover", handleDescriptionHover);
   document.addEventListener("mouseout", hideTooltip);
 
-  byId("confirm-race").addEventListener("click", () => goStep("class"));
+  byId("confirm-race").addEventListener("click", () => goStep("abilities"));
   byId("back-to-race").addEventListener("click", () => goStep("race"));
   byId("confirm-class").addEventListener("click", confirmStartingClass);
-  byId("confirm-class-levels").addEventListener("click", () => goStep("abilities"));
+  byId("confirm-class-levels").addEventListener("click", () => goStep("spells"));
   byId("back-to-class").addEventListener("click", () => goStep("class"));
-  byId("confirm-abilities").addEventListener("click", () => goStep("background"));
+  byId("confirm-abilities").addEventListener("click", () => goStep("class"));
+  byId("confirm-spells").addEventListener("click", () => goStep("background"));
   els.abilityMethod.addEventListener("change", (e) => { state.abilityMethod = e.target.value; renderAbilityStep(); renderClassProgress(); });
+  els.spellLevelFilter?.addEventListener("change", renderSpellsStep);
   els.resetRolls.addEventListener("click", resetRolledStats);
   byId("back-to-abilities").addEventListener("click", () => goStep("abilities"));
+  byId("back-to-spells").addEventListener("click", () => goStep("spells"));
   byId("confirm-background").addEventListener("click", () => goStep("summary"));
   byId("back-to-background").addEventListener("click", () => goStep("background"));
   byId("download-json").addEventListener("click", downloadJson);
@@ -1050,8 +1062,9 @@ function renderAll() {
   els.customPage.classList.toggle("hidden", !state.customOpen);
   if (state.customOpen) { renderCustomFieldsByType(); renderSubmittedList(); }
   renderRaceStep();
-  renderClassStep();
   renderAbilityStep();
+  renderClassStep();
+  renderSpellsStep();
   renderBackgroundStep();
   renderSummary();
 }
@@ -1708,6 +1721,151 @@ function renderAbilityStep() {
   }
 }
 
+function canCharacterCastSpells() {
+  const race = selectedRace();
+  const raceCaster = toArray(race?.features).some((f) => /(Legacy|Magic|Spellcasting|Psionics)/i.test(f));
+  const fighterLevel = classLevel("fighter");
+  const fighterSubclass = state.character.classPlan.subclassByClass.fighter;
+  const eldritchKnightCaster = fighterLevel >= 3 && fighterSubclass === "Eldritch Knight";
+  return raceCaster || eldritchKnightCaster;
+}
+
+function spellCapForCurrentBuild() {
+  const fighterLevel = classLevel("fighter");
+  const fighterSubclass = state.character.classPlan.subclassByClass.fighter;
+  if (!(fighterLevel >= 3 && fighterSubclass === "Eldritch Knight")) return { cantrips: 0, spells: 0 };
+  const cantrips = fighterLevel >= 10 ? 3 : 2;
+  const spellsByLevel = {
+    3: 3, 4: 4, 5: 4, 6: 4, 7: 5, 8: 6, 9: 6, 10: 7,
+    11: 8, 12: 8, 13: 9, 14: 10, 15: 10, 16: 11, 17: 11, 18: 11, 19: 12, 20: 13,
+  };
+  return { cantrips, spells: spellsByLevel[fighterLevel] || 0 };
+}
+
+function renderSpellsStep() {
+  if (!els.spellList) return;
+  const canCast = canCharacterCastSpells();
+  const cap = spellCapForCurrentBuild();
+  els.spellsStatus.textContent = canCast
+    ? "Spellcasting is available from your current build."
+    : "No active spellcasting features detected yet. This tab will populate as your build gains spellcasting.";
+  els.spellsCap.textContent = `Known spell cap: Cantrips ${cap.cantrips}, Leveled Spells ${cap.spells}.`;
+
+  const filterValue = els.spellLevelFilter?.value || "all";
+  const spells = (state.data.spells || []).filter((s) => filterValue === "all" || String(s.level) === filterValue);
+
+  els.spellList.innerHTML = "";
+  spells.forEach((spell) => {
+    const selected = state.character.spellsKnown.includes(spell.id);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `option-card ${selected ? "selected" : ""}`;
+    button.innerHTML = `<strong>${escapeHtml(spell.name)}</strong><p>${spell.level === 0 ? "Cantrip" : `Level ${spell.level}`} • ${escapeHtml(spell.school || "")}</p><p>${escapeHtml(spell.description || "")}</p>`;
+    button.addEventListener("click", () => toggleKnownSpell(spell));
+    els.spellList.appendChild(button);
+  });
+
+  els.selectedSpells.innerHTML = "";
+  const chosen = state.character.spellsKnown
+    .map((id) => state.data.spells.find((s) => s.id === id))
+    .filter(Boolean);
+  if (!chosen.length) {
+    els.selectedSpells.innerHTML = "<li>No spells selected.</li>";
+  } else {
+    chosen.forEach((s) => {
+      const li = document.createElement("li");
+      li.textContent = `${s.name} (${s.level === 0 ? "Cantrip" : `Level ${s.level}`})`;
+      els.selectedSpells.appendChild(li);
+    });
+  }
+}
+
+function toggleKnownSpell(spell) {
+  const cap = spellCapForCurrentBuild();
+  const isCantrip = Number(spell.level) === 0;
+  const known = new Set(state.character.spellsKnown);
+  if (known.has(spell.id)) {
+    known.delete(spell.id);
+  } else {
+    const selected = [...known].map((id) => state.data.spells.find((s) => s.id === id)).filter(Boolean);
+    const currentCantrips = selected.filter((s) => Number(s.level) === 0).length;
+    const currentSpells = selected.filter((s) => Number(s.level) > 0).length;
+    if (isCantrip && currentCantrips >= cap.cantrips) return;
+    if (!isCantrip && currentSpells >= cap.spells) return;
+    known.add(spell.id);
+  }
+  state.character.spellsKnown = [...known];
+  renderSpellsStep();
+  renderSummary();
+}
+
+async function loadBuiltInCompendium() {
+  try {
+    const resp = await fetch(BUILTIN_COMPENDIUM_PATH);
+    if (!resp.ok) return;
+    const data = await resp.json();
+
+    if (Array.isArray(data.classes) && data.classes.length) {
+      data.classes.forEach((incoming) => {
+        const existing = BASE_DATA.classes.find((c) => c.id === incoming.id);
+        if (!existing) return;
+
+        if (incoming.name) existing.name = incoming.name;
+        if (incoming.hitDie) existing.hitDie = incoming.hitDie;
+        if (incoming.multiclassReq) existing.multiclassReq = incoming.multiclassReq;
+        if (Array.isArray(incoming.proficiencies) && incoming.proficiencies.length) {
+          existing.proficiencies = [...incoming.proficiencies];
+        }
+
+        if (Array.isArray(incoming.subclasses) && incoming.subclasses.length) {
+          existing.subclasses = incoming.subclasses.map((sub) => {
+            const previous = existing.subclasses?.find((s) => s.name === sub.name);
+            return {
+              name: sub.name,
+              description: sub.description || previous?.description || "",
+              features: sub.features && typeof sub.features === "object" ? structuredClone(sub.features) : (previous?.features || {}),
+            };
+          });
+        }
+      });
+      state.data.classes = structuredClone(BASE_DATA.classes);
+    }
+
+    if (Array.isArray(data.spells) && data.spells.length) {
+      const mergedById = new Map((BASE_DATA.spells || []).map((spell) => [spell.id, { ...spell }]));
+      data.spells.forEach((spell) => {
+        if (!spell?.id || !spell?.name) return;
+        mergedById.set(spell.id, { ...spell });
+      });
+      const mergedSpells = [...mergedById.values()].sort((a, b) => (a.level - b.level) || a.name.localeCompare(b.name));
+      BASE_DATA.spells = mergedSpells;
+      state.data.spells = structuredClone(mergedSpells);
+    }
+  } catch (err) {
+    console.warn("Failed to load built-in compendium", err);
+  }
+}
+
+async function importBuiltInCompendiumToCustom() {
+  try {
+    const resp = await fetch(BUILTIN_COMPENDIUM_PATH);
+    if (!resp.ok) throw new Error("Unable to fetch built-in compendium.");
+    const data = await resp.json();
+    const items = [];
+    (data.classes || []).forEach((cls) => items.push({ type: "classes", name: cls.name, data: cls }));
+    (data.spells || []).forEach((s) => items.push({ type: "spells", name: s.name, data: s }));
+    items.forEach((item) => {
+      const id = `builtin-${item.type}-${slugify(item.name)}`;
+      const exists = state.custom.submitted.some((s) => s.id === id);
+      if (!exists) state.custom.submitted.push({ ...item, id, submitted: true, dirty: false });
+    });
+    els.customStatus.textContent = "Built-in compendium loaded into submitted custom items.";
+    renderSubmittedList();
+  } catch (err) {
+    els.customStatus.textContent = "Failed to load built-in compendium.";
+  }
+}
+
 function renderOriginAsiPanel() {
   const race = selectedRace();
   const isFlexible = race.abilityScoreRule === "choose2plus1";
@@ -1809,6 +1967,10 @@ function renderBackgroundStep() {
 function summaryDataObject() {
   const race = selectedRace() || { id: "", name: "Unknown Race", source: "Unknown", languages: [], skills: [], features: [], racialAbilities: {}, speed: { walk: 30 } };
   const background = selectedBackground() || { name: "Unknown Background", skills: [], feature: "", equipment: [] };
+  const chosenFeats = Object.values(state.character.classPlan.advancements || {})
+    .filter((c) => c.kind === "feat" && c.featId)
+    .map((c) => (state.data.feats.find((f) => f.id === c.featId) || CORE_FEATS.find((f) => f.id === c.featId))?.name)
+    .filter(Boolean);
   return {
     name: state.character.name || "Unnamed Adventurer",
     race: race.name,
@@ -1836,6 +1998,10 @@ function summaryDataObject() {
       feature: background.feature,
       equipment: toArray(background.equipment),
     },
+    spellsKnown: state.character.spellsKnown
+      .map((id) => state.data.spells.find((s) => s.id === id))
+      .filter(Boolean)
+      .map((s) => ({ name: s.name, level: s.level, school: s.school })),
     feats: chosenFeats,
   };
 }
@@ -1882,6 +2048,8 @@ function renderSummary() {
     </section>
 
     <section class="details"><h3>Feats</h3><p>${escapeHtml(summary.feats.join(", ") || "None selected") }</p></section>
+
+    <section class="details"><h3>Spells</h3><p>${escapeHtml((summary.spellsKnown || []).map((s) => `${s.name} (${s.level === 0 ? "Cantrip" : `Level ${s.level}`})`).join(", ") || "None selected")}</p></section>
   `;
 }
 

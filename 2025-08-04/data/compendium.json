@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "name": "Built-in Core Compendium",
+    "edition": "5e 2014",
+    "note": "Contains class/subclass/spell data in importable JSON form for this app. Extend this file with your own local source text as needed."
+  },
+  "classes": [
+    {
+      "id": "fighter",
+      "name": "Fighter",
+      "hitDie": "d10",
+      "multiclassReq": "STR 13 or DEX 13",
+      "proficiencies": ["All armor", "Shields", "Simple/martial weapons"],
+      "subclasses": [
+        {
+          "name": "Champion",
+          "description": "A straightforward martial specialist built on superior athletics and critical hits."
+        },
+        {
+          "name": "Battle Master",
+          "description": "A tactical fighter who uses superiority dice and maneuvers."
+        },
+        {
+          "name": "Eldritch Knight",
+          "description": "A martial fighter blending steel and arcane spellcasting."
+        }
+      ]
+    }
+  ],
+  "spells": [
+    {"id":"acid-splash","name":"Acid Splash","level":0,"school":"Conjuration","classes":["Wizard","Sorcerer"],"description":"Hurl a bubble of acid at one or two targets; each target must make a Dexterity save or take acid damage."},
+    {"id":"fire-bolt","name":"Fire Bolt","level":0,"school":"Evocation","classes":["Wizard","Sorcerer"],"description":"Hurl a mote of fire at a creature or object; on a hit it takes fire damage."},
+    {"id":"light","name":"Light","level":0,"school":"Evocation","classes":["Cleric","Wizard"],"description":"Touch an object to shed bright and dim light for 1 hour."},
+    {"id":"mage-hand","name":"Mage Hand","level":0,"school":"Conjuration","classes":["Wizard","Warlock","Sorcerer"],"description":"Create a spectral hand that can manipulate objects at a distance."},
+    {"id":"prestidigitation","name":"Prestidigitation","level":0,"school":"Transmutation","classes":["Wizard","Warlock","Sorcerer"],"description":"Perform minor magical tricks and harmless sensory effects."},
+    {"id":"ray-of-frost","name":"Ray of Frost","level":0,"school":"Evocation","classes":["Wizard","Sorcerer"],"description":"A frigid beam deals cold damage and slows the target's speed."},
+    {"id":"shield","name":"Shield","level":1,"school":"Abjuration","classes":["Wizard","Sorcerer"],"description":"A reactive magical barrier grants +5 AC until your next turn and blocks magic missile."},
+    {"id":"magic-missile","name":"Magic Missile","level":1,"school":"Evocation","classes":["Wizard","Sorcerer"],"description":"Create three glowing darts of force that automatically hit targets."},
+    {"id":"absorb-elements","name":"Absorb Elements","level":1,"school":"Abjuration","classes":["Druid","Ranger","Sorcerer","Wizard"],"description":"Capture incoming elemental energy to gain resistance and empower your next melee hit."},
+    {"id":"burning-hands","name":"Burning Hands","level":1,"school":"Evocation","classes":["Wizard","Sorcerer"],"description":"A 15-foot cone of fire forces Dexterity saves and deals fire damage."},
+    {"id":"chromatic-orb","name":"Chromatic Orb","level":1,"school":"Evocation","classes":["Wizard","Sorcerer"],"description":"Hurl a sphere of elemental energy; choose acid, cold, fire, lightning, poison, or thunder damage."},
+    {"id":"detect-magic","name":"Detect Magic","level":1,"school":"Divination","classes":["Wizard","Cleric","Druid"],"description":"Sense magic within range and identify magical auras while concentrating."},
+    {"id":"find-familiar","name":"Find Familiar","level":1,"school":"Conjuration","classes":["Wizard"],"description":"Summon a spirit in animal form to serve as your familiar."},
+    {"id":"sleep","name":"Sleep","level":1,"school":"Enchantment","classes":["Wizard","Sorcerer","Bard"],"description":"Roll hit points affected and put creatures to magical sleep."},
+    {"id":"thunderwave","name":"Thunderwave","level":1,"school":"Evocation","classes":["Wizard","Bard","Druid"],"description":"A wave of thunderous force pushes creatures and deals thunder damage on a failed save."},
+    {"id":"misty-step","name":"Misty Step","level":2,"school":"Conjuration","classes":["Wizard","Sorcerer","Warlock"],"description":"Briefly wreathe yourself in mist and teleport up to 30 feet."},
+    {"id":"mirror-image","name":"Mirror Image","level":2,"school":"Illusion","classes":["Wizard","Sorcerer"],"description":"Create illusory duplicates that can cause attacks to miss you."},
+    {"id":"scorching-ray","name":"Scorching Ray","level":2,"school":"Evocation","classes":["Wizard","Sorcerer"],"description":"Create three rays of fire and make spell attacks against targets."},
+    {"id":"shatter","name":"Shatter","level":2,"school":"Evocation","classes":["Wizard","Bard","Sorcerer"],"description":"A sudden loud ringing deals thunder damage in an area, especially effective against inorganic materials."},
+    {"id":"hold-person","name":"Hold Person","level":2,"school":"Enchantment","classes":["Wizard","Cleric","Bard","Druid","Sorcerer","Warlock"],"description":"Paralyze a humanoid target on a failed Wisdom save while concentration lasts."}
+  ]
+}
