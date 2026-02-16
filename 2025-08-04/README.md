@@ -3,11 +3,11 @@
 This project is a multi-step character creation flow inspired by D&D Beyond, with clickable step tabs for quick navigation.
 
 ## Current Builder Flow
-- **Race**: pick a race, review short lore, age of maturity, lifespan, movement speeds (walk/fly/climb/swim where applicable), full language/proficiency details, and detailed feature descriptions.
-- **Class**: pick a starting class, submit to lock level 1, then add or subtract levels per class up to a total of level 20. Class cards now include a hover description for each class, multiclass options can be toggled open/closed, and picked multiclasses are removed from the multiclass list until reduced back to level 0. A class setup panel now shows saving throws, core proficiencies, and class skill-pick checkboxes for every taken class. The timeline shows class features with descriptions directly underneath (no duplicate hover tooltip on class features), subclass features appear as `Subclass Feature - ...` at subclass progression levels, and each Ability Score Improvement / Feat selector is shown inline at the exact level where it is unlocked.
+- **Race**: current refinement mode shows core PHB races as selectable and greys out non-core races while we finish core-sheet polish. Race details include lore, maturity, lifespan, movement speeds, language/proficiency details, and feature descriptions.
+- **Class**: current refinement mode enables Fighter as the active class path and greys out other classes. Fighter progression is now populated with detailed level-by-level class text, a fighting-style selector at setup, and core subclass support (Champion, Battle Master, Eldritch Knight) with subclass timeline entries.
 - **Ability Scores**: choose either strict **27-point buy** (8 to 15 before bonuses) or **rolled stats** (4d6 drop one die per roll slot with manual assignment to stats, max 18). For 2024-era species, ability bonuses are assigned in the ability tab (+2 and +1 to different abilities) instead of fixed racial bonuses.
 - **Background**: choose a background and review grants.
-- **Summary**: export a JSON character sheet.
+- **Summary**: outputs a human-readable character sheet layout (race, classes, ability scores, background, feats, and key selections).
 
 ## Included Core Content
 - Core PHB races remain fully playable in-app (with race-option support like Dragonborn ancestry), and the race list is expanded with a broad index of 5e/One D&D official + partnered race names and full sourcebook names. Race options are split into **2014 Rules Content** and **2024 Rules Content** sections in the UI. These race entries are grouped by rules era and include sourcebook metadata directly in the picker and detail view.

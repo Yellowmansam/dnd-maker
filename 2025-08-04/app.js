@@ -76,6 +76,32 @@ const RACE_OPTION_PRESETS = {
   ],
 };
 
+const CORE_RACE_IDS = new Set(["dragonborn", "dwarf", "elf", "gnome", "half-elf", "half-orc", "halfling", "human", "tiefling"]);
+const ENABLED_CLASS_IDS = new Set(["fighter"]);
+const CORE_SUBCLASSES_BY_CLASS = {
+  barbarian: ["Berserker", "Totem Warrior"],
+  bard: ["Lore", "Valor"],
+  cleric: ["Knowledge", "Life", "Light", "Nature", "Tempest", "Trickery", "War"],
+  druid: ["Land", "Moon"],
+  fighter: ["Champion", "Battle Master", "Eldritch Knight"],
+  monk: ["Open Hand", "Shadow", "Four Elements"],
+  paladin: ["Devotion", "Ancients", "Vengeance"],
+  ranger: ["Hunter", "Beast Master"],
+  rogue: ["Thief", "Assassin", "Arcane Trickster"],
+  sorcerer: ["Draconic Bloodline", "Wild Magic"],
+  warlock: ["Archfey", "Fiend", "Great Old One"],
+  wizard: ["Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion", "Necromancy", "Transmutation"],
+};
+
+const FIGHTING_STYLE_OPTIONS = {
+  Archery: "You gain a +2 bonus to attack rolls you make with ranged weapons.",
+  Defense: "While you are wearing armor, you gain a +1 bonus to AC.",
+  Dueling: "When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.",
+  "Great Weapon Fighting": "When you roll a 1 or 2 on a damage die for an attack you make with a melee weapon that you are wielding with two hands, you can reroll the die and must use the new roll, even if the new roll is a 1 or a 2. The weapon must have the two-handed or versatile property for you to gain this benefit.",
+  Protection: "When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.",
+  "Two Weapon Fighting": "When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.",
+};
+
 const FEATURE_DESCRIPTIONS = {
   "Draconic Ancestry": "Your dragon lineage defines your breath weapon and resistance.",
   "Breath Weapon": "Exhale destructive elemental energy based on your ancestry.",
@@ -702,6 +728,118 @@ function applyRaceCompletionPass() {
   });
 }
 
+function applyCoreContentFocus() {
+  BASE_DATA.classes.forEach((cls) => {
+    const allowed = new Set(CORE_SUBCLASSES_BY_CLASS[cls.id] || []);
+    cls.subclasses = (cls.subclasses || []).filter((sub) => allowed.has(sub.name));
+  });
+}
+
+function applyFighterDetailedProgression() {
+  const fighter = BASE_DATA.classes.find((cls) => cls.id === "fighter");
+  if (!fighter) return;
+  fighter.levels = {
+    1: [
+      ["Hit Points", "Hit Dice: 1d10 per fighter level. Hit Points at 1st Level: 10 + your Constitution modifier. Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per fighter level after 1st."],
+      ["Proficiencies", "Armor: All armor, shields. Weapons: Simple weapons, martial weapons. Tools: None. Saving Throws: Strength, Constitution. Skills: Choose two skills from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival."],
+      ["Fighting Style", "Choose one Fighting Style. You can’t take a Fighting Style option more than once, even if you later get to choose again."],
+      ["Second Wind", "You have a limited well of stamina that you can draw on to protect yourself from harm. On your turn, you can use a bonus action to regain hit points equal to 1d10 + your fighter level. Once you use this feature, you must finish a short or long rest before you can use it again."],
+    ],
+    2: [["Action Surge", "Starting at 2nd level, you can push yourself beyond your normal limits for a moment. On your turn, you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again. Starting at 17th level, you can use it twice before a rest, but only once on the same turn."]],
+    3: [["Martial Archetype", "At 3rd level, you choose an archetype that you strive to emulate in your combat styles and techniques. Choose Champion, Battle Master, or Eldritch Knight. The archetype grants features at 3rd, 7th, 10th, 15th, and 18th level."]],
+    4: [["Ability Score Increase", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    5: [["Extra Attack", "Beginning at 5th level, you can attack twice, instead of once, whenever you take the Attack action on your turn. The number of attacks increases to three when you reach 11th level in this class and to four when you reach 20th level in this class."]],
+    6: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    7: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    8: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    9: [["Indomitable", "Beginning at 9th level, you can reroll a saving throw that you fail. If you do so, you must use the new roll, and you can’t use this feature again until you finish a long rest. You can use this feature twice between long rests starting at 13th level and three times between long rests starting at 17th level."]],
+    10: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    11: [["Extra Attack (2)", "You can attack three times whenever you take the Attack action on your turn."]],
+    12: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    13: [["Indomitable (2)", "You can use Indomitable twice between long rests."]],
+    14: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    15: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    16: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    17: [["Action Surge (2)", "You can use Action Surge twice between rests, but only once on the same turn."], ["Indomitable (3)", "You can use Indomitable three times between long rests."]],
+    18: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    19: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
+    20: [["Extra Attack (3)", "You can attack four times whenever you take the Attack action on your turn."]],
+  };
+
+  const subclassTemplates = {
+    Champion: {
+      1: [["Subclass Feature - Champion Training", "No archetype feature is gained at fighter level 1; Champion features begin at level 3."]],
+      2: [["Subclass Feature - Champion Training", "No archetype feature is gained at fighter level 2; Champion features begin at level 3."]],
+      3: [["Subclass Feature - Improved Critical", "Your weapon attacks score a critical hit on a roll of 19 or 20."]],
+      4: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      5: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      6: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      7: [["Subclass Feature - Remarkable Athlete", "Add half your proficiency bonus (rounded up) to STR, DEX, and CON checks that don’t already use your proficiency bonus, and improve your long jump and high jump." ]],
+      8: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      9: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      10: [["Subclass Feature - Additional Fighting Style", "You can choose a second option from the Fighting Style class feature."]],
+      11: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      12: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      13: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      14: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      15: [["Subclass Feature - Superior Critical", "Your weapon attacks score a critical hit on a roll of 18–20."]],
+      16: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      17: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      18: [["Subclass Feature - Survivor", "At the start of each of your turns, regain hit points equal to 5 + your Constitution modifier if you have no more than half your hit points and are not at 0 hit points."]],
+      19: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+      20: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
+    },
+    "Battle Master": {
+      1: [["Subclass Feature - Battle Master Training", "No archetype feature is gained at fighter level 1; Battle Master features begin at level 3."]],
+      2: [["Subclass Feature - Battle Master Training", "No archetype feature is gained at fighter level 2; Battle Master features begin at level 3."]],
+      3: [["Subclass Feature - Combat Superiority", "You learn maneuvers fueled by superiority dice and gain a pool of superiority dice used for tactical effects."], ["Subclass Feature - Student of War", "Gain proficiency with one type of artisan’s tools of your choice."]],
+      4: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      5: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      6: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      7: [["Subclass Feature - Know Your Enemy", "If you spend at least 1 minute observing a creature, you can learn whether it is your equal, superior, or inferior in certain combat statistics."]],
+      8: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      9: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      10: [["Subclass Feature - Improved Combat Superiority", "Your superiority dice become d10s."]],
+      11: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      12: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      13: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      14: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      15: [["Subclass Feature - Relentless", "When you roll initiative and have no superiority dice remaining, you regain one superiority die."]],
+      16: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      17: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      18: [["Subclass Feature - Improved Combat Superiority (d12)", "Your superiority dice become d12s."]],
+      19: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+      20: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
+    },
+    "Eldritch Knight": {
+      1: [["Subclass Feature - Eldritch Knight Training", "No archetype feature is gained at fighter level 1; Eldritch Knight features begin at level 3."]],
+      2: [["Subclass Feature - Eldritch Knight Training", "No archetype feature is gained at fighter level 2; Eldritch Knight features begin at level 3."]],
+      3: [["Subclass Feature - Spellcasting", "You learn wizard cantrips and spells, using Intelligence as your spellcasting ability."], ["Subclass Feature - Weapon Bond", "Perform a ritual to bond with up to two weapons; bonded weapons can’t be disarmed from you and can be summoned to your hand."]],
+      4: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      5: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      6: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      7: [["Subclass Feature - War Magic", "When you use your action to cast a cantrip, you can make one weapon attack as a bonus action."]],
+      8: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      9: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      10: [["Subclass Feature - Eldritch Strike", "When you hit a creature with a weapon attack, that creature has disadvantage on the next saving throw it makes against a spell you cast before the end of your next turn."]],
+      11: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      12: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      13: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      14: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      15: [["Subclass Feature - Arcane Charge", "When you use Action Surge, you can teleport up to 30 feet to an unoccupied space you can see before or after the additional action."]],
+      16: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      17: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      18: [["Subclass Feature - Improved War Magic", "When you use your action to cast a spell, you can make one weapon attack as a bonus action."]],
+      19: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+      20: [["Subclass Feature - Eldritch Knight Progression", "No additional Eldritch Knight feature at this level."]],
+    },
+  };
+
+  fighter.subclasses = fighter.subclasses
+    .filter((sub) => ["Champion", "Battle Master", "Eldritch Knight"].includes(sub.name))
+    .map((sub) => ({ ...sub, features: subclassTemplates[sub.name] || sub.features }));
+}
+
 function applyBookDataBatches() {
   const raceById = new Map(BASE_DATA.races.map((r) => [r.id, r]));
   const classByIdMap = new Map(BASE_DATA.classes.map((c) => [c.id, c]));
@@ -813,6 +951,8 @@ expandRaceCatalog();
 applyBookDataBatches();
 normalizeRacePlaceholderText();
 applyRaceCompletionPass();
+applyCoreContentFocus();
+applyFighterDetailedProgression();
 
 const state = {
   step: "race",
@@ -822,7 +962,7 @@ const state = {
     name: "",
     raceId: BASE_DATA.races[0].id,
     raceChoices: {},
-    classPlan: { primaryClassId: BASE_DATA.classes[0].id, subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {} },
+    classPlan: { primaryClassId: "fighter", subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {}, fightingStyleByClass: {} },
     originAbilityBonuses: { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 },
     abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
     backgroundId: BASE_DATA.backgrounds[0].id,
@@ -973,11 +1113,13 @@ function renderRaceCardsByEra(container, races, selectedId, onSelect) {
     const grid = document.createElement("div");
     grid.className = "option-grid";
     group.races.forEach((race) => {
+      const isEnabled = CORE_RACE_IDS.has(race.id);
       const b = document.createElement("button");
       b.type = "button";
-      b.className = `option-card ${race.id === selectedId ? "selected" : ""}`;
-      b.innerHTML = `<strong>${escapeHtml(race.name)}</strong><p>${escapeHtml(race.source || "Player's Handbook (2014)")}</p>`;
-      b.addEventListener("click", () => onSelect(race.id));
+      b.disabled = !isEnabled;
+      b.className = `option-card ${race.id === selectedId ? "selected" : ""} ${isEnabled ? "" : "disabled"}`;
+      b.innerHTML = `<strong>${escapeHtml(race.name)}</strong><p>${escapeHtml(race.source || "Player's Handbook (2014)")}</p>${isEnabled ? "" : "<p>Temporarily disabled during core-only refinement.</p>"}`;
+      if (isEnabled) b.addEventListener("click", () => onSelect(race.id));
       grid.appendChild(b);
     });
     section.appendChild(grid);
@@ -1077,6 +1219,14 @@ function renderClassConfiguration() {
       block.appendChild(wrap);
     }
 
+    if (classId === "fighter") {
+      const currentStyle = state.character.classPlan.fightingStyleByClass[classId] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+      const styleOptions = Object.entries(FIGHTING_STYLE_OPTIONS)
+        .map(([style, description]) => `<option value="${escapeHtml(style)}" ${style === currentStyle ? "selected" : ""}>${escapeHtml(style)} - ${escapeHtml(description)}</option>`)
+        .join("");
+      block.insertAdjacentHTML("beforeend", `<label><strong>Fighting Style:</strong><select data-fighting-style-class="${classId}">${styleOptions}</select></label><p><em>${escapeHtml(FIGHTING_STYLE_OPTIONS[currentStyle])}</em></p>`);
+    }
+
     if (cls.subclasses?.length && state.character.classPlan.subclassByClass[classId]) {
       const unlocked = unlockedSubclassFeatureNames(classId);
       block.insertAdjacentHTML("beforeend", `<p><strong>Unlocked Subclass Features:</strong> ${escapeHtml(unlocked.join(", ") || "None yet")}</p>`);
@@ -1104,6 +1254,14 @@ function renderClassConfiguration() {
       renderClassConfiguration();
     });
   });
+
+  els.classConfigPanel.querySelectorAll("select[data-fighting-style-class]").forEach((select) => {
+    select.addEventListener("change", (e) => {
+      state.character.classPlan.fightingStyleByClass[e.target.dataset.fightingStyleClass] = e.target.value;
+      renderClassConfiguration();
+      renderClassProgress();
+    });
+  });
 }
 
 function unlockedSubclassFeatureNames(classId) {
@@ -1122,24 +1280,30 @@ function unlockedSubclassFeatureNames(classId) {
 function renderClassCards(selectedId) {
   els.classOptions.innerHTML = "";
   state.data.classes.forEach((item) => {
+    const isEnabled = ENABLED_CLASS_IDS.has(item.id);
     const b = document.createElement("button");
     b.type = "button";
-    b.className = `option-card ${item.id === selectedId ? "selected" : ""}`;
+    b.disabled = !isEnabled;
+    b.className = `option-card ${item.id === selectedId ? "selected" : ""} ${isEnabled ? "" : "disabled"}`;
     const desc = CLASS_DESCRIPTIONS[item.name] || `${item.name} class.`;
-    b.innerHTML = `<strong class="desc-term" data-desc="${escapeHtml(desc)}">${escapeHtml(item.name)}</strong><p>${escapeHtml(desc)}</p>`;
-    b.addEventListener("click", () => {
-      state.character.classPlan.primaryClassId = item.id;
-      renderClassStep();
-    });
+    b.innerHTML = `<strong class="desc-term" data-desc="${escapeHtml(desc)}">${escapeHtml(item.name)}</strong><p>${escapeHtml(desc)}</p>${isEnabled ? "" : "<p>Temporarily disabled during fighter-only refinement.</p>"}`;
+    if (isEnabled) {
+      b.addEventListener("click", () => {
+        state.character.classPlan.primaryClassId = item.id;
+        renderClassStep();
+      });
+    }
     els.classOptions.appendChild(b);
   });
 }
 
 function confirmStartingClass() {
-  const id = state.character.classPlan.primaryClassId;
+  const id = ENABLED_CLASS_IDS.has(state.character.classPlan.primaryClassId) ? state.character.classPlan.primaryClassId : "fighter";
+  state.character.classPlan.primaryClassId = id;
   state.character.classPlan.levelsByClass = { [id]: 1 };
   state.character.classPlan.advancements = {};
   state.character.classPlan.subclassByClass[id] = state.character.classPlan.subclassByClass[id] || "";
+  if (id === "fighter") state.character.classPlan.fightingStyleByClass[id] = state.character.classPlan.fightingStyleByClass[id] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
   state.classValidation = "";
   renderClassStep();
 }
@@ -1218,7 +1382,7 @@ function classTimelineEntries() {
     const cls = classById(classId);
     const sub = state.character.classPlan.subclassByClass[classId];
     const subObj = cls.subclasses?.find((s) => s.name === sub);
-    const subclassLevels = SUBCLASS_LEVELS[classId] || [3, 6, 10, 14];
+    const subclassLevels = subObj ? Object.keys(subObj.features || {}).map(Number).sort((a, b) => a - b) : (SUBCLASS_LEVELS[classId] || [3, 6, 10, 14]);
     for (let lv = 1; lv <= level; lv += 1) {
       const features = toFeatureObjects(cls.levels?.[lv] || [["No feature listed", "No details available for this level yet."]]);
       const hasAsi = features.some((f) => /Ability Score Improvement/i.test(f.name));
@@ -1238,10 +1402,11 @@ function renderMulticlassList() {
   els.multiclassList.innerHTML = "";
   state.data.classes.filter((c) => c.id !== primary && classLevel(c.id) === 0).forEach((cls) => {
     const meets = meetsMulticlassRequirement(cls.multiclassReq);
-    const canAdd = meets && total < 20;
+    const enabledForRefinement = ENABLED_CLASS_IDS.has(cls.id);
+    const canAdd = meets && total < 20 && enabledForRefinement;
     const card = document.createElement("div");
     card.className = `option-card ${canAdd ? "" : "disabled"}`;
-    const reason = meets ? "Requirement met" : "Requirement not met with current ability scores";
+    const reason = !enabledForRefinement ? "Disabled during fighter-only refinement" : (meets ? "Requirement met" : "Requirement not met with current ability scores");
     card.innerHTML = `<strong>${cls.name}</strong><p>Requirement: ${cls.multiclassReq}</p><p>${reason}</p>`;
     const button = document.createElement("button");
     button.type = "button";
@@ -1270,6 +1435,7 @@ function removeLevelFromClass(classId) {
     delete state.character.classPlan.levelsByClass[classId];
     delete state.character.classPlan.subclassByClass[classId];
     delete state.character.classPlan.skillPicksByClass[classId];
+    delete state.character.classPlan.fightingStyleByClass[classId];
     if (state.character.classPlan.primaryClassId === classId) {
       state.character.classPlan.primaryClassId = state.data.classes[0]?.id || "";
     }
@@ -1555,23 +1721,79 @@ function renderBackgroundStep() {
   els.backgroundDetails.innerHTML = `<h3>${bg.name}</h3><p><strong>Skills:</strong> ${toArray(bg.skills).join(", ")}</p><p><strong>Feature:</strong> ${bg.feature}</p><p><strong>Equipment:</strong> ${toArray(bg.equipment).join(", ")}</p><p><strong>Background Stats/Bonuses:</strong> ${bg.bonuses}</p>`;
 }
 
-function renderSummary() {
+function summaryDataObject() {
   const race = selectedRace();
-  const chosenFeats = Object.values(state.character.classPlan.advancements || {})
-    .filter((c) => c.kind === "feat" && c.featId)
-    .map((c) => (state.data.feats.find((f) => f.id === c.featId) || CORE_FEATS.find((f) => f.id === c.featId))?.name)
-    .filter(Boolean);
-  const summary = {
+  const background = selectedBackground();
+  return {
     name: state.character.name || "Unnamed Adventurer",
     race: race.name,
-    raceSelections: Object.fromEntries(Object.entries(state.character.raceChoices).filter(([key]) => key.startsWith(`${race.id}:`)).map(([key, val]) => [key.split(":")[1], val])),
-    classes: state.character.classPlan,
-    classSkillSelections: state.character.classPlan.skillPicksByClass,
-    abilities: { base: state.character.abilities, final: finalAbilityScores(), pointBuySpent: spentPoints(), pointBuyBudget: POINT_BUY_BUDGET },
+    source: race.source,
+    raceChoices: Object.fromEntries(Object.entries(state.character.raceChoices).filter(([key]) => key.startsWith(`${race.id}:`)).map(([key, val]) => [key.split(":")[1], val])),
+    movement: formatMovementSpeed(race),
+    classes: Object.entries(state.character.classPlan.levelsByClass).map(([classId, level]) => ({
+      class: classById(classId).name,
+      level,
+      subclass: state.character.classPlan.subclassByClass[classId] || null,
+      fightingStyle: state.character.classPlan.fightingStyleByClass?.[classId] || null,
+      skillPicks: state.character.classPlan.skillPicksByClass?.[classId] || [],
+    })),
+    abilities: {
+      base: state.character.abilities,
+      final: finalAbilityScores(),
+      pointBuySpent: spentPoints(),
+      pointBuyBudget: POINT_BUY_BUDGET,
+    },
+    background: {
+      name: background.name,
+      skills: toArray(background.skills),
+      feature: background.feature,
+      equipment: toArray(background.equipment),
+    },
     feats: chosenFeats,
-    background: selectedBackground().name,
   };
-  els.characterSheet.textContent = JSON.stringify(summary, null, 2);
+}
+
+function renderSummary() {
+  const summary = summaryDataObject();
+  const race = selectedRace();
+  const background = selectedBackground();
+  const finalScores = summary.abilities.final;
+  const abilityRows = Object.entries(finalScores).map(([ab, score]) => `<li><strong>${ab}</strong>: ${score} (mod ${abilityMod(score) >= 0 ? "+" : ""}${abilityMod(score)})</li>`).join("");
+  const raceSelections = Object.entries(state.character.raceChoices)
+    .filter(([key]) => key.startsWith(`${race.id}:`) && !!key)
+    .map(([key, val]) => `<li><strong>${escapeHtml(key.split(":")[1])}</strong>: ${escapeHtml(val || "Not selected")}</li>`)
+    .join("") || "<li>None</li>";
+
+  const classRows = Object.entries(state.character.classPlan.levelsByClass)
+    .map(([classId, lvl]) => {
+      const cls = classById(classId);
+      const subclass = state.character.classPlan.subclassByClass[classId] || "None";
+      const fightingStyle = state.character.classPlan.fightingStyleByClass?.[classId];
+      const skills = state.character.classPlan.skillPicksByClass?.[classId] || [];
+      return `<article class="details"><h4>${escapeHtml(cls.name)} (Level ${lvl})</h4><p><strong>Subclass:</strong> ${escapeHtml(subclass)}</p>${fightingStyle ? `<p><strong>Fighting Style:</strong> ${escapeHtml(fightingStyle)}</p>` : ""}<p><strong>Class Skill Picks:</strong> ${escapeHtml(skills.join(", ") || "None")}</p></article>`;
+    }).join("");
+
+  els.characterSheet.innerHTML = `
+    <section class="details"><h3>${escapeHtml(state.character.name || "Unnamed Adventurer")}</h3>
+      <p><strong>Race:</strong> ${escapeHtml(race.name)}</p>
+      <p><strong>Movement:</strong> ${escapeHtml(formatMovementSpeed(race))}</p>
+      <p><strong>Background:</strong> ${escapeHtml(background.name)}</p>
+    </section>
+
+    <section class="details"><h3>Ability Scores</h3><ul>${abilityRows}</ul><p><strong>Point Buy:</strong> ${spentPoints()} / ${POINT_BUY_BUDGET}</p></section>
+
+    <section class="details"><h3>Race Choices</h3><ul>${raceSelections}</ul></section>
+
+    <section class="details"><h3>Class Breakdown</h3>${classRows || "<p>No classes selected.</p>"}</section>
+
+    <section class="details"><h3>Background Details</h3>
+      <p><strong>Skills:</strong> ${escapeHtml(toArray(background.skills).join(", "))}</p>
+      <p><strong>Feature:</strong> ${escapeHtml(background.feature || "None")}</p>
+      <p><strong>Equipment:</strong> ${escapeHtml(toArray(background.equipment).join(", "))}</p>
+    </section>
+
+    <section class="details"><h3>Feats</h3><p>${escapeHtml(summary.feats.join(", ") || "None selected") }</p></section>
+  `;
 }
 
 function handleDescriptionHover(event) {
@@ -1807,12 +2029,13 @@ function classById(id) { return state.data.classes.find((c) => c.id === id) || s
 function selectedBackground() { return state.data.backgrounds.find((b) => b.id === state.character.backgroundId) || state.data.backgrounds[0]; }
 function spentPoints() { return Object.values(state.character.abilities).reduce((s, v) => s + COST_BY_SCORE[v], 0); }
 
-function downloadJson() { downloadBlob(JSON.parse(els.characterSheet.textContent), `${(state.character.name || "character").replace(/\s+/g, "-").toLowerCase()}.json`); }
+function downloadJson() { downloadBlob(summaryDataObject(), `${(state.character.name || "character").replace(/\s+/g, "-").toLowerCase()}.json`); }
 function downloadBlob(data, filename) { const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url); }
 function byId(id) { return document.getElementById(id); }
 function toArray(v) { if (Array.isArray(v)) return v; if (typeof v === "string" && v.trim()) return [v.trim()]; return []; }
 function csv(v) { return String(v || "").split(",").map((x) => x.trim()).filter(Boolean); }
 function formatAbilityBonuses(b) { const pairs = Object.entries(b || {}); return pairs.length ? pairs.map(([a, v]) => `${a} ${v >= 0 ? "+" : ""}${v}`).join(", ") : "None"; }
+function abilityMod(score) { return Math.floor((score - 10) / 2); }
 function slugify(v) { return String(v || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
 function labelForType(type) { return ({ races: "Race", classes: "Class", spells: "Spell", backgrounds: "Background", feats: "Feat", languages: "Language" })[type] || type; }
 function capitalize(v) { return `${v[0].toUpperCase()}${v.slice(1)}`; }
