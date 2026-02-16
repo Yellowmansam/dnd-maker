@@ -29,9 +29,11 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 .type-fields { display: grid; gap: 0.6rem; margin-top: 0.75rem; }
 .quickfill-box { position: absolute; z-index: 20; display: grid; gap: 0.25rem; min-width: 220px; max-width: 380px; background: #0b1220; border: 1px solid #3b4967; border-radius: 8px; padding: 0.4rem; }
 .quickfill-box button { background: #1f2937; border-color: #374151; text-align: left; }
-.class-progress .timeline { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.45rem; }
+.class-progress .timeline { margin: 0; padding-left: 1.25rem; display: grid; gap: 1rem; }
 .class-level-breakdown { margin-top: 0.4rem; display: grid; gap: 0.4rem; }
-.feature-desc { margin: 0.2rem 0 0.5rem; color: #cbd5e1; }
+.feature-desc { margin: 0.2rem 0 0.5rem; color: #cbd5e1; overflow-wrap: anywhere; word-break: break-word; }
+.class-progress .timeline > li { padding: 0.6rem 0.4rem; border-bottom: 1px solid #2f3a52; }
+.details, .option-card, .character-sheet, .character-sheet p, .character-sheet li { overflow-wrap: anywhere; word-break: break-word; }
 .multiclass-block { margin-top: 0.9rem; }
 .abilities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
 .ability-card { border: 1px solid #3b4967; border-radius: 10px; padding: 0.75rem; background: #121827; }
@@ -46,3 +48,5 @@ pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
 .character-sheet h3, .character-sheet h4 { margin: 0 0 0.35rem; }
 .character-sheet ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
 @media (max-width: 900px) { .custom-layout { grid-template-columns: 1fr; } }
+
+.details select { max-width: 100%; }

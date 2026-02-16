@@ -1211,20 +1211,19 @@ function renderClassConfiguration() {
     if (cls.skillChoices?.count) {
       const wrap = document.createElement("div");
       wrap.innerHTML = `<p><strong>Choose ${cls.skillChoices.count} class skills:</strong></p>`;
-      cls.skillChoices.options.forEach((skill) => {
-        const id = `${classId}-skill-${slugify(skill)}`;
-        const checked = saved.includes(skill) ? "checked" : "";
-        wrap.insertAdjacentHTML("beforeend", `<label for="${id}"><input id="${id}" type="checkbox" data-skill-class="${classId}" value="${escapeHtml(skill)}" ${checked} /> ${escapeHtml(skill)}</label>`);
-      });
+      const selected = [...saved];
+      for (let idx = 0; idx < cls.skillChoices.count; idx += 1) {
+        const current = selected[idx] || "";
+        const opts = cls.skillChoices.options
+          .filter((skill) => !selected.includes(skill) || skill === current)
+          .map((skill) => `<option value="${escapeHtml(skill)}" ${skill === current ? "selected" : ""}>${escapeHtml(skill)}</option>`)
+          .join("");
+        wrap.insertAdjacentHTML(
+          "beforeend",
+          `<label>Skill Choice ${idx + 1}<select data-skill-class="${classId}" data-skill-slot="${idx}"><option value="">Choose a skill</option>${opts}</select></label>`,
+        );
+      }
       block.appendChild(wrap);
-    }
-
-    if (classId === "fighter") {
-      const currentStyle = state.character.classPlan.fightingStyleByClass[classId] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
-      const styleOptions = Object.entries(FIGHTING_STYLE_OPTIONS)
-        .map(([style, description]) => `<option value="${escapeHtml(style)}" ${style === currentStyle ? "selected" : ""}>${escapeHtml(style)} - ${escapeHtml(description)}</option>`)
-        .join("");
-      block.insertAdjacentHTML("beforeend", `<label><strong>Fighting Style:</strong><select data-fighting-style-class="${classId}">${styleOptions}</select></label><p><em>${escapeHtml(FIGHTING_STYLE_OPTIONS[currentStyle])}</em></p>`);
     }
 
     if (cls.subclasses?.length && state.character.classPlan.subclassByClass[classId]) {
@@ -1235,33 +1234,18 @@ function renderClassConfiguration() {
     els.classConfigPanel.appendChild(block);
   });
 
-  els.classConfigPanel.querySelectorAll("input[data-skill-class]").forEach((input) => {
-    input.addEventListener("change", (e) => {
+  els.classConfigPanel.querySelectorAll("select[data-skill-class]").forEach((select) => {
+    select.addEventListener("change", (e) => {
       const classId = e.target.dataset.skillClass;
-      const cls = classById(classId);
-      const limit = cls.skillChoices?.count || 0;
-      const picks = new Set(state.character.classPlan.skillPicksByClass[classId] || []);
-      if (e.target.checked) {
-        picks.add(e.target.value);
-        if (picks.size > limit) {
-          e.target.checked = false;
-          return;
-        }
-      } else {
-        picks.delete(e.target.value);
-      }
-      state.character.classPlan.skillPicksByClass[classId] = [...picks];
+      const slot = Number(e.target.dataset.skillSlot || 0);
+      const current = [...(state.character.classPlan.skillPicksByClass[classId] || [])];
+      current[slot] = e.target.value || "";
+      state.character.classPlan.skillPicksByClass[classId] = current.filter(Boolean);
       renderClassConfiguration();
+      renderSummary();
     });
   });
 
-  els.classConfigPanel.querySelectorAll("select[data-fighting-style-class]").forEach((select) => {
-    select.addEventListener("change", (e) => {
-      state.character.classPlan.fightingStyleByClass[e.target.dataset.fightingStyleClass] = e.target.value;
-      renderClassConfiguration();
-      renderClassProgress();
-    });
-  });
 }
 
 function unlockedSubclassFeatureNames(classId) {
@@ -1313,9 +1297,10 @@ function renderClassProgress() {
   els.totalLevel.textContent = `Total Level: ${total}`;
 
   const timeline = classTimelineEntries();
-  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul>${row.asiId ? `<div class="details" data-asi-inline="${escapeHtml(row.asiId)}"><strong>${escapeHtml(row.asiLabel || "Ability Score Improvement")}</strong></div>` : ""}</li>`).join("");
+  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul>${row.asiId ? `<div class="details" data-asi-inline="${escapeHtml(row.asiId)}"><strong>${escapeHtml(row.asiLabel || "Ability Score Improvement")}</strong></div>` : ""}${row.fightingStyleId ? `<div class="details" data-fighting-style-inline="${escapeHtml(row.fightingStyleId)}"><strong>Fighting Style</strong></div>` : ""}</li>`).join("");
   renderClassLevelBreakdown();
   renderInlineAsiCards();
+  renderInlineFightingStyleCards();
 
   if (total === 0) state.multiclassOpen = false;
   els.toggleMulticlass.disabled = total === 0;
@@ -1386,7 +1371,8 @@ function classTimelineEntries() {
     for (let lv = 1; lv <= level; lv += 1) {
       const features = toFeatureObjects(cls.levels?.[lv] || [["No feature listed", "No details available for this level yet."]]);
       const hasAsi = features.some((f) => /Ability Score Improvement/i.test(f.name));
-      entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null });
+      const fightingStyleId = cls.id === "fighter" && lv === 1 ? `${classId}-lv${lv}-fighting-style` : null;
+      entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null, fightingStyleId });
       if (sub && subclassLevels.includes(lv)) {
         const subFeatures = toFeatureObjects(subObj?.features?.[lv] || [[`Subclass Feature - ${sub}`, subclassFeatureDescription(cls.id, sub, lv)]]).map((f) => ({ ...f, name: f.name.startsWith("Subclass Feature -") ? f.name : `Subclass Feature - ${f.name}` }));
         entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: subFeatures });
@@ -1722,8 +1708,8 @@ function renderBackgroundStep() {
 }
 
 function summaryDataObject() {
-  const race = selectedRace();
-  const background = selectedBackground();
+  const race = selectedRace() || { id: "", name: "Unknown Race", source: "Unknown", languages: [], skills: [], features: [], racialAbilities: {}, speed: { walk: 30 } };
+  const background = selectedBackground() || { name: "Unknown Background", skills: [], feature: "", equipment: [] };
   return {
     name: state.character.name || "Unnamed Adventurer",
     race: race.name,
@@ -1731,7 +1717,7 @@ function summaryDataObject() {
     raceChoices: Object.fromEntries(Object.entries(state.character.raceChoices).filter(([key]) => key.startsWith(`${race.id}:`)).map(([key, val]) => [key.split(":")[1], val])),
     movement: formatMovementSpeed(race),
     classes: Object.entries(state.character.classPlan.levelsByClass).map(([classId, level]) => ({
-      class: classById(classId).name,
+      class: (classById(classId)?.name || classId),
       level,
       subclass: state.character.classPlan.subclassByClass[classId] || null,
       fightingStyle: state.character.classPlan.fightingStyleByClass?.[classId] || null,
@@ -1755,8 +1741,8 @@ function summaryDataObject() {
 
 function renderSummary() {
   const summary = summaryDataObject();
-  const race = selectedRace();
-  const background = selectedBackground();
+  const race = selectedRace() || { id: "", name: "Unknown Race", source: "Unknown", languages: [], skills: [], features: [], racialAbilities: {}, speed: { walk: 30 } };
+  const background = selectedBackground() || { name: "Unknown Background", skills: [], feature: "", equipment: [] };
   const finalScores = summary.abilities.final;
   const abilityRows = Object.entries(finalScores).map(([ab, score]) => `<li><strong>${ab}</strong>: ${score} (mod ${abilityMod(score) >= 0 ? "+" : ""}${abilityMod(score)})</li>`).join("");
   const raceSelections = Object.entries(state.character.raceChoices)
@@ -1766,7 +1752,7 @@ function renderSummary() {
 
   const classRows = Object.entries(state.character.classPlan.levelsByClass)
     .map(([classId, lvl]) => {
-      const cls = classById(classId);
+      const cls = classById(classId) || { name: classId };
       const subclass = state.character.classPlan.subclassByClass[classId] || "None";
       const fightingStyle = state.character.classPlan.fightingStyleByClass?.[classId];
       const skills = state.character.classPlan.skillPicksByClass?.[classId] || [];
