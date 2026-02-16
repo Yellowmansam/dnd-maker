@@ -102,6 +102,17 @@ const FIGHTING_STYLE_OPTIONS = {
   "Two Weapon Fighting": "When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.",
 };
 
+const BATTLE_MASTER_MANEUVERS = [
+  "Commander's Strike", "Disarming Attack", "Distracting Strike", "Evasive Footwork", "Feinting Attack", "Goading Attack", "Lunging Attack",
+  "Maneuvering Attack", "Menacing Attack", "Parry", "Precision Attack", "Pushing Attack", "Rally", "Riposte", "Sweeping Attack", "Trip Attack",
+];
+
+const ARTISAN_TOOL_OPTIONS = [
+  "Alchemist's Supplies", "Brewer's Supplies", "Calligrapher's Supplies", "Carpenter's Tools", "Cartographer's Tools", "Cobbler's Tools",
+  "Cook's Utensils", "Glassblower's Tools", "Jeweler's Tools", "Leatherworker's Tools", "Mason's Tools", "Painter's Supplies",
+  "Potter's Tools", "Smith's Tools", "Tinker's Tools", "Weaver's Tools", "Woodcarver's Tools",
+];
+
 const FEATURE_DESCRIPTIONS = {
   "Draconic Ancestry": "Your dragon lineage defines your breath weapon and resistance.",
   "Breath Weapon": "Exhale destructive elemental energy based on your ancestry.",
@@ -750,18 +761,18 @@ function applyFighterDetailedProgression() {
     4: [["Ability Score Increase", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
     5: [["Extra Attack", "Beginning at 5th level, you can attack twice, instead of once, whenever you take the Attack action on your turn. The number of attacks increases to three when you reach 11th level in this class and to four when you reach 20th level in this class."]],
     6: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
-    7: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    7: [],
     8: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
     9: [["Indomitable", "Beginning at 9th level, you can reroll a saving throw that you fail. If you do so, you must use the new roll, and you can’t use this feature again until you finish a long rest. You can use this feature twice between long rests starting at 13th level and three times between long rests starting at 17th level."]],
-    10: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    10: [],
     11: [["Extra Attack (2)", "You can attack three times whenever you take the Attack action on your turn."]],
     12: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
     13: [["Indomitable (2)", "You can use Indomitable twice between long rests."]],
     14: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
-    15: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    15: [],
     16: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
     17: [["Action Surge (2)", "You can use Action Surge twice between rests, but only once on the same turn."], ["Indomitable (3)", "You can use Indomitable three times between long rests."]],
-    18: [["Martial Archetype Feature", "You gain a feature from your chosen Martial Archetype."]],
+    18: [],
     19: [["Ability Score Improvement", "Increase one ability score by 2, increase two ability scores by 1 each, or take a feat."]],
     20: [["Extra Attack (3)", "You can attack four times whenever you take the Attack action on your turn."]],
   };
@@ -774,7 +785,7 @@ function applyFighterDetailedProgression() {
       4: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
       5: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
       6: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
-      7: [["Subclass Feature - Remarkable Athlete", "Add half your proficiency bonus (rounded up) to STR, DEX, and CON checks that don’t already use your proficiency bonus, and improve your long jump and high jump." ]],
+      7: [["Subclass Feature - Remarkable Athlete", "Add half your proficiency bonus (rounded up) to STR, DEX, and CON checks that don’t already use your proficiency bonus, In addition, when you make a running long jump, the distance you can cover increases by a number of feet equal to your Strength modifier." ]],
       8: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
       9: [["Subclass Feature - Champion Progression", "No additional Champion feature at this level."]],
       10: [["Subclass Feature - Additional Fighting Style", "You can choose a second option from the Fighting Style class feature."]],
@@ -796,7 +807,7 @@ function applyFighterDetailedProgression() {
       4: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
       5: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
       6: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
-      7: [["Subclass Feature - Know Your Enemy", "If you spend at least 1 minute observing a creature, you can learn whether it is your equal, superior, or inferior in certain combat statistics."]],
+      7: [["Subclass Feature - Know Your Enemy", "If you spend at least 1 minute observing or interacting with a creature outside combat, the DM tells you if the creature is your equal, superior, or inferior in each of: Strength score, Dexterity score, Constitution score, Armor Class, current hit points, total class levels (if any), and Fighter class levels (if any)."]],
       8: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
       9: [["Subclass Feature - Battle Master Progression", "No additional Battle Master feature at this level."]],
       10: [["Subclass Feature - Improved Combat Superiority", "Your superiority dice become d10s."]],
@@ -962,7 +973,7 @@ const state = {
     name: "",
     raceId: BASE_DATA.races[0].id,
     raceChoices: {},
-    classPlan: { primaryClassId: "fighter", subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {}, fightingStyleByClass: {} },
+    classPlan: { primaryClassId: "fighter", subclassByClass: {}, levelsByClass: {}, advancements: {}, skillPicksByClass: {}, fightingStyleByClass: {}, fightingStyleSecondaryByClass: {}, battleMasterByClass: {} },
     originAbilityBonuses: { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 },
     abilities: { STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8 },
     backgroundId: BASE_DATA.backgrounds[0].id,
@@ -1282,7 +1293,10 @@ function confirmStartingClass() {
   state.character.classPlan.levelsByClass = { [id]: 1 };
   state.character.classPlan.advancements = {};
   state.character.classPlan.subclassByClass[id] = state.character.classPlan.subclassByClass[id] || "";
-  if (id === "fighter") state.character.classPlan.fightingStyleByClass[id] = state.character.classPlan.fightingStyleByClass[id] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+  if (id === "fighter") {
+    state.character.classPlan.fightingStyleByClass[id] = state.character.classPlan.fightingStyleByClass[id] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+    state.character.classPlan.fightingStyleSecondaryByClass[id] = state.character.classPlan.fightingStyleSecondaryByClass[id] || "";
+  }
   state.classValidation = "";
   renderClassStep();
 }
@@ -1292,10 +1306,11 @@ function renderClassProgress() {
   els.totalLevel.textContent = `Total Level: ${total}`;
 
   const timeline = classTimelineEntries();
-  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul>${row.asiId ? `<div class="details" data-asi-inline="${escapeHtml(row.asiId)}"><strong>${escapeHtml(row.asiLabel || "Ability Score Improvement")}</strong></div>` : ""}${row.fightingStyleId ? `<div class="details" data-fighting-style-inline="${escapeHtml(row.fightingStyleId)}"><strong>Fighting Style</strong></div>` : ""}</li>`).join("");
+  els.classFeatureTimeline.innerHTML = timeline.map((row) => `<li><strong>${escapeHtml(row.label)}</strong><ul>${row.features.map((f) => `<li><span>${escapeHtml(f.name)}</span><p class="feature-desc">${escapeHtml(f.description)}</p></li>`).join("")}</ul>${row.asiId ? `<div class="details" data-asi-inline="${escapeHtml(row.asiId)}"><strong>${escapeHtml(row.asiLabel || "Ability Score Improvement")}</strong></div>` : ""}${row.fightingStyleId ? `<div class="details" data-fighting-style-inline="${escapeHtml(row.fightingStyleId)}"><strong>Fighting Style</strong></div>` : ""}${row.battleMasterChoiceId ? `<div class="details" data-bm-inline="${escapeHtml(row.battleMasterChoiceId)}"></div>` : ""}</li>`).join("");
   renderClassLevelBreakdown();
   renderInlineAsiCards();
   renderInlineFightingStyleCards();
+  renderInlineBattleMasterCards();
 
   if (total === 0) state.multiclassOpen = false;
   els.toggleMulticlass.disabled = total === 0;
@@ -1366,7 +1381,7 @@ function classTimelineEntries() {
     for (let lv = 1; lv <= level; lv += 1) {
       const features = toFeatureObjects(cls.levels?.[lv] || []).filter((f) => !/No feature listed/i.test(f.name));
       const hasAsi = features.some((f) => /Ability Score (Improvement|Increase)/i.test(f.name));
-      const fightingStyleId = cls.id === "fighter" && lv === 1 ? `${classId}-lv${lv}-fighting-style` : null;
+      const fightingStyleId = cls.id === "fighter" && (lv === 1 || lv === 10) ? `${classId}-lv${lv}-fighting-style` : null;
       const showClassRow = features.length > 0 || hasAsi || !!fightingStyleId;
       if (showClassRow) {
         entries.push({ label: `${cls.name} Level ${lv}`, features, asiId: hasAsi ? `${classId}-lv${lv}` : null, asiLabel: hasAsi ? `${cls.name} Level ${lv}: Ability Score Improvement / Feat` : null, fightingStyleId });
@@ -1376,8 +1391,9 @@ function classTimelineEntries() {
         const subFeatures = toFeatureObjects(subObj?.features?.[lv] || [])
           .filter((f) => !/No additional|No archetype feature/i.test(f.description || ""))
           .map((f) => ({ ...f, name: f.name.startsWith("Subclass Feature -") ? f.name : `Subclass Feature - ${f.name}` }));
-        if (subFeatures.length) {
-          entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: subFeatures });
+        const battleMasterChoiceId = (cls.id === "fighter" && sub === "Battle Master" && (lv === 3 || lv === 10)) ? `${classId}-lv${lv}-bm` : null;
+        if (subFeatures.length || battleMasterChoiceId) {
+          entries.push({ label: `${cls.name} Subclass Feature (Level ${lv})`, features: subFeatures, battleMasterChoiceId });
         }
       }
     }
@@ -1425,6 +1441,8 @@ function removeLevelFromClass(classId) {
     delete state.character.classPlan.subclassByClass[classId];
     delete state.character.classPlan.skillPicksByClass[classId];
     delete state.character.classPlan.fightingStyleByClass[classId];
+    delete state.character.classPlan.fightingStyleSecondaryByClass[classId];
+    delete state.character.classPlan.battleMasterByClass[classId];
     if (state.character.classPlan.primaryClassId === classId) {
       state.character.classPlan.primaryClassId = state.data.classes[0]?.id || "";
     }
@@ -1509,20 +1527,78 @@ function renderInlineAsiCards() {
 
 function renderInlineFightingStyleCards() {
   document.querySelectorAll("[data-fighting-style-inline]").forEach((mount) => {
-    const classId = mount.dataset.fightingStyleInline.split("-lv")[0];
-    const current = state.character.classPlan.fightingStyleByClass[classId] || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+    const key = mount.dataset.fightingStyleInline;
+    const [classId, levelToken] = key.split("-lv");
+    const level = Number((levelToken || "1").split("-")[0]);
+    const isSecondary = level >= 10;
+    const current = isSecondary
+      ? (state.character.classPlan.fightingStyleSecondaryByClass[classId] || "")
+      : (state.character.classPlan.fightingStyleByClass[classId] || Object.keys(FIGHTING_STYLE_OPTIONS)[0]);
     const options = Object.keys(FIGHTING_STYLE_OPTIONS)
       .map((style) => `<option value="${escapeHtml(style)}" ${style === current ? "selected" : ""}>${escapeHtml(style)}</option>`)
       .join("");
-    mount.innerHTML = `<strong>Fighting Style</strong><label>Choose Style<select data-inline-fighting-style="${classId}">${options}</select></label><p class="feature-desc">${escapeHtml(FIGHTING_STYLE_OPTIONS[current])}</p>`;
+    mount.innerHTML = `<strong>${isSecondary ? "Second Fighting Style" : "Fighting Style"}</strong><label>Choose Style<select data-inline-fighting-style="${classId}" data-inline-fighting-style-level="${level}"><option value="">Choose a style</option>${options}</select></label><p class="feature-desc">${current ? escapeHtml(FIGHTING_STYLE_OPTIONS[current]) : "Select a style to apply your level 10 additional fighting style."}</p>`;
   });
 
   document.querySelectorAll("select[data-inline-fighting-style]").forEach((select) => {
     select.addEventListener("change", (e) => {
       const classId = e.target.dataset.inlineFightingStyle;
-      state.character.classPlan.fightingStyleByClass[classId] = e.target.value || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+      const level = Number(e.target.dataset.inlineFightingStyleLevel || 1);
+      if (level >= 10) {
+        state.character.classPlan.fightingStyleSecondaryByClass[classId] = e.target.value || "";
+      } else {
+        state.character.classPlan.fightingStyleByClass[classId] = e.target.value || Object.keys(FIGHTING_STYLE_OPTIONS)[0];
+      }
       renderClassProgress();
       renderSummary();
+    });
+  });
+}
+
+function renderInlineBattleMasterCards() {
+  document.querySelectorAll("[data-bm-inline]").forEach((mount) => {
+    const key = mount.dataset.bmInline;
+    const [classId, levelToken] = key.split("-lv");
+    const level = Number((levelToken || "3").split("-")[0]);
+    const store = state.character.classPlan.battleMasterByClass[classId] || { maneuvers: ["", "", ""], extraManeuvers: ["", ""], tool: "" };
+    state.character.classPlan.battleMasterByClass[classId] = store;
+
+    const maneuverOptions = BATTLE_MASTER_MANEUVERS.map((m) => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+    const toolOptions = ARTISAN_TOOL_OPTIONS.map((t) => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
+
+    if (level === 3) {
+      mount.innerHTML = `<strong>Battle Master Choices</strong>
+        <p class="feature-desc">Combat Superiority: choose three maneuvers.</p>
+        ${[0, 1, 2].map((i) => `<label>Maneuver ${i + 1}<select data-bm-maneuver="${classId}" data-bm-slot="${i}"><option value="">Choose maneuver</option>${maneuverOptions}</select></label>`).join("")}
+        <label>Student of War Tool Proficiency<select data-bm-tool="${classId}"><option value="">Choose artisan's tools</option>${toolOptions}</select></label>`;
+    } else {
+      mount.innerHTML = `<strong>Battle Master Choices</strong>
+        <p class="feature-desc">Improved Combat Superiority (d10). Choose two additional maneuvers.</p>
+        ${[0, 1].map((i) => `<label>Additional Maneuver ${i + 1}<select data-bm-extra="${classId}" data-bm-extra-slot="${i}"><option value="">Choose maneuver</option>${maneuverOptions}</select></label>`).join("")}`;
+    }
+
+    mount.querySelectorAll("select[data-bm-maneuver]").forEach((s) => {
+      const i = Number(s.dataset.bmSlot || 0);
+      s.value = store.maneuvers[i] || "";
+      s.addEventListener("change", (e) => {
+        store.maneuvers[i] = e.target.value;
+        renderSummary();
+      });
+    });
+    mount.querySelectorAll("select[data-bm-tool]").forEach((s) => {
+      s.value = store.tool || "";
+      s.addEventListener("change", (e) => {
+        store.tool = e.target.value;
+        renderSummary();
+      });
+    });
+    mount.querySelectorAll("select[data-bm-extra]").forEach((s) => {
+      const i = Number(s.dataset.bmExtraSlot || 0);
+      s.value = store.extraManeuvers[i] || "";
+      s.addEventListener("change", (e) => {
+        store.extraManeuvers[i] = e.target.value;
+        renderSummary();
+      });
     });
   });
 }
@@ -1744,6 +1820,8 @@ function summaryDataObject() {
       level,
       subclass: state.character.classPlan.subclassByClass[classId] || null,
       fightingStyle: state.character.classPlan.fightingStyleByClass?.[classId] || null,
+      secondFightingStyle: state.character.classPlan.fightingStyleSecondaryByClass?.[classId] || null,
+      battleMasterChoices: state.character.classPlan.battleMasterByClass?.[classId] || null,
       skillPicks: state.character.classPlan.skillPicksByClass?.[classId] || [],
     })),
     abilities: {
@@ -1778,8 +1856,10 @@ function renderSummary() {
       const cls = classById(classId) || { name: classId };
       const subclass = state.character.classPlan.subclassByClass[classId] || "None";
       const fightingStyle = state.character.classPlan.fightingStyleByClass?.[classId];
+      const secondFightingStyle = state.character.classPlan.fightingStyleSecondaryByClass?.[classId];
+      const bm = state.character.classPlan.battleMasterByClass?.[classId];
       const skills = state.character.classPlan.skillPicksByClass?.[classId] || [];
-      return `<article class="details"><h4>${escapeHtml(cls.name)} (Level ${lvl})</h4><p><strong>Subclass:</strong> ${escapeHtml(subclass)}</p>${fightingStyle ? `<p><strong>Fighting Style:</strong> ${escapeHtml(fightingStyle)}</p>` : ""}<p><strong>Class Skill Picks:</strong> ${escapeHtml(skills.join(", ") || "None")}</p></article>`;
+      return `<article class="details"><h4>${escapeHtml(cls.name)} (Level ${lvl})</h4><p><strong>Subclass:</strong> ${escapeHtml(subclass)}</p>${fightingStyle ? `<p><strong>Fighting Style:</strong> ${escapeHtml(fightingStyle)}</p>` : ""}${secondFightingStyle ? `<p><strong>Second Fighting Style:</strong> ${escapeHtml(secondFightingStyle)}</p>` : ""}${bm ? `<p><strong>Battle Master Maneuvers:</strong> ${escapeHtml([...(bm.maneuvers || []), ...(bm.extraManeuvers || [])].filter(Boolean).join(", ") || "None selected")}</p><p><strong>Student of War Tool:</strong> ${escapeHtml(bm.tool || "None selected")}</p>` : ""}<p><strong>Class Skill Picks:</strong> ${escapeHtml(skills.join(", ") || "None")}</p></article>`;
     }).join("");
 
   els.characterSheet.innerHTML = `
