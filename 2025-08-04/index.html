@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D&D 5e Character Builder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header class="hero card row between">
+        <div>
+          <h1>D&D 5e Character Builder</h1>
+          <p>D&D Beyond-style flow: Race → Ability Scores → Class → Spells → Background → Summary.</p>
+        </div>
+        <button id="open-custom" type="button" class="secondary">Custom Content</button>
+      </header>
+
+      <nav class="steps card" aria-label="Builder steps">
+        <ol id="stepper"></ol>
+      </nav>
+
+      <section id="custom-page" class="card hidden">
+        <div class="row between">
+          <h2>Set Custom Content</h2>
+          <button id="close-custom" type="button" class="secondary">Back to Builder</button>
+        </div>
+        <p>Import/export and create custom races, classes, spells, backgrounds, feats, and languages.</p>
+
+        <div class="row">
+          <button id="import-custom" type="button" class="secondary">Import Custom JSON</button>
+          <button id="export-custom" type="button" class="secondary">Export Custom JSON</button>
+          <button id="import-builtin-compendium" type="button" class="secondary">Load Built-in Compendium</button>
+          <input id="import-custom-file" type="file" accept="application/json" class="hidden" />
+        </div>
+
+        <details class="details">
+          <summary>How to add custom content</summary>
+          <textarea rows="8" readonly>
+Pick a type first. The editor fields change based on type.
+- Use comma-separated values in list boxes.
+- Quick fill appears while typing in supported fields.
+- Submit Item is required for new/edited items.
+- Imported items are already submitted.
+- Click Apply Changes to merge submitted items into the builder.
+          </textarea>
+        </details>
+
+        <div class="custom-layout">
+          <aside class="custom-sidebar">
+            <h3>Submitted Items</h3>
+            <ul id="submitted-items" class="submitted-list"></ul>
+          </aside>
+
+          <section class="custom-editor details">
+            <h3>Custom Item Editor</h3>
+            <label>
+              Type
+              <select id="custom-type">
+                <option value="races">Race</option>
+                <option value="classes">Class</option>
+                <option value="spells">Spell</option>
+                <option value="backgrounds">Background</option>
+                <option value="feats">Feat</option>
+                <option value="languages">Language</option>
+              </select>
+            </label>
+
+            <div id="type-races" class="type-fields">
+              <label>Name <input id="race-name" type="text" /></label>
+              <label>Languages (comma-separated)
+                <input id="race-languages" type="text" class="quickfill" data-domain="languages" />
+              </label>
+              <label>Skills/Proficiencies (comma-separated)
+                <input id="race-skills" type="text" class="quickfill" data-domain="skills" />
+              </label>
+              <label>Racial Features (comma-separated)
+                <input id="race-features" type="text" class="quickfill" data-domain="race-features" />
+              </label>
+              <label>Racial Ability Bonuses JSON
+                <textarea id="race-abilities" rows="3">{"STR":1}</textarea>
+              </label>
+            </div>
+
+            <div id="type-classes" class="type-fields hidden">
+              <label>Name <input id="class-name" type="text" /></label>
+              <label>Hit Die <input id="class-hitdie" type="text" placeholder="d8" /></label>
+              <label>Proficiencies (comma-separated)
+                <input id="class-proficiencies" type="text" class="quickfill" data-domain="proficiencies" />
+              </label>
+              <label>Multiclass Requirement <input id="class-multi-req" type="text" placeholder="INT 13" /></label>
+              <label>Level Features (one per line: level|feature|description)
+                <textarea id="class-features" rows="6" placeholder="1|Spellcasting|You can cast wizard spells."></textarea>
+              </label>
+            </div>
+
+            <div id="type-backgrounds" class="type-fields hidden">
+              <label>Name <input id="background-name" type="text" /></label>
+              <label>Skills (comma-separated)
+                <input id="background-skills" type="text" class="quickfill" data-domain="skills" />
+              </label>
+              <label>Feature Name
+                <input id="background-feature-name" type="text" class="quickfill" data-domain="background-features" />
+              </label>
+              <label>Feature Description
+                <textarea id="background-feature-desc" rows="3"></textarea>
+              </label>
+              <label>Equipment (comma-separated)
+                <input id="background-equipment" type="text" class="quickfill" data-domain="equipment" />
+              </label>
+              <label>Bonuses / Notes
+                <input id="background-bonuses" type="text" />
+              </label>
+            </div>
+
+            <div id="type-spells" class="type-fields hidden">
+              <label>Name <input id="spell-name" type="text" /></label>
+              <label>Level <input id="spell-level" type="number" min="0" max="9" value="0" /></label>
+              <label>School <input id="spell-school" type="text" /></label>
+              <label>Description <textarea id="spell-description" rows="4"></textarea></label>
+            </div>
+
+            <div id="type-feats" class="type-fields hidden">
+              <label>Name <input id="feat-name" type="text" /></label>
+              <label>Prerequisite <input id="feat-prereq" type="text" /></label>
+              <label>Description <textarea id="feat-description" rows="4"></textarea></label>
+            </div>
+
+            <div id="type-languages" class="type-fields hidden">
+              <label>Name <input id="language-name" type="text" /></label>
+              <label>Description <textarea id="language-description" rows="4"></textarea></label>
+            </div>
+
+            <div id="quickfill-box" class="quickfill-box hidden"></div>
+            <p id="custom-status" class="validation"></p>
+            <div class="row between">
+              <button id="clear-custom" type="button" class="secondary">New Item</button>
+              <button id="submit-custom" type="button">Submit Item</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="row end">
+          <button id="apply-custom" type="button">Apply Changes</button>
+        </div>
+      </section>
+
+      <section id="step-race" class="card step-panel">
+        <h2>Choose Race</h2>
+        <p>Select a race to review full racial details.</p>
+        <div id="race-options" class="race-era-groups"></div>
+        <article id="race-details" class="details"></article>
+        <div id="race-option-config" class="details hidden"></div>
+        <div class="row end"><button id="confirm-race" type="button">Confirm Race</button></div>
+      </section>
+
+      <section id="step-abilities" class="card step-panel hidden">
+        <h2>Ability Scores</h2>
+        <label>Generation Method
+          <select id="ability-method">
+            <option value="pointBuy">Point Buy (27)</option>
+            <option value="rolled">Rolled Stats (4d6 drop lowest)</option>
+          </select>
+        </label>
+
+        <article id="origin-asi-panel" class="details hidden"></article>
+
+        <article id="rolled-panel" class="details hidden">
+          <h3>Rolled Stats</h3>
+          <p>Click each roll button to roll 4d6, then choose one die to drop for that slot.</p>
+          <div id="roll-buttons" class="row"></div>
+          <div id="rolled-assign" class="row"></div>
+          <button id="reset-rolls" type="button" class="secondary">Reset Rolls</button>
+        </article>
+
+        <div id="abilities-grid" class="abilities-grid"></div>
+        <article class="details">
+          <ul>
+            <li>Point buy budget: 27</li><li>Point buy min/max: 8 to 15</li><li>Rolled stat max allowed on assignment: 18</li>
+          </ul>
+          <p id="point-buy-status"></p>
+        </article>
+        <div class="row between">
+          <button id="back-to-race" type="button" class="secondary">Back</button>
+          <button id="confirm-abilities" type="button">Confirm Ability Scores</button>
+        </div>
+      </section>
+
+      <section id="step-class" class="card step-panel hidden">
+        <h2>Choose Class & Build Levels</h2>
+        <label>Character Name <input id="character-name" type="text" placeholder="Nalia" /></label>
+
+        <div id="starting-class-setup">
+          <h3>Pick Starting Class</h3>
+          <div id="class-options" class="option-grid"></div>
+          <div class="row end">
+            <button id="confirm-class" type="button">Set Starting Class (Level 1)</button>
+          </div>
+        </div>
+
+        <article id="class-config-panel" class="details"></article>
+
+        <article class="details class-progress">
+          <div class="row between">
+            <h3>Class Progression</h3>
+            <div>
+              <strong id="total-level">Total Level: 1</strong>
+              <div id="class-level-breakdown" class="class-level-breakdown"></div>
+            </div>
+          </div>
+          <ul id="class-feature-timeline" class="timeline"></ul>
+
+          <div class="multiclass-block">
+            <button id="toggle-multiclass" type="button" class="secondary">Multiclass Options</button>
+            <div id="multiclass-list" class="option-grid hidden"></div>
+          </div>
+        </article>
+
+        <p id="class-validation" class="validation"></p>
+        <div class="row between">
+          <button id="back-to-abilities" type="button" class="secondary">Back</button>
+          <button id="confirm-class-levels" type="button">Confirm Class Levels</button>
+        </div>
+      </section>
+
+      <section id="step-spells" class="card step-panel hidden">
+        <h2>Spells</h2>
+        <p>If your race/class/subclass grants spellcasting, choose known spells here.</p>
+        <article class="details">
+          <p id="spells-status"></p>
+          <p id="spells-cap"></p>
+        </article>
+        <article class="details">
+          <label>Spell Level
+            <select id="spell-level-filter">
+              <option value="all">All</option>
+              <option value="0">Cantrips</option>
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+              <option value="6">Level 6</option>
+              <option value="7">Level 7</option>
+              <option value="8">Level 8</option>
+              <option value="9">Level 9</option>
+            </select>
+          </label>
+          <div id="spell-list" class="option-grid"></div>
+        </article>
+        <article class="details">
+          <h3>Selected Spells</h3>
+          <ul id="selected-spells"></ul>
+        </article>
+        <div class="row between">
+          <button id="back-to-class" type="button" class="secondary">Back</button>
+          <button id="confirm-spells" type="button">Confirm Spells</button>
+        </div>
+      </section>
+
+      <section id="step-background" class="card step-panel hidden">
+        <h2>Choose Background</h2>
+        <p>Select a background and review what it grants.</p>
+        <div id="background-options" class="option-grid"></div>
+        <article id="background-details" class="details"></article>
+        <div class="row between">
+          <button id="back-to-spells" type="button" class="secondary">Back</button>
+          <button id="confirm-background" type="button">Confirm Background</button>
+        </div>
+      </section>
+
+      <section id="step-summary" class="card step-panel hidden">
+        <h2>Character Sheet Summary</h2>
+        <div id="character-sheet" class="character-sheet"></div>
+        <div class="row between">
+          <button id="back-to-background" type="button" class="secondary">Back</button>
+          <button id="download-json" type="button">Download Character JSON</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="hover-tooltip" class="tooltip hidden"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
